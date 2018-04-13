@@ -1,0 +1,16 @@
+<div class="layui-header header header-demo">
+    <div class="layui-main">
+        <font class="logo">后台管理系统</font>
+        <ul class="layui-nav" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;" th:text="${userName}">admin</a>
+            <dl class="layui-nav-child">
+                <dd><a class="dialog" style="cursor: pointer" data-url="/sys/personalInfo" data-title="修改个人信息" data-width="800"
+               data-height="600">修改个人信息</a></dd>
+            <dd><a href="/logout">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item x-index"><a href="/">返回首页</a></li>
+        </ul>
+    </div>
+</div>

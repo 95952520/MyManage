@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="common/head"/>
+</head>
+<body>
+<div class="x-body">
+    <form class="layui-form" style="padding-bottom: 10px;text-align: left;">
+        用户名：
+        <div class="layui-inline">
+            <input class="layui-input" type="text" name="userName" autocomplete="off" placeholder="用户名">
+        </div>
+        用户状态：
+        <div class="layui-inline">
+            <select name="status" lay-verify="" lay-search="">
+                <option value="">搜索或选择</option>
+                <th:block th:each="map: ${userStatus}">
+                    <option th:value="${map.key}" th:text="${map.value}"></option>
+                </th:block>
+            </select>
+        </div>
+        <!--开始时间：-->
+        <!--<div class="layui-inline">-->
+            <!--<div class="layui-input-inline">-->
+                <!--<input type="text" name="beginDate" id="date" lay-verify="myCheckDate" placeholder="yyyy-MM-dd"-->
+                       <!--autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+        <!--</div>-->
+        <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+    </form>
+
+    <xblock>
+        <button class="layui-btn dialog" data-url="sysUser/toAdd" data-title="添加">
+            <i class="layui-icon">&#xe608;</i>添加
+        </button>
+    </xblock>
+
+    <table class="layui-table"
+           lay-data="{height:'700', url:'/sysUser/list', page:true,id:'table',limit:15,limits:[10,15,20,50,100]}"
+           lay-filter="table">
+        <thead>
+        <tr>
+            <!--<th lay-data="{checkbox:true, fixed: true}"></th>-->
+            <th lay-data="{field:'id',align:'center', sort: true}">id</th>
+            <th lay-data="{field:'userName', align:'center'}">用户名</th>
+            <th lay-data="{field:'status',align:'center',sort: true,templet:'#userStatus'}">status</th>
+            <th lay-data="{field:'userDesc',align:'center'}">userDesc</th>
+            <th lay-data="{field:'createUser',align:'center'}">创建用户的id</th>
+            <th lay-data="{field:'createTime',align:'center',sort: true,}">创建时间</th>
+            <th lay-data="{field:'loginTime',align:'center', sort: true,}">上次登录时间</th>
+            <th lay-data="{fixed:'right', align:'center',width:300, toolbar: '#row-bar'}">操作</th>
+        </tr>
+        </thead>
+    </table>
+
+    <script type="text/html" id="userStatus" th:inline="javascript">
+        {{#  var map = [[${userStatus}]] }}
+        {{#  for(var key in map){ }}
+        {{#  if(d.status == key && d.status == 1){ }}
+        <font color='green'>{{ unescape(map[key].replace(/\\u/g, '%u')) }}</font>
+        {{#  }else if(d.status == key && d.status == 0){ }}
+        <font color='red'>{{ unescape(map[key].replace(/\\u/g, '%u')) }}</font>
+        {{#  } }}
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="row-bar">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" data-id="id" data-url="/sysUser/toUserRole" data-title="用户角色" data-width="450"
+        data-height="600"><i class="layui-icon">&#xe642;</i> 用户角色管理</a>
+        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" data-url="/sysUser/toEdit" data-title="编辑" data-width="800"
+        data-height="600"><i class="layui-icon">&#xe642;</i> 编辑</a>
+        <a class="layui-btn layui-btn-xs" lay-event="confirm" data-id="id" data-url="/sysUser/resetPwd" data-msg="确定重置密码为bqcBQC123?"><i class="layui-icon">&#xe642;</i> 重置密码</a>
+    </script>
+</div>
+<div th:replace="common/js"></div>
+<div th:replace="common/setting"></div>
+<script type="text/javascript">
+    layui.use('xtable');
+</script>
+</body>
+</html>

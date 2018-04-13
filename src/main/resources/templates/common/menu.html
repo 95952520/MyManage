@@ -1,0 +1,19 @@
+<div class="layui-side layui-bg-black x-side">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree site-demo-nav" lay-filter="side">
+            <li class="layui-nav-item" th:each="parentMenu: ${menuList}">
+                <a class="javascript:;" href="javascript:;">
+                    <i class="layui-icon" style="top: 3px;" th:utext="${parentMenu.img}">&#xe614;</i>
+                    <cite th:text="${parentMenu.name}"></cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd class="" th:each="sonMenu: ${parentMenu.list}">
+                        <a href="javascript:;" th:_href="${sonMenu.sonUrl}">
+                            <cite th:text="${sonMenu.sonName}"></cite>
+                        </a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>

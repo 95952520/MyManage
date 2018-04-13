@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="common/head"/>
+</head>
+<body>
+<div class="x-body">
+    <form class="layui-form layui-form-pane" data-id="reload" action="/sysMenu/doEdit">
+        <input type="hidden" name="parentId" th:value="${menuEntity.parentId}">
+        <input type="hidden" name="menuId" th:value="${menuEntity.menuId}">
+        <div th:if="${menuEntity.parentId != null && menuEntity.parentId != 0}" class="layui-form-item">
+            <label class="layui-form-label">主菜单</label>
+            <div class="layui-inline" style="width: 300px">
+                <select name="parentId" lay-verify="" lay-search="" >
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${mainMenus}">
+                        <option th:value="${map.menuId}" th:text="${map.name}"
+                                th:selected="${menuEntity.parentId==map.menuId}"></option>
+                    </th:block>
+                </select>
+            </div>
+        </div>
+        <div th:if="${menuEntity.parentId}==0" class="layui-form-item">
+            <label class="layui-form-label">图标<i class="layui-icon" style="margin-left: 10px;" th:utext="${menuEntity.img}"></i></label>
+            <div class="layui-input-inline" style="width: 300px" >
+                <input type="text" name="img" placeholder="图标code" autocomplete="off" class="layui-input" th:value="${menuEntity.img}">
+            </div>
+            <div class="layui-form-mid layui-word-aux">详见<a href="http://www.layui.com/doc/element/icon.html" target="_blank"><font color="blue">layui图标库</font></a></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class="layui-input-block" style="width: 300px">
+                <input type="text" name="name" lay-verify="required|checkStr" placeholder="请输入菜单名称"
+                       autocomplete="off" class="layui-input" th:value="${menuEntity.name}">
+            </div>
+        </div>
+        <div  th:if="${menuEntity.parentId != null && menuEntity.parentId != 0}" class="layui-form-item">
+            <label class="layui-form-label">URL请求</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text"  name="url" placeholder="请输入"  autocomplete="off" class="layui-input" th:value="${menuEntity.url}">
+            </div>
+        </div>
+        <div th:if="${menuEntity.parentId != null && menuEntity.parentId != 0}" class="layui-form-item">
+            <label class="layui-form-label">授权</label>
+            <div class="layui-input-inline"  style="width: 300px">
+                <input type="text" name="perms" placeholder="请输入" autocomplete="off" class="layui-input" th:value="${menuEntity.perms}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline"  style="width: 300px">
+                <input type="text" name="orderNum" lay-verify="required" placeholder="请输入" autocomplete="off"
+                       class="layui-input" onkeyup="this.value=this.value.replace(/\D/g,'')" th:value="${menuEntity.orderNum}">
+            </div>
+            <div class="layui-form-mid layui-word-aux">数字越大权值越大</div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="margin-left:85px; " lay-submit lay-filter="submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="common/js"></div>
+<div th:replace="common/setting"></div>
+<script type="text/javascript">
+    layui.use('xform');
+    layui.use('xtable');
+
+</script>
+</body>
+</html>

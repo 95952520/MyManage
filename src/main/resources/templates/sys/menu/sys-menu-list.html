@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="common/head"/>
+</head>
+<body>
+<div class="x-body">
+    <xblock>
+        <button class="layui-btn dialog" data-width="600" data-height="300" data-url="/sysMenu/toAdd" data-title="新增">
+            <i class="layui-icon">&#xe608;</i>添加主菜单
+        </button>
+    </xblock>
+    <form class="layui-form layui-form-pane" action="">
+        <table class="layui-table" lay-filter="table" style="margin: 0;">
+            <thead>
+            <tr>
+                <th style="width:25%">菜单名称</th>
+                <th>菜单URL</th>
+                <th style="width:20%">授权</th>
+                <th style="width:10%">排序</th>
+                <th style="width:20%">操作</th>
+            </tr>
+            </thead>
+        </table>
+        <table class="layui-table"  th:each="parentMenu: ${menuList}"  style="margin: 0;">
+            <thead>
+            <tr>
+                <th th:utext="((${parentMenu.img} == null)?' ': '<i class=\'layui-icon\'> '+${parentMenu.img}+'</i> ')+${parentMenu.name}" style="width:25%">
+                </th>
+                <th th:utext="${parentMenu.url}"></th>
+                <th th:utext="${parentMenu.perms}" style="width:20%"></th>
+                <th th:utext="${parentMenu.orderNum}" style="width:10%" data-edit="text"></th>
+                <th style="width:20%">
+                    <input type="hidden" name="parentId" class="par id" th:value="${parentMenu.id}">
+                    <input type="hidden" name="name" class="par name" th:value="${parentMenu.name}">
+                    <a class=" layui-btn layui-btn-warm layui-btn-xs event" lay-event="edit" data-url="/sysMenu/toEdit" data-title="编辑"
+                       data-width="600" data-height="425"><i class="layui-icon">&#xe642;</i> 编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs event" lay-event="del" data-id="par" data-url='/sysMenu/delete'><i class="layui-icon">&#xe640;</i> 删除</a>
+                    <a class="layui-btn  layui-btn-normal layui-btn-xs event" lay-event="add" data-url="/sysMenu/toAdd" data-title="新增"
+                       data-width="600" data-height="425"> <i class="layui-icon">&#xe608;</i> 添加子菜单</a>
+                </th>
+            </tr>
+            </thead>
+             <tr th:each="sonMenu: ${parentMenu.list}">
+                <td th:utext="'<i class=\'layui-icon\' style=\'color: #ddd;\' >&#xe602;</i><i class=\'layui-icon\' style=\'color: #ddd; \' >&#xe602;</i>  '+${ sonMenu.sonName}"></td>
+                <td th:utext="${sonMenu.sonUrl}"></td>
+                <td th:utext="${sonMenu.sonPerms}"></td>
+                <td th:utext="${sonMenu.sonOrderNum}"></td>
+                <td>
+                    <input type="hidden" name="sonId" class="son id" th:value="${sonMenu.sonId}">
+                    <a class=" layui-btn layui-btn-warm layui-btn-xs event" lay-event="edit"  data-url="/sysMenu/toEdit" data-title="编辑"
+                       data-width="600" data-height="425"><i class="layui-icon">&#xe642;</i> 编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs event" lay-event="del" data-id="son" data-url='/sysMenu/delete'><i
+                        class="layui-icon">&#xe640;</i> 删除</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div th:replace="common/js"></div>
+<div th:replace="common/setting"></div>
+<script type="text/javascript">
+    layui.use('xutils');
+    layui.use('xtable');
+
+</script>
+</body>
+</html>

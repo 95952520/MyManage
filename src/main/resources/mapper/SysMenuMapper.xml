@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuchen.mapper.SysMenuMapper">
+    <resultMap id="ParentMenu" type="com.xuchen.model.ParentMenu">
+        <result column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="IMG" property="img" jdbcType="VARCHAR"/>
+        <result column="PARENT_STATUS" property="parentStatus" jdbcType="VARCHAR"/>
+
+        <result column="URL" property="url" jdbcType="VARCHAR"/>
+        <result column="PERMS" property="perms" jdbcType="VARCHAR"/>
+        <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER"/>
+
+        <collection  property="list" resultMap="SonMenu"></collection>
+
+
+    </resultMap>
+
+    <resultMap id="SonMenu" type="com.xuchen.model.SonMenu">
+        <result column="SON_ID" property="sonId" jdbcType="INTEGER"/>
+        <result column="SON_NAME" property="sonName" jdbcType="VARCHAR"/>
+        <result column="SON_URL" property="sonUrl" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="INTEGER"/>
+        <result column="SON_STATUS" property="sonStatus" jdbcType="INTEGER"/>
+
+        <result column="SON_IMG" property="sonImg" jdbcType="VARCHAR"/>
+        <result column="SON_PERMS" property="sonPerms" jdbcType="VARCHAR"/>
+        <result column="SON_ORDER_NUM" property="sonOrderNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="getMenuByUserId" resultMap="ParentMenu">
+        SELECT * FROM
+        (SELECT DISTINCT par.menu_id AS id,par.name,par.img,par.order_num AS parent_order
+        FROM sys_menu par
+        INNER JOIN sys_role_menu prm ON par.menu_id = prm.menu_id
+        INNER JOIN sys_user_role sur ON prm.role_id = sur.role_id
+        INNER JOIN sys_user u ON sur.user_id = u.id
+        WHERE u.id = #{id} AND par.type = 0 AND prm.status = 1
+        GROUP BY sur.role_id,par.menu_id
+        ORDER BY par.order_num DESC) tp
+        INNER JOIN
+        (SELECT DISTINCT son.menu_id AS son_id,son.name AS son_name,son.url AS son_url,
+        son.parent_id AS parent_id,son.order_num AS son_order
+        FROM sys_menu son
+        INNER JOIN sys_role_menu srm ON son.menu_id = srm.menu_id
+        INNER JOIN sys_user_role sur ON srm.role_id = sur.role_id
+        INNER JOIN sys_user u ON sur.user_id = u.id
+        WHERE u.id = #{id} AND son.type = 1 AND srm.status = 1
+        GROUP BY srm.role_id,son.menu_id
+        ORDER BY son.order_num DESC) ts ON tp.id = ts.parent_id
+        ORDER BY parent_order DESC,son_order DESC
+    </select>
+
+    <select id="getMenuByRoleId" resultMap="ParentMenu">
+        SELECT par.menu_id AS id,par.name,prm.status AS parent_status,son.menu_id AS son_id,son.name AS son_name,srm.status AS son_status
+        FROM sys_menu par
+        INNER JOIN sys_menu son ON par.menu_id = son.parent_id
+        INNER JOIN sys_role_menu prm ON par.menu_id = prm.menu_id
+        INNER JOIN sys_role_menu srm ON son.menu_id = srm.menu_id
+        WHERE prm.role_id = #{id} AND srm.role_id = #{id}
+        ORDER BY par.order_num DESC
+    </select>
+
+    <select id="getMenuList" resultMap="ParentMenu">
+    (SELECT par.menu_id AS id,
+            par.name,
+            par.img,
+            par.url,
+            par.perms,
+            par.order_num,
+            son.menu_id AS son_id,
+            son.name AS son_name,
+            son.img AS son_img,
+            son.perms as son_perms,
+            son.url AS son_url,
+            son.order_num AS son_order_num,
+            son.parent_id AS parent_id
+     FROM sys_menu par INNER JOIN sys_menu son ON par.menu_id = son.parent_id
+     ORDER BY par.order_num DESC)
+     UNION
+    (SELECT menu_id as id, name,img,url,perms,order_num ,
+                    NULL AS son_id,
+                    NULL AS son_name,
+                    NULL AS son_img,
+                    NULL as son_perms,
+                    NULL AS son_url,
+                    NULL AS son_order_num,
+                    NULL AS parent_id
+   FROM sys_menu WHERE parent_id=0)
+    </select>
+
+    <insert id="insertRoleAndMenu">
+        INSERT sys_role_menu (role_id,menu_id,status) SELECT role_id,#{menuId},0 FROM sys_role
+    </insert>
+    <delete id="deleteMenuById" parameterType="java.lang.Integer" >
+        delete from sys_role_menu WHERE menu_id in (select menu_id from sys_menu WHERE menu_id = #{id} or parent_id=#{id});
+
+        delete from sys_menu where menu_id = #{id} or parent_id=#{id}
+    </delete>
+</mapper>
