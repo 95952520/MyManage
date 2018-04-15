@@ -11,9 +11,10 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseCheckBox;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
-import com.xuchen.entity.@ObjEntity@;
+import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
-import com.xuchen.service.@ClassService@;
+import com.xuchen.enums.UserTypeEnums;
+import com.xuchen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,86 +24,87 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("@classMapping@")
-public class @ClassController@ extends BaseController {
+@RequestMapping("user")
+public class UserController extends BaseController {
 
 
     @Autowired
-    @ClassService@ @Service@;
+    UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     String index(HttpServletRequest request) {
         setAttributeEnums(request);
-        return "@htmlPackage@/@htmlUrl@-list";
+        return "user/user-list";
     }
 
     @RequestMapping("list")
     @ResponseBody
-    Result list(BaseQuery baseQuery, @ObjEntity@ myEntity, String params, HttpServletRequest request) {
+    Result list(BaseQuery baseQuery, User myEntity, String params, HttpServletRequest request) {
         if (params != null) {
-            myEntity = JSONObject.parseObject(params).toJavaObject(@ObjEntity@.class);
+            myEntity = JSONObject.parseObject(params).toJavaObject(User.class);
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);
-//        wrapper.eq("id").like("user_name");
-        List<@ObjEntity@> list = @Service@.selectList(wrapper);
+        wrapper.eq("user_type").like("user_name").like("shop_name");
+        List<User> list = userService.selectList(wrapper);
         return Result.success(PageHelper.freeTotal(), list);
     }
 
     @RequestMapping("editText")
     @ResponseBody
-    Result editText(@ObjEntity@ myEntity) {
-        @Service@.updateById(myEntity);
+    Result editText(User myEntity) {
+        userService.updateById(myEntity);
         return Result.success();
     }
 
     @RequestMapping(value = "toAdd", method = RequestMethod.GET)
     String toAdd(Integer id, HttpServletRequest request) {
         setAttributeEnums(request);
-        return "@htmlPackage@/@htmlUrl@-add";
+        return "user/user-add";
     }
 
     @RequestMapping("doAdd")
     @ResponseBody
-    Result doAdd(@ObjEntity@ myEntity) {
-//        myEntity.setCreateUser(getSessionUserName());
-        @Service@.insert(myEntity);
+    Result doAdd(User myEntity) {
+        myEntity.setCreateUser(getSessionUserName());
+        userService.insert(myEntity);
         return Result.success();
     }
 
     @RequestMapping(value = "toEdit", method = RequestMethod.GET)
-    String toEdit(@ObjEntity@ myEntity, HttpServletRequest request) {
+    String toEdit(User myEntity, HttpServletRequest request) {
         setAttributeEnums(request);
-        request.setAttribute("myEntity", @Service@.selectById(myEntity));
-        return "@htmlPackage@/@htmlUrl@-edit";
+        request.setAttribute("myEntity", userService.selectById(myEntity));
+        return "user/user-edit";
     }
 
     @RequestMapping("doEdit")
     @ResponseBody
-    Result doEdit(@ObjEntity@ myEntity) {
-        @Service@.updateById(myEntity);
+    Result doEdit(User myEntity) {
+        myEntity.setUpdateUser(getSessionUserName());
+        userService.updateById(myEntity);
         return Result.success();
     }
 
-    @RequestMapping("delete")
-    @ResponseBody
-    Result delete(@ObjEntity@ myEntity) {
-        @Service@.deleteById(myEntity);
-        return Result.success();
-    }
-
-    @RequestMapping("deleteList")
-    @ResponseBody
-    Result deleteList(String jsonObj) {
-//        List<@ObjEntity@> list = JSONArray.parseArray(jsonObj,@ObjEntity@.class);
+//    @RequestMapping("delete")
+//    @ResponseBody
+//    Result delete(User myEntity) {
+//        userService.deleteById(myEntity);
+//        return Result.success();
+//    }
+//
+//    @RequestMapping("deleteList")
+//    @ResponseBody
+//    Result deleteList(String jsonObj) {
+//        List<User> list = JSONArray.parseArray(jsonObj,User.class);
 //        List<Integer> ids = new ArrayList<>();
-//        for(@ObjEntity@ obj : list) {
+//        for(User obj : list) {
 //            ids.add(obj.getId());
 //        }
-//        @Service@.deleteBatchIds(ids);
-        return Result.success();
-    }
+//        userService.deleteBatchIds(ids);
+//        return Result.success();
+//    }
 
     private void setAttributeEnums(HttpServletRequest request) {
-//        request.setAttribute("menuType", MenuTypeEnum.getMap());
+        request.setAttribute("userType", UserTypeEnums.getMap());
     }
 }

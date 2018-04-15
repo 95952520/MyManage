@@ -8,48 +8,51 @@
     <form class="layui-form layui-form-pane" action="/@entityObjName@/doAdd">
         <div class="layui-form-item">
             <label class="layui-form-label">名称</label>
-                <div class="layui-input-block" style="width: 300px">
-                    <input type="text" name="userName" lay-verify="" placeholder="请输入" readonly
-                           autocomplete="off" class="layui-input">
-                </div>
+            <div class="layui-input-block" style="width: 300px">
+                <input type="text" name="userName" lay-verify="" placeholder="请输入" autocomplete="off"
+                       class="layui-input">
+            </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">密码</label>
                 <div class="layui-input-inline" style="width: 300px">
-                    <input type="password" id="password" name="password" lay-verify="" placeholder="请输入"  autocomplete="off" class="layui-input">
+                    <input type="password" id="password" name="password" lay-verify="" placeholder="请输入" autocomplete="off"
+                           class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">不得含有特殊字符</div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">重复密码</label>
-                <div class="layui-input-inline"  style="width: 300px">
-                <input type="password" name="confPassword" lay-verify="required|eqPwd" placeholder="重复输入密码"
-                       autocomplete="off" class="layui-input">
+                <div class="layui-input-inline" style="width: 300px">
+                    <input type="password" name="confPassword" lay-verify="required|eqPwd" placeholder="重复输入密码"
+                           autocomplete="off" class="layui-input">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item" pane>
-            <label class="layui-form-label">角色</label>
-            <div class="layui-input-block">
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block">
                     <th:block th:each="map: ${userRole}">
-                        <input type="radio" name="roleId" th:value="${map.key}" th:title="${map.value}" th:if="${map.key}==1">
-                        <input type="radio" name="roleId" th:value="${map.key}" th:title="${map.value}" th:if="${map.key}==2" checked="">
+                        <input type="radio" name="roleId" th:value="${map.key}" th:title="${map.value}"
+                               th:if="${map.key}==1">
+                        <input type="radio" name="roleId" th:value="${map.key}" th:title="${map.value}"
+                               th:if="${map.key}==2" checked="">
                     </th:block>
-                <!--<input type="checkbox" name="roleId" lay-skin="switch" value="1|2" lay-text="开发|运维">-->
+                    <!--<input type="checkbox" name="roleId" lay-skin="switch" value="1|2" lay-text="开发|运维">-->
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item" pane>
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="启用|禁止">
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="启用|禁止">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label  class="layui-form-label">其他信息</label>
-            <div class="layui-input-block">
-                <input type="text" name="userDesc" lay-verify="required|checkStr" placeholder="请输入用户相关信息(如：姓名、手机号)"
-                       autocomplete="off" class="layui-input">
+            <div class="layui-form-item">
+                <label class="layui-form-label">其他信息</label>
+                <div class="layui-input-block">
+                    <input type="text" name="userDesc" lay-verify="required|checkStr" placeholder="请输入用户相关信息(如：姓名、手机号)"
+                           autocomplete="off" class="layui-input">
+                </div>
             </div>
-        </div>
 
 
         <div class="layui-form-item">

@@ -91,8 +91,8 @@ public class SysRoleController extends BaseController {
 
 
     @RequestMapping(value = "toRoleMenu", method = RequestMethod.GET)
-    String toRoleMenu(Integer id, HttpServletRequest request) {
-        request.setAttribute("roleId",id);
+    String toRoleMenu(Integer roleId, HttpServletRequest request) {
+        request.setAttribute("roleId",roleId);
         return "sys/role/sys-role-menu";
     }
 

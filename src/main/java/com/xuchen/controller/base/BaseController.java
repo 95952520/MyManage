@@ -29,6 +29,10 @@ public class BaseController {
         return (SysUser) SecurityUtils.getSubject().getPrincipal();
     }
 
+    protected static String getSessionUserName() {
+        return getSessionUser().getUserName();
+    }
+
     protected static Integer getSessionUserId() {
         return getSessionUser().getId();
     }
@@ -45,17 +49,21 @@ public class BaseController {
         logger.error("接口报错:[" + request.getRequestURI() + "],调用者[" + getSessionUserId() + "],method[" + request.getMethod() + "]");
         logger.error("参数:" + getJsonParams(request.getParameterMap()));
         e.printStackTrace();
-        return Result.fail(e.getMessage());
+        return Result.fail(e.getLocalizedMessage());
     }
 
     /**
      * 根据成员变量名从集合中提取成map
      */
-    protected static HashMap<Object,Object> getMapByList(List<? extends Serializable> list, String keyName, String valueName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    protected static HashMap<Object,Object> getMapByList(List<? extends Serializable> list, String keyName, String valueName) {
         HashMap<Object,Object> map = new HashMap<>();
         if (list != null && list.size()>0){
-            for (Serializable entity : list) {
-                map.put(getValueByInvoke(entity,keyName),getValueByInvoke(entity,valueName));
+            try {
+                for (Serializable entity : list) {
+                    map.put(getValueByInvoke(entity,keyName),getValueByInvoke(entity,valueName));
+                }
+            }catch (Exception e){
+                logger.error("从集合中提取成map失败");
             }
         }
         return map;

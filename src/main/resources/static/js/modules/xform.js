@@ -26,6 +26,25 @@ layui.define(['layer', 'form', 'upload'], function (exports) {
                 return '不能含有特殊字符';
             }
         },
+        checkInt: function (value) {
+            value = value.trim();
+            if ("" == value) {
+                return;
+            }
+            if (!new RegExp("^-?\\d+$").test(value)) {
+                return '需要为数字类型';
+            }
+        },
+        checkDec: function (value) {
+            value = value.trim();
+            if ("" == value) {
+                return;
+            }
+            var re = /^[0-9]+\.?[0-9]*$/;
+            if (!re.test(value)) {
+                return '需要为大于0的数(可为小数)';
+            }
+        },
         file: function (value, item) {
             if (value == '') {
                 return "上传文件不能为空";

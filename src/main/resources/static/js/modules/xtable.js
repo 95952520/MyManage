@@ -1,5 +1,5 @@
 //layui xtable
-layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports) {
+layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports) {
 
     var $ = layui.jquery,
         element = layui.element,
@@ -10,8 +10,8 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
     //弹窗
     $(".dialog").on('click', function () {
         var me = this;
-        var url = $(this).attr('data-url');
-        width = $(me).attr('data-width') || 800,
+        var url = $(this).attr('data-url'),
+            width = $(me).attr('data-width') || 800,
             height = $(me).attr('data-height') || 600,
             title = $(me).attr('data-title') || '';
         x_admin_show(title, url, width, height);
@@ -25,7 +25,7 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
         },
         checkInt: function (value) {
             value = value.trim();
-            if (""==value){
+            if ("" == value) {
                 return;
             }
             if (!new RegExp("^-?\\d+$").test(value)) {
@@ -47,7 +47,7 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
         //删除
         if (obj.event === 'del') {
             layer.confirm('确定删除?', {icon: 3, title: '警告'}, function (index) {
-                $.post(url,data, function (result) {
+                $.post(url, data, function (result) {
                     if (result.code == 0) {
                         layer.msg(result.msg, {
                             icon: 1,
@@ -56,14 +56,17 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
                         layer.close(index);
                         table.reload('table');
                     } else {
-                        layer.msg(result.msg, {icon: 2});
+                        layer.msg(result.msg, {
+                            icon: 2,
+                            time: 10000
+                        });
                     }
                 });
             });
             //确认框
-        } else if (obj.event === 'confirm'){
+        } else if (obj.event === 'confirm') {
             layer.confirm(msg, {icon: 3, title: '警告'}, function (index) {
-                $.post(url,data, function (result) {
+                $.post(url, data, function (result) {
                     if (result.code == 0) {
                         layer.msg(result.msg, {
                             icon: 1,
@@ -72,13 +75,16 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
                         layer.close(index);
                         table.reload('table');
                     } else {
-                        layer.msg(result.msg, {icon: 2});
+                        layer.msg(result.msg, {
+                            icon: 2,
+                            time: 10000
+                        });
                     }
                 });
             });
             //编辑
-        }else {
-            x_admin_show(title, url + '?id=' + data[id], width, height);
+        } else {
+            x_admin_show(title, url + '?' + id + '=' + data[id], width, height);
         }
     });
 
@@ -96,10 +102,10 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
     });
 
     //监听单元格编辑
-    table.on('edit(table)', function(obj){
+    table.on('edit(table)', function (obj) {
         var value = obj.value //得到修改后的值
-            ,data = obj.data //得到所在行所有键值
-            ,field = obj.field; //得到字段
+            , data = obj.data //得到所在行所有键值
+            , field = obj.field; //得到字段
         $.post($("#editText").val(), data, function (result) {
             if (result.code == 0) {
                 parent.layer.msg(result.msg, {
@@ -108,7 +114,10 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
                 });
             } else {
                 table.reload('table');
-                layer.msg(result.msg, {icon: 2});
+                layer.msg(result.msg, {
+                    icon: 2,
+                    time: 10000
+                });
             }
         });
     });
@@ -120,7 +129,7 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
         var checkStatus = table.checkStatus('table');
         var data = checkStatus.data;
         if (data.length == 0) {
-            layer.msg("请选择要删除的记录",{icon: 0});
+            layer.msg("请选择要删除的记录", {icon: 0});
             return;
         }
         var _ids = [];
@@ -129,7 +138,7 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
         });
         data = JSON.stringify(data);
         layer.confirm('确定删除?', {icon: 3, title: '警告'}, function (index) {
-            $.post(url,{jsonObj:data}, function (result) {
+            $.post(url, {jsonObj: data}, function (result) {
                 if (result.code == 0) {
                     layer.msg('删除成功', {
                         icon: 1,
@@ -138,7 +147,10 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
                     layer.close(index);
                     table.reload('table');
                 } else {
-                    layer.msg(result.msg, {icon: 2});
+                    layer.msg(result.msg, {
+                        icon: 2,
+                        time: 10000
+                    });
                 }
             });
         });
@@ -170,6 +182,7 @@ layui.define(['layer', 'table', 'element', 'form','laydate'], function (exports)
             } else {
                 layer.msg(result.msg, {
                     icon: 2,
+                    time: 10000
                 });
             }
         });

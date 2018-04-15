@@ -1,6 +1,9 @@
 package com.xuchen.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xuchen.BootManage;
+import com.xuchen.entity.User;
+import com.xuchen.enums.UserTypeEnums;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +17,13 @@ import java.util.List;
 public class ServiceTest {
 
     @Autowired
-    SysRoleService service;
+    UserService service;
 
     @Test
     public void test() {
-        List<String> list = service.findRolesByUserId(1);
-        System.out.println(list.size());
-        for (String s : list) {
-            System.out.println(s);
+        List<User> list = service.selectList(new EntityWrapper<User>().eq("user_type", UserTypeEnums.supplier.getId()));
+        for (User user : list) {
+            System.out.println(user);
         }
 
     }

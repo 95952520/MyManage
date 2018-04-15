@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="common/head"/>
+</head>
+<body>
+<div class="x-body">
+    <form class="layui-form layui-form-pane" action="/user/doEdit">
+        <input type="hidden" name="userId" th:value="${myEntity.userId}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="userName" th:value="${myEntity.userName}" readonly="readonly"
+                       lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-block">
+                <th:block th:each="map: ${userType}">
+                    <input type="radio" name="userType" th:value="${map.key}" th:title="${map.value}" th:checked="${myEntity.userType}==${map.key}">
+                </th:block>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" style="margin-left:200px;" lay-submit lay-filter="submit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="common/js"></div>
+<div th:replace="common/setting"></div>
+<script type="text/javascript">
+    layui.use('xform');
+</script>
+</body>
+</html>

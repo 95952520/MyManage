@@ -18,11 +18,11 @@ public class MybatisPlusGenerate {
     /**
      * 数据库表名
      */
-    protected static String[] tableNames = {"user"};
+    protected static String[] tableNames = {"stock"};
     /**
      * 项目路径
      */
-    protected static String projectPath = "D:\\git\\BootManage\\src\\main\\java";
+    protected static String projectPath = "D:\\git\\MyManage\\src\\main\\java";
     /**
      * 包名称
      */
