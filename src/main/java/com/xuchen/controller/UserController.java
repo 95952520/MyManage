@@ -57,7 +57,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "toAdd", method = RequestMethod.GET)
-    String toAdd(Integer id, HttpServletRequest request) {
+    String toAdd(HttpServletRequest request) {
         setAttributeEnums(request);
         return "user/user-add";
     }

@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
 public class RedisStore {
     private static RedisTemplate redisTemplate;
 
-    @Resource(name = "redisTemplate")
-    private void setRedisTemplate(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
+//    @Resource(name = "redisTemplate")
+//    private void setRedisTemplate(RedisTemplate redisTemplate) {
+//        this.redisTemplate = redisTemplate;
+//    }
 
     public static Set getKeys(String key) {
         return redisTemplate.keys(key);

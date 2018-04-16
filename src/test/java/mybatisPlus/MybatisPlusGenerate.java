@@ -18,7 +18,7 @@ public class MybatisPlusGenerate {
     /**
      * 数据库表名
      */
-    protected static String[] tableNames = {"stock"};
+    protected static String[] tableNames = {"goods"};
     /**
      * 项目路径
      */
@@ -30,7 +30,7 @@ public class MybatisPlusGenerate {
     /**
      * 作者
      */
-    protected static String author = "edwin";
+    protected static String author = "xuchen";
     /**
      * 生成controller通用模版(需手动微调)
      */
