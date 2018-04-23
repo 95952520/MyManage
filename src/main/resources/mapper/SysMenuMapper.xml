@@ -88,6 +88,7 @@
                     NULL AS son_order_num,
                     NULL AS parent_id
    FROM sys_menu WHERE parent_id=0)
+   ORDER BY order_num DESC,son_order_num DESC
     </select>
 
     <insert id="insertRoleAndMenu">

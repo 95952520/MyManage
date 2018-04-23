@@ -15,16 +15,17 @@ import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.UserTypeEnums;
 import com.xuchen.service.UserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("user")
+@RequiresPermissions("user")
 public class UserController extends BaseController {
 
 

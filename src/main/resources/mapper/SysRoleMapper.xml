@@ -11,7 +11,7 @@
         FROM sys_menu sm
         INNER JOIN sys_role_menu rm ON sm.menu_id = rm.menu_id AND rm.status = 1
         INNER JOIN sys_user_role sr ON sr.role_id = rm.role_id
-        WHERE sr.user_id = #{userId} AND sm.perms IS NOT NULL
+        WHERE sr.user_id = #{userId} AND sm.perms IS NOT NULL AND sm.perms!=''
     </select>
 
     <select id="findRolesByUserId" resultType="java.lang.String">

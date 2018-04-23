@@ -1,15 +1,9 @@
 package com.xuchen.controller;
 
-import com.xuchen.base.Result;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
-import com.xuchen.base.BaseCheckBox;
 import com.xuchen.base.BaseQuery;
+import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
 import com.xuchen.entity.Goods;
 import com.xuchen.entity.base.MyEntityWrapper;
@@ -18,16 +12,19 @@ import com.xuchen.enums.StockTypeEnum;
 import com.xuchen.enums.UnitTypeEnum;
 import com.xuchen.enums.WeightTypeEnum;
 import com.xuchen.service.GoodsService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("goods")
+@RequiresPermissions("goods")
 public class GoodsController extends BaseController {
 
 

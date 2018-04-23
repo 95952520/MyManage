@@ -18,7 +18,7 @@ public class MybatisPlusGenerate {
     /**
      * 数据库表名
      */
-    protected static String[] tableNames = {"goods"};
+    protected static String[] tableNames = {"order"};
     /**
      * 项目路径
      */

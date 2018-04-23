@@ -189,8 +189,10 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
     });
 
     //日期
-    laydate.render({
-        elem: '#date'
+    $.each($('.layDate'), function (i, item) {
+        laydate.render({
+            elem: item
+        });
     });
 
     /**

@@ -5,7 +5,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -16,86 +17,10 @@ public class MyUtils {
     private static Random random = new Random();
     private final static String randomStr = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz123456789";
 
-    /**
-     * 获取当前年月
-     */
-    public static String getYearMonth() {
-        return new SimpleDateFormat("yyyyMM").format(new Date());
+    public static Date getDateByLocal(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    /**
-     * 获取当前月日
-     */
-    public static String getMonthDay() {
-        return new SimpleDateFormat("MMdd").format(new Date());
-    }
-
-    /**
-     * 获取当前年
-     */
-    public static int getYear() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        int i = calendar.get(Calendar.YEAR);
-        return i;
-    }
-
-    public static int getNowUnixTime() {
-        return (int) (System.currentTimeMillis() / 1000);
-    }
-
-    public static int getUnixTime(Date date) {
-        return (int) (date.getTime() / 1000);
-    }
-
-    /**
-     * 获取传入时间的变化值
-     *
-     * @param type  1.时 2.天 3.月
-     * @param value 该时间单位的变化值
-     * @return
-     */
-    public static Date getQueryDate(Date origin, Integer type, Integer value) {
-        calendar.setTime(origin);
-        switch (type) {
-            case 1:
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + value);
-                break;
-            case 2:
-                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + value);
-                break;
-            case 3:
-                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + value);
-                break;
-            default:
-                return null;
-        }
-        return calendar.getTime();
-    }
-
-    /**
-     * 获取该天23:59:59的Date
-     *
-     * @return
-     */
-    public static Date getEndOfDay(Date origin) {
-        calendar.setTime(origin);
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        return calendar.getTime();
-    }
-
-    /**
-     * 获取该天剩下的秒数
-     *
-     * @return
-     */
-    public static long getLeftSecends() {
-        Date date = new Date();
-        Date endOfDay = getEndOfDay(date);
-        return (endOfDay.getTime() - date.getTime()) / 1000;
-    }
 
 
     /**

@@ -8,15 +8,17 @@ import java.lang.reflect.Method;
 public class MyEntityWrapper<T> extends EntityWrapper {
 
     private T myEntity;
+    private BaseQuery baseQuery;
 
     public MyEntityWrapper() {
     }
 
     public MyEntityWrapper(BaseQuery baseQuery, T myEntity) {
-        this.myEntity=myEntity;
-        if (baseQuery==null){
-            baseQuery=new BaseQuery();
+        this.myEntity = myEntity;
+        if (baseQuery == null) {
+            baseQuery = new BaseQuery();
         }
+        this.baseQuery = baseQuery;
         baseQuery.startPage();
         this.orderBy(baseQuery.getPageField(), "asc".equals(baseQuery.getPageOrder()));
     }
@@ -33,6 +35,20 @@ public class MyEntityWrapper<T> extends EntityWrapper {
         String columnValue = getColumnValue(column);
         if (columnValue != null) {
             super.eq(column, columnValue);
+        }
+        return this;
+    }
+
+    public MyEntityWrapper between(String column) {
+        System.out.println(baseQuery);
+        if (baseQuery.getBeginDate()!=null && baseQuery.getEndDate()!=null){
+            if (baseQuery.getBeginDate().before(baseQuery.getEndDate())){
+                super.between(column,baseQuery.getBeginDate(),baseQuery.getEndDate());
+            }
+        }else if (baseQuery.getBeginDate()!=null){
+            super.gt(column,baseQuery.getBeginDate());
+        }else if (baseQuery.getEndDate()!=null){
+            super.lt(column,baseQuery.getEndDate());
         }
         return this;
     }

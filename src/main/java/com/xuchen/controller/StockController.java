@@ -19,6 +19,7 @@ import com.xuchen.enums.UserTypeEnums;
 import com.xuchen.enums.WeightTypeEnum;
 import com.xuchen.service.StockService;
 import com.xuchen.service.UserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("stock")
+@RequiresPermissions("stock")
 public class StockController extends BaseController {
 
 
