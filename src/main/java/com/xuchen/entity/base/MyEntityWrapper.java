@@ -40,7 +40,6 @@ public class MyEntityWrapper<T> extends EntityWrapper {
     }
 
     public MyEntityWrapper between(String column) {
-        System.out.println(baseQuery);
         if (baseQuery.getBeginDate()!=null && baseQuery.getEndDate()!=null){
             if (baseQuery.getBeginDate().before(baseQuery.getEndDate())){
                 super.between(column,baseQuery.getBeginDate(),baseQuery.getEndDate());

@@ -1,0 +1,11 @@
+service mysqld start/stop/restart
+mysql -uroot -p
+
+src/redis.server redis.conf
+
+nohup java -jar XXX.jar &
+nohup java -jar XXX.jar >>XXX.out --spring.profiles.active=test &
+
+nginx  启动
+nginx -s stop 停止
+nginx -s reload 重新加载配置文件

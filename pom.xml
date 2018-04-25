@@ -60,6 +60,11 @@
 			<version>${starter.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>${druid.version}</version>

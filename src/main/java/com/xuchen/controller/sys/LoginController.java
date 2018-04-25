@@ -59,12 +59,12 @@ public class LoginController extends BaseController {
         if (MyUtils.isEmpty(loginEntity.getUserName()) || MyUtils.isEmpty(loginEntity.getPassword())) {
             return "redirect:login";
         }
-//        Integer loginCount;
-//        loginCount = RedisStore.getValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName());
-//        if (loginCount != null && loginCount == 5) {
-//            attributes.addFlashAttribute("msg", "用户尝试登录次数过多，请30分钟后再试");
-//            return "redirect:login";
-//        }
+        Integer loginCount;
+        loginCount = RedisStore.getValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName());
+        if (loginCount != null && loginCount == 5) {
+            attributes.addFlashAttribute("msg", "用户尝试登录次数过多，请30分钟后再试");
+            return "redirect:login";
+        }
         UsernamePasswordToken token = new UsernamePasswordToken(loginEntity.getUserName(), loginEntity.getPassword());
         try {
             SecurityUtils.getSubject().login(token);
@@ -74,12 +74,12 @@ public class LoginController extends BaseController {
             return "redirect:login";
         } catch (AuthenticationException e) {
             token.clear();
-//            loginCount = RedisStore.getValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName());
-//            RedisStore.setValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName(), (loginCount == null ? 0 : loginCount) + 1, 30, TimeUnit.MINUTES);
+            loginCount = RedisStore.getValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName());
+            RedisStore.setValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName(), (loginCount == null ? 0 : loginCount) + 1, 30, TimeUnit.MINUTES);
             attributes.addFlashAttribute("msg", "用户或密码不正确！");
             return "redirect:login";
         }
-//        RedisStore.delValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName());
+        RedisStore.delValue(RedisKey.LOGIN_USER_NAME + loginEntity.getUserName());
         logger.info("[" + loginEntity.getUserName() + "]登录成功,IP["+ MyUtils.getIpAddress(request)+"]");
         return "redirect:index";
     }

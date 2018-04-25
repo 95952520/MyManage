@@ -60,7 +60,7 @@ public class BaseQuery {
     public Date getBeginDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
-        if (beginDate == null){
+        if (beginDate == null || "".equals(beginDate)){
             return null;
         }
         try {
@@ -82,7 +82,7 @@ public class BaseQuery {
     public Date getEndDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
-        if (endDate == null){
+        if (endDate == null || "".equals(endDate)){
             return null;
         }
         try {
