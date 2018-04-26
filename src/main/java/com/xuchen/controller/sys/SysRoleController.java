@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.SysRole;
 import com.xuchen.entity.SysRoleMenu;
 import com.xuchen.entity.base.MyEntityWrapper;
@@ -78,6 +79,7 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
+    @RequestLog
     Result doAdd(SysRole myEntity) {
         myEntity.setUserIdCreate(getSessionUserId());
         sysRoleService.insertRoleAndMenu(myEntity);
@@ -86,6 +88,7 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping("delete")
     @ResponseBody
+    @RequestLog
     Result delete(SysRole myEntity) {
         sysRoleService.deleteById(myEntity);
         return Result.success();
@@ -124,6 +127,7 @@ public class SysRoleController extends BaseController {
 
     @RequestMapping(value = "updateRoleMenu",method = RequestMethod.POST)
     @ResponseBody
+    @RequestLog
     Result updateRoleMenu(Integer id, Integer[] ids) {
         SysRoleMenu sysRoleMenu = new SysRoleMenu();
         sysRoleMenu.setStatus(0);

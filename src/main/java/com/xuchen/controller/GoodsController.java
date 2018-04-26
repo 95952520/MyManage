@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Goods;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.ProductTypeEnum;
@@ -51,6 +52,7 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("editText")
     @ResponseBody
+    @RequestLog
     Result editText(Goods myEntity) {
         goodsService.updateById(myEntity);
         return Result.success();
@@ -64,6 +66,7 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
+    @RequestLog
     Result doAdd(Goods myEntity) {
 //        myEntity.setCreateUser(getSessionUserName());
         goodsService.insert(myEntity);
@@ -79,6 +82,7 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
+    @RequestLog
     Result doEdit(Goods myEntity) {
         goodsService.updateById(myEntity);
         return Result.success();
@@ -86,6 +90,7 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("delete")
     @ResponseBody
+    @RequestLog
     Result delete(Goods myEntity) {
         goodsService.deleteById(myEntity);
         return Result.success();

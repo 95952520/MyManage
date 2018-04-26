@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Stock;
 import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
@@ -58,6 +59,7 @@ public class StockController extends BaseController {
 
     @RequestMapping("editText")
     @ResponseBody
+    @RequestLog
     Result editText(Stock myEntity) {
         stockService.updateById(myEntity);
         return Result.success();
@@ -71,6 +73,7 @@ public class StockController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
+    @RequestLog
     Result doAdd(Stock myEntity) {
         myEntity.setCreateUser(getSessionUserName());
         stockService.insert(myEntity);
@@ -86,6 +89,7 @@ public class StockController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
+    @RequestLog
     Result doEdit(Stock myEntity) {
         stockService.updateById(myEntity);
         myEntity.setCreateUser(getSessionUserName());
@@ -101,6 +105,7 @@ public class StockController extends BaseController {
 
     @RequestMapping("deleteList")
     @ResponseBody
+    @RequestLog
     Result deleteList(String jsonObj) {
 //        List<Stock> list = JSONArray.parseArray(jsonObj,Stock.class);
 //        List<Integer> ids = new ArrayList<>();

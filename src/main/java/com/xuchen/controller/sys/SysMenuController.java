@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.SysMenu;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.model.ParentMenu;
@@ -61,6 +62,7 @@ public class SysMenuController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
+    @RequestLog
     Result doAdd(SysMenu myEntity, HttpServletRequest request) {
        // sysMenuService.insert(myEntity);
         sysMenuService.insertRoleAndMenu(myEntity);
@@ -83,6 +85,7 @@ public class SysMenuController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
+    @RequestLog
     Result doEdit(SysMenu myEntity, HttpServletRequest request) {
         sysMenuService.updateById(myEntity);
         return Result.success();
@@ -90,6 +93,7 @@ public class SysMenuController extends BaseController {
 
     @RequestMapping("delete")
     @ResponseBody
+    @RequestLog
     Result delete(SysMenu myEntity, HttpServletRequest request) {
         sysMenuService.deleteMenuById(myEntity.getMenuId());
         return Result.success();

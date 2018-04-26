@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseCheckBox;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.UserTypeEnums;
@@ -52,6 +53,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("editText")
     @ResponseBody
+    @RequestLog
     Result editText(User myEntity) {
         userService.updateById(myEntity);
         return Result.success();
@@ -65,6 +67,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
+    @RequestLog
     Result doAdd(User myEntity) {
         myEntity.setCreateUser(getSessionUserName());
         userService.insert(myEntity);
@@ -80,6 +83,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
+    @RequestLog
     Result doEdit(User myEntity) {
         myEntity.setUpdateUser(getSessionUserName());
         userService.updateById(myEntity);

@@ -2,6 +2,7 @@ package com.xuchen.controller.sys;
 
 import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.SysUser;
 import com.xuchen.enums.UserStatusEnum;
 import com.xuchen.service.SysUserService;
@@ -29,6 +30,7 @@ public class SysController extends BaseController {
 
     @RequestMapping("/updatePersonalInfo")
     @ResponseBody
+    @RequestLog
     Result updatePersonalInfo(SysUser sysUser) {
         if ("".equals(sysUser.getPassword())) {
             sysUser.setPassword(null);

@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.OrderBase;
 import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
@@ -58,6 +59,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping("editText")
     @ResponseBody
+    @RequestLog
     Result editText(OrderBase myEntity) {
         orderService.updateById(myEntity);
         return Result.success();
@@ -71,6 +73,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
+    @RequestLog
     Result doAdd(OrderBase myEntity) {
         myEntity.setCreateUser(getSessionUserName());
         orderService.insert(myEntity);
@@ -86,6 +89,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
+    @RequestLog
     Result doEdit(OrderBase myEntity) {
         orderService.updateById(myEntity);
         return Result.success();
@@ -93,6 +97,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping("delete")
     @ResponseBody
+    @RequestLog
     Result delete(OrderBase myEntity) {
         orderService.deleteById(myEntity);
         return Result.success();
