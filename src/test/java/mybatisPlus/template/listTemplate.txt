@@ -66,7 +66,7 @@
     <script type="text/html" id="row-bar">
         <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" data-url="/@entityObjName@/toEdit" data-title="编辑"
          data-id="id" data-width="800" data-height="600"><i class="layui-icon">&#xe642;</i> 编辑</a>
-        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" data-url='/@entityObjName@/delete'><i-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" data-url="/@entityObjName@/delete"><i-->
                 <!--class="layui-icon">&#xe640;</i> 删除</a>-->
     </script>
 </div>

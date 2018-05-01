@@ -99,7 +99,7 @@
             <th lay-data="{field:'unpayMoney',align:'center', sort: true}">未付款金额</th>
             <th lay-data="{field:'remark',align:'center',edit:'text'}">备注</th>
             <th lay-data="{field:'createTime',align:'center', sort: true}">创建时间</th>
-            <th lay-data="{fixed:'right', align:'center',width:150, toolbar: '#row-bar'}">操作</th>
+            <th lay-data="{fixed:'right', align:'center',width:200, toolbar: '#row-bar'}">操作</th>
         </tr>
         </thead>
     </table>
@@ -150,6 +150,8 @@
     </script>
 
     <script type="text/html" id="row-bar">
+        <a class="layui-btn layui-btn-noraml layui-btn-xs" lay-event="layedit" data-url="/orderGoods" data-title="该订单的商品列表"
+         data-id="orderId" data-width="1200" data-height="800"><i class="layui-icon">&#xe642;</i> 商品列表</a>
         <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" data-url="/order/toEdit" data-title="编辑"
          data-id="orderId" data-width="800" data-height="800"><i class="layui-icon">&#xe642;</i> 编辑</a>
         <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" data-url='/order/delete'><i-->

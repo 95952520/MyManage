@@ -52,10 +52,6 @@ public class Goods implements Serializable {
      */
     private BigDecimal originalPrice;
     /**
-     * 运费
-     */
-    private BigDecimal freight;
-    /**
      * 批发价
      */
     private BigDecimal wholesalePrice;
@@ -137,13 +133,6 @@ public class Goods implements Serializable {
         this.originalPrice = originalPrice;
     }
 
-    public BigDecimal getFreight() {
-        return freight;
-    }
-
-    public void setFreight(BigDecimal freight) {
-        this.freight = freight;
-    }
 
     public BigDecimal getWholesalePrice() {
         return wholesalePrice;
@@ -173,7 +162,6 @@ public class Goods implements Serializable {
         ", weight=" + weight +
         ", weightType=" + weightType +
         ", originalPrice=" + originalPrice +
-        ", freight=" + freight +
         ", wholesalePrice=" + wholesalePrice +
         ", retailPrice=" + retailPrice +
         "}";

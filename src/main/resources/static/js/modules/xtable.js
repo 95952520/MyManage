@@ -83,6 +83,8 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
                 });
             });
             //编辑
+        } else if (obj.event === 'layedit'){
+            xlay_edit_show(title, url + '?' + id + '=' + data[id], width, height);
         } else {
             x_admin_show(title, url + '?' + id + '=' + data[id], width, height);
         }

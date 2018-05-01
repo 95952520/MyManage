@@ -6,17 +6,15 @@
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane" action="/order/doAdd">
-        <div class="layui-form-item">
-            <div class="layui-inline" style="margin-bottom: 15px">
-                <label class="layui-form-label">顾客</label>
-                <div class="layui-input-inline" style="width: 300px">
-                    <select name="customerId" lay-verify="required" lay-search="">
-                        <option value="">直接选择或搜索选择</option>
-                        <th:block th:each="map: ${customerList}">
-                            <option th:value="${map.userId}" th:text="${map.userName}"></option>
-                        </th:block>
-                    </select>
-                </div>
+        <div class="layui-inline" style="margin-bottom: 15px">
+            <label class="layui-form-label">顾客</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select name="customerId" lay-verify="required" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${customerList}">
+                        <option th:value="${map.userId}" th:text="${map.userName}"></option>
+                    </th:block>
+                </select>
             </div>
         </div>
         <div class="layui-form-item" pane>
@@ -39,15 +37,15 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">配送地址</label>
-            <div class="layui-input-block" style="width: 300px">
+            <div class="layui-input-block">
                 <input type="text" name="deliveryAddress" placeholder="非必填" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline" style="margin-bottom: 15px">
             <label class="layui-form-label">配送者</label>
             <div class="layui-input-inline" style="width: 300px">
-                <select name="deliveryUserId" lay-verify="required" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
+                <select name="deliveryUserId" lay-search="">
+                    <option value="">非必选，直接选择或搜索选择</option>
                     <th:block th:each="map: ${deliverList}">
                         <option th:value="${map.userId}" th:text="${map.userName}"></option>
                     </th:block>
@@ -89,8 +87,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <input type="text" name="remark" placeholder="非必填"
-                       autocomplete="off" class="layui-input">
+                <textarea placeholder="非必填" name="remark" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
