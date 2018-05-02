@@ -74,9 +74,7 @@ public class MyUtils {
      * @return
      */
     public static boolean isNotEmpty(Object string) {
-        if (string == null || "".equals(String.valueOf(string).trim()))
-            return false;
-        return true;
+        return !isEmpty(string);
     }
 
     /**

@@ -10,6 +10,7 @@ import com.xuchen.entity.SysMenu;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.model.ParentMenu;
 import com.xuchen.service.SysMenuService;
+import com.xuchen.util.MyUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class SysMenuController extends BaseController {
     @RequestMapping("list")
     @ResponseBody
     Result list(BaseQuery baseQuery, SysMenu myEntity, String params, HttpServletRequest request) {
-        if (params != null) {
+        if (MyUtils.isNotEmpty(params)) {
             myEntity = JSONObject.parseObject(params).toJavaObject(SysMenu.class);
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);

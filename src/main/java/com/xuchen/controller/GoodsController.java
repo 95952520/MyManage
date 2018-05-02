@@ -13,6 +13,7 @@ import com.xuchen.enums.StockTypeEnum;
 import com.xuchen.enums.UnitTypeEnum;
 import com.xuchen.enums.WeightTypeEnum;
 import com.xuchen.service.GoodsService;
+import com.xuchen.util.MyUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class GoodsController extends BaseController {
     @RequestMapping("list")
     @ResponseBody
     Result list(BaseQuery baseQuery, Goods myEntity, String params, HttpServletRequest request) {
-        if (params != null) {
+        if (MyUtils.isNotEmpty(params)) {
             myEntity = JSONObject.parseObject(params).toJavaObject(Goods.class);
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);

@@ -14,6 +14,7 @@ import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.@ObjEntity@;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.service.@ClassService@;
+import com.xuchen.util.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class @ClassController@ extends BaseController {
     @RequestMapping("list")
     @ResponseBody
     Result list(BaseQuery baseQuery, @ObjEntity@ myEntity, String params, HttpServletRequest request) {
-        if (params != null) {
+        if (MyUtils.isNotEmpty(params)) {
             myEntity = JSONObject.parseObject(params).toJavaObject(@ObjEntity@.class);
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);

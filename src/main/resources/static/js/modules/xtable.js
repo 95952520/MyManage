@@ -162,6 +162,7 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
     form.on('submit(search)', function (data) {
         var values = data.field,
             fm = data.form;
+        values.params = '';
         table.reload('table', {
             where: values
         });
