@@ -34,6 +34,8 @@
 		<baomidou.springboot.version>1.0.5</baomidou.springboot.version>
 		<baomidou.mybatis-plus.version>2.1.9</baomidou.mybatis-plus.version>
 		<fastjson.version>1.2.37</fastjson.version>
+
+		<skipTests>true</skipTests>
 	</properties>
 
 	<dependencies>
@@ -141,9 +143,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-				</configuration>
 			</plugin>
 		</plugins>
 		<resources>

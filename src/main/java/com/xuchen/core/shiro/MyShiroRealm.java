@@ -8,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -36,6 +37,9 @@ public class MyShiroRealm extends AuthorizingRealm {
         SysUser user = sysUserService.selectOne(entityWrapper.eq("user_name",userName));
         if (user == null) {
             throw new UnknownAccountException();
+        }
+        if (user.getStatus() == 0){
+            throw new LockedAccountException();
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 user, //用户

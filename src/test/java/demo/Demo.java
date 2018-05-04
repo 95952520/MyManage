@@ -1,14 +1,11 @@
 package demo;
 
-import com.xuchen.entity.SysUser;
-import com.xuchen.util.MyUtils;
+import java.io.File;
+import java.io.FileInputStream;
 
 public class Demo {
     public static void main(String[] args) throws Exception {
-        SysUser user = new SysUser();
-        user.setUserName("1");
-        user.setPassword("1");
-        MyUtils.encrypPassword(user);
-        System.out.println(user.getPassword());
+        File file = new File("D://1.txt");
+        FileInputStream inputStream = new FileInputStream(file);
     }
 }

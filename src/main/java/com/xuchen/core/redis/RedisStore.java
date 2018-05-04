@@ -35,7 +35,7 @@ public class RedisStore {
         return (T) redisTemplate.opsForValue().get(key);
     }
 
-    public static void delValue(String key) {
+    public static void delKey(String key) {
         redisTemplate.delete(key);
     }
 
