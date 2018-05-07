@@ -35,26 +35,15 @@ public class User implements Serializable {
      * 地址
      */
     private String address;
-    /**
-     * 地址2
-     */
-    private String addressTwo;
-    /**
-     * 地址3
-     */
-    private String addressThree;
+    private String userImg;
     /**
      * 电话
      */
     private String phone;
     /**
-     * 电话2
+     * 0.失效 1.有效
      */
-    private String phoneTwo;
-    /**
-     * 电话3
-     */
-    private String phoneThree;
+    private Integer status;
     /**
      * 备注
      */
@@ -63,7 +52,6 @@ public class User implements Serializable {
     private Date createTime;
     private String updateUser;
     private Date updateTime;
-
 
     public Integer getUserId() {
         return userId;
@@ -105,20 +93,12 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public String getAddressTwo() {
-        return addressTwo;
+    public String getUserImg() {
+        return userImg;
     }
 
-    public void setAddressTwo(String addressTwo) {
-        this.addressTwo = addressTwo;
-    }
-
-    public String getAddressThree() {
-        return addressThree;
-    }
-
-    public void setAddressThree(String addressThree) {
-        this.addressThree = addressThree;
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
     public String getPhone() {
@@ -127,22 +107,6 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPhoneTwo() {
-        return phoneTwo;
-    }
-
-    public void setPhoneTwo(String phoneTwo) {
-        this.phoneTwo = phoneTwo;
-    }
-
-    public String getPhoneThree() {
-        return phoneThree;
-    }
-
-    public void setPhoneThree(String phoneThree) {
-        this.phoneThree = phoneThree;
     }
 
     public String getRemark() {
@@ -185,24 +149,30 @@ public class User implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-        ", userId=" + userId +
-        ", userName=" + userName +
-        ", userType=" + userType +
-        ", shopName=" + shopName +
-        ", address=" + address +
-        ", addressTwo=" + addressTwo +
-        ", addressThree=" + addressThree +
-        ", phone=" + phone +
-        ", phoneTwo=" + phoneTwo +
-        ", phoneThree=" + phoneThree +
-        ", remark=" + remark +
-        ", createUser=" + createUser +
-        ", createTime=" + createTime +
-        ", updateUser=" + updateUser +
-        ", updateTime=" + updateTime +
-        "}";
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userType=" + userType +
+                ", shopName='" + shopName + '\'' +
+                ", address='" + address + '\'' +
+                ", userImg='" + userImg + '\'' +
+                ", phone='" + phone + '\'' +
+                ", status=" + status +
+                ", remark='" + remark + '\'' +
+                ", createUser='" + createUser + '\'' +
+                ", createTime=" + createTime +
+                ", updateUser='" + updateUser + '\'' +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

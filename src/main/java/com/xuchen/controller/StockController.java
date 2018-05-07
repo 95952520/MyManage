@@ -14,6 +14,7 @@ import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Stock;
 import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
+import com.xuchen.enums.StatusEnum;
 import com.xuchen.enums.StockTypeEnum;
 import com.xuchen.enums.UnitTypeEnum;
 import com.xuchen.enums.UserTypeEnums;
@@ -118,7 +119,8 @@ public class StockController extends BaseController {
     }
 
     private void setAttributeEnums(HttpServletRequest request) {
-        List<User> list = userService.selectList(new EntityWrapper<User>().eq(("user_type"), UserTypeEnums.supplier.getId()));
+        List<User> list = userService.selectList(new EntityWrapper<User>().eq(("user_type"),
+                UserTypeEnums.supplier.getId()).eq("status", StatusEnum.useable.getId()));
         request.setAttribute("supplierList", getMapByList(list,"userId","userName"));
         request.setAttribute("stockType", StockTypeEnum.getMap());
         request.setAttribute("unitType", UnitTypeEnum.getMap());

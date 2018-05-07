@@ -7,6 +7,7 @@ import com.xuchen.mapper.SysUserRoleMapper;
 import com.xuchen.model.UserRoleModel;
 import com.xuchen.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateUserRole(Integer id, Integer[] ids) {
         baseMapper.delete(new EntityWrapper<SysUserRole>().eq("user_id",id));
         if (ids.length>0){

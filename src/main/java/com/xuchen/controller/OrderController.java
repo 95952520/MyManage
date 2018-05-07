@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xuchen.base.Result;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +18,7 @@ import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.DeliveryTypeEnum;
 import com.xuchen.enums.OrderTypeEnum;
 import com.xuchen.enums.PayTypeEnum;
+import com.xuchen.enums.StatusEnum;
 import com.xuchen.enums.UserTypeEnums;
 import com.xuchen.service.OrderService;
 import com.xuchen.service.UserService;
@@ -117,9 +119,16 @@ public class OrderController extends BaseController {
     }
 
     private void setAttributeEnums(HttpServletRequest request) {
-        List<User> deliverList = userService.selectList(new EntityWrapper<User>().where("user_type ="+ UserTypeEnums.home.getId()).or("user_type="+UserTypeEnums.deliver.getId()));
-        List<User> customerList = userService.selectList(new EntityWrapper<User>().where("user_type in ("+ UserTypeEnums.shop.getId()+
-                ","+UserTypeEnums.worker.getId()+","+UserTypeEnums.factory.getId()+","+UserTypeEnums.littleBuyer.getId()+","+UserTypeEnums.elseType.getId()+")"));
+        List<User> deliverList = userService.selectList(new EntityWrapper<User>()
+                .eq("user_type",UserTypeEnums.home.getId()).or().eq("user_type",UserTypeEnums.deliver.getId())
+                .andNew().eq("status", StatusEnum.useable.getId()));
+        List<Integer> ids = new ArrayList<>(5);
+        ids.add(UserTypeEnums.shop.getId());
+        ids.add(UserTypeEnums.worker.getId());
+        ids.add(UserTypeEnums.factory.getId());
+        ids.add(UserTypeEnums.elseType.getId());
+        ids.add(UserTypeEnums.littleBuyer.getId());
+        List<User> customerList = userService.selectList(new EntityWrapper<User>().in("user_type", ids));
         request.setAttribute("customerList", customerList);
         request.setAttribute("deliverList", deliverList);
         request.setAttribute("DeliveryTypeEnum", DeliveryTypeEnum.getMap());

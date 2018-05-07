@@ -10,7 +10,7 @@ import com.xuchen.controller.base.BaseController;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.SysUser;
 import com.xuchen.entity.base.MyEntityWrapper;
-import com.xuchen.enums.UserStatusEnum;
+import com.xuchen.enums.StatusEnum;
 import com.xuchen.model.UserRoleModel;
 import com.xuchen.model.base.TreeParModel;
 import com.xuchen.service.SysUserRoleService;
@@ -18,6 +18,7 @@ import com.xuchen.service.SysUserService;
 import com.xuchen.util.MyUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +46,8 @@ public class SysUserController extends BaseController {
     SysUserService sysUserService;
     @Autowired
     SysUserRoleService sysUserRoleService;
+    @Value("${defaultPwd}")
+    String defaultPwd;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     String index(HttpServletRequest request) {
@@ -92,7 +95,7 @@ public class SysUserController extends BaseController {
     @ResponseBody
     @RequestLog
     Result doEdit(SysUser myEntity, HttpServletRequest request) {
-        if (myEntity.getStatus()==null){
+        if (myEntity.getStatus() == null) {
             myEntity.setStatus(0);
         }
         sysUserService.updateById(myEntity);
@@ -101,7 +104,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "toUserRole", method = RequestMethod.GET)
     String toRoleMenu(Integer id, HttpServletRequest request) {
-        request.setAttribute("userId",id);
+        request.setAttribute("userId", id);
         return "sys/user/sys-user-role";
     }
 
@@ -114,32 +117,32 @@ public class SysUserController extends BaseController {
             TreeParModel treeParModel = new TreeParModel();
             treeParModel.setValue(model.getRoleId());
             treeParModel.setTitle(model.getRoleName());
-            treeParModel.setChecked(model.getUserId()!=null);
+            treeParModel.setChecked(model.getUserId() != null);
             list.add(treeParModel);
         }
         return JSONArray.toJSONString(list);
     }
 
-    @RequestMapping(value = "updateUserRole",method = RequestMethod.POST)
+    @RequestMapping(value = "updateUserRole", method = RequestMethod.POST)
     @ResponseBody
-    @RequestLog
     Result updateUserRole(Integer id, Integer[] ids) {
-        sysUserRoleService.updateUserRole(id,ids);
+        logger.info("id=" + id + ",ids=" + loggerArray(ids));
+        sysUserRoleService.updateUserRole(id, ids);
         return Result.success();
     }
 
-    @RequestMapping(value = "resetPwd",method = RequestMethod.POST)
+    @RequestMapping(value = "resetPwd", method = RequestMethod.POST)
     @ResponseBody
     @RequestLog
     Result resetPwd(SysUser myEntity) {
-        myEntity.setPassword("123456");
+        myEntity.setPassword(defaultPwd);
         MyUtils.encrypPassword(myEntity);
         sysUserService.updateById(myEntity);
         return Result.success();
     }
 
-    private void setAttributeEnums(HttpServletRequest request){
-        request.setAttribute("userStatus", UserStatusEnum.getMap());
+    private void setAttributeEnums(HttpServletRequest request) {
+        request.setAttribute("userStatus", StatusEnum.getMap());
     }
 }
 

@@ -1,9 +1,12 @@
 package com.xuchen.base;
 
+/**
+ * 表格内checkbox
+ */
 public class BaseCheckBox {
     private Integer id;
     private String filed;
-    private boolean flag;
+    private boolean checked;
 
     public Integer getId() {
         return id;
@@ -21,12 +24,12 @@ public class BaseCheckBox {
         this.filed = filed;
     }
 
-    public boolean isFlag() {
-        return flag;
+    public boolean isChecked() {
+        return checked;
     }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class BaseCheckBox {
         return "BaseCheckBox{" +
                 "id=" + id +
                 ", filed='" + filed + '\'' +
-                ", flag=" + flag +
+                ", checked=" + checked +
                 '}';
     }
 }

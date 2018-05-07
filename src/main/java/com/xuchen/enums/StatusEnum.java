@@ -2,13 +2,13 @@ package com.xuchen.enums;
 
 import java.util.HashMap;
 
-public enum UserStatusEnum {
+public enum StatusEnum {
     useable(1,"正常"),
     invalid(0,"失效");
     private int id;
     private String value;
 
-    UserStatusEnum(int id, String value){
+    StatusEnum(int id, String value){
         this.id = id;
         this.value = value;
     }
@@ -23,8 +23,8 @@ public enum UserStatusEnum {
 
     public static HashMap<Integer,String> getMap(){
         HashMap<Integer,String> map=new HashMap<>();
-        UserStatusEnum[] values = values();
-        for (UserStatusEnum enums : values) {
+        StatusEnum[] values = values();
+        for (StatusEnum enums : values) {
             map.put(enums.id,enums.value);
         }
         return map;

@@ -34,6 +34,7 @@
     </xblock>
 
     <input type="hidden" id="editText" value="user/editText">
+    <input type="hidden" id="checkboxUpdate" value="user/checkboxUpdate">
 
     <table class="layui-table"
            lay-data="{height:'700', url:'/user/list', page:true,id:'table',limit:15,limits:[10,15,20,50,100]}"
@@ -47,12 +48,10 @@
             <th lay-data="{field:'userName',align:'center',edit:'text',}">姓名</th>
             <th lay-data="{field:'userType',align:'center',templet:'#userType'}">用户类型</th>
             <th lay-data="{field:'shopName',align:'center',edit:'text',}">门店名</th>
+            <th lay-data="{field:'userImg',align:'center',templet:'#userImg'}">头像</th>
             <th lay-data="{field:'address',align:'center',edit:'text',}">地址</th>
-            <th lay-data="{field:'addressTwo',align:'center',edit:'text',}">地址2</th>
-            <th lay-data="{field:'addressThree',align:'center',edit:'text'}">地址3</th>
             <th lay-data="{field:'phone',align:'center',edit:'text',}">电话</th>
-            <th lay-data="{field:'phoneTwo',align:'center',edit:'text',}">电话2</th>
-            <th lay-data="{field:'phoneThree',align:'center',edit:'text',}">电话3</th>
+            <th lay-data="{field:'status',align:'center',templet:'#status'}">状态</th>
             <th lay-data="{field:'remark',align:'center',edit:'text',}">备注</th>
             <th lay-data="{fixed:'right', align:'center',width:150, toolbar: '#row-bar'}">操作</th>
         </tr>
@@ -66,6 +65,17 @@
         {{         unescape(map[key].replace(/\\u/g, '%u')) }}
         {{#     } }}
         {{#  } }}
+    </script>
+
+    <script type="text/html" id="userImg">
+        {{#  if(d.userImg != '' && d.userImg != null){ }}
+        <img src="{{d.userImg}}" alt="{{d.userName}}">
+        {{#  } else { }}
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="status">
+        <input type="checkbox" name="status" value="{{d.userId}}" lay-skin="switch" lay-text="正常|失效" lay-filter="checkbox" {{ d.status == 1 ? 'checked' : '' }}
     </script>
 
 

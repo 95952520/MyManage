@@ -4,7 +4,7 @@ import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.SysUser;
-import com.xuchen.enums.UserStatusEnum;
+import com.xuchen.enums.StatusEnum;
 import com.xuchen.service.SysUserService;
 import com.xuchen.util.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +42,6 @@ public class SysController extends BaseController {
     }
 
     private void setAttributeEnums(HttpServletRequest request) {
-        request.setAttribute("userStatus", UserStatusEnum.getMap());
+        request.setAttribute("userStatus", StatusEnum.getMap());
     }
 }

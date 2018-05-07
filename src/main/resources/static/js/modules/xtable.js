@@ -175,8 +175,8 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
         var o = new Object();
         o.id = $(me).attr('value');
         o.filed = $(me).attr('name');
-        o.flag = obj.elem.checked;
-        $.post($(me).attr('data-url'), o, function (result) {
+        o.checked = obj.elem.checked;
+        $.post($("#checkboxUpdate").val(), o, function (result) {
             if (result.code == 0) {
                 parent.layer.msg(result.msg, {
                     icon: 1,

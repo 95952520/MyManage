@@ -60,6 +60,18 @@ public class UserController extends BaseController {
         return Result.success();
     }
 
+    @RequestMapping("checkboxUpdate")
+    @ResponseBody
+    @RequestLog
+    Result editText(BaseCheckBox checkBox) {
+        logger.info(checkBox);
+        User myEntity = new User();
+        myEntity.setUserId(checkBox.getId());
+        myEntity.setStatus(checkBox.isChecked()?1:0);
+        userService.updateById(myEntity);
+        return Result.success();
+    }
+
     @RequestMapping(value = "toAdd", method = RequestMethod.GET)
     String toAdd(HttpServletRequest request) {
         setAttributeEnums(request);

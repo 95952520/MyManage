@@ -36,3 +36,5 @@ logging:
   level:
     root: info
   file: logs/BootManage.log
+
+defaultPwd: 123456

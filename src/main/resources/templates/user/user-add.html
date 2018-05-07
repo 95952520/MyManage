@@ -6,6 +6,7 @@
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane" action="/user/doAdd">
+        <input type="hidden" id="uploadData" value="">
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block" style="width: 300px">
@@ -22,6 +23,16 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">用户头像</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="uploadImg">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="imgElement" lay-verify="checkImg" style="width: 600px">
+                    <p id="imgDesc"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">门店名</label>
             <div class="layui-input-block" >
                 <input type="text" name="shopName" lay-verify="required" placeholder="必填"
@@ -29,44 +40,16 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">地址1</label>
+            <label class="layui-form-label">地址</label>
             <div class="layui-input-block">
                 <input type="text" name="address" lay-verify="required" placeholder="必填" 
                        autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">地址2</label>
-            <div class="layui-input-block">
-                <input type="text" name="addressTwo" placeholder="非必填"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">地址3</label>
-            <div class="layui-input-block">
-                <input type="text" name="addressThree" placeholder="非必填"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">电话1</label>
+            <label class="layui-form-label">电话</label>
             <div class="layui-input-block" style="width: 300px">
                 <input type="text" name="phone" lay-verify="required|checkInt" placeholder="必填"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">电话2</label>
-            <div class="layui-input-block" style="width: 300px">
-                <input type="text" name="phoneTwo" lay-verify="checkInt" placeholder="非必填"
-                       autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">电话3</label>
-            <div class="layui-input-block" style="width: 300px">
-                <input type="text" name="phoneThree" lay-verify="checkInt" placeholder="非必填"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -77,7 +60,6 @@
                        autocomplete="off" class="layui-input">
             </div>
         </div>
-
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -91,6 +73,7 @@
 <div th:replace="common/setting"></div>
 <script type="text/javascript">
     layui.use('xform');
+    layui.use('xupload');
 </script>
 </body>
 </html>

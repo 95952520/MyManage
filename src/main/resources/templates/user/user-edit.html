@@ -6,6 +6,7 @@
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane" action="/user/doEdit">
+        <input type="hidden" id="uploadData" value="">
         <input type="hidden" name="userId" th:value="${myEntity.userId}">
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
@@ -20,6 +21,16 @@
                 <th:block th:each="map: ${userType}">
                     <input type="radio" name="userType" th:value="${map.key}" th:title="${map.value}" th:checked="${myEntity.userType}==${map.key}">
                 </th:block>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户头像</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="uploadImg">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="imgElement" th:src="${myEntity.userImg}" lay-verify="checkImg" style="width: 600px">
+                    <p id="imgDesc"></p>
+                </div>
             </div>
         </div>
         <div class="layui-form-item">

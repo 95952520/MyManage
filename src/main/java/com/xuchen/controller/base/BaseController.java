@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class BaseController {
 
-    protected static Logger logger = Logger.getLogger(BaseController.class);
+    protected static final Logger logger = Logger.getLogger(BaseController.class);
 
     protected static SysUser getSessionUser() {
         return (SysUser) SecurityUtils.getSubject().getPrincipal();
@@ -80,5 +80,20 @@ public class BaseController {
     private static Object getValueByInvoke(Object obj ,String str) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method = obj.getClass().getMethod("get" + Character.toUpperCase(str.charAt(0)) + str.substring(1));
         return method.invoke(obj, new Object[]{});
+    }
+
+
+    protected static String loggerArray(Integer[] ids){
+        if (ids==null || ids.length==0){
+            return "[]";
+        }else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            for (Integer id : ids) {
+                sb.append(id+",");
+            }
+            sb.append("]");
+            return sb.toString();
+        }
     }
 }
