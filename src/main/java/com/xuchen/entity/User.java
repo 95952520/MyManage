@@ -35,11 +35,13 @@ public class User implements Serializable {
      * 地址
      */
     private String address;
+    private String addressTwo;
     private String userImg;
     /**
      * 电话
      */
     private String phone;
+    private String phoneTwo;
     /**
      * 0.失效 1.有效
      */
@@ -93,6 +95,14 @@ public class User implements Serializable {
         this.address = address;
     }
 
+    public String getAddressTwo() {
+        return addressTwo;
+    }
+
+    public void setAddressTwo(String addressTwo) {
+        this.addressTwo = addressTwo;
+    }
+
     public String getUserImg() {
         return userImg;
     }
@@ -107,6 +117,22 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getPhoneTwo() {
+        return phoneTwo;
+    }
+
+    public void setPhoneTwo(String phoneTwo) {
+        this.phoneTwo = phoneTwo;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getRemark() {
@@ -149,14 +175,6 @@ public class User implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -165,8 +183,10 @@ public class User implements Serializable {
                 ", userType=" + userType +
                 ", shopName='" + shopName + '\'' +
                 ", address='" + address + '\'' +
+                ", addressTwo='" + addressTwo + '\'' +
                 ", userImg='" + userImg + '\'' +
                 ", phone='" + phone + '\'' +
+                ", phoneTwo='" + phoneTwo + '\'' +
                 ", status=" + status +
                 ", remark='" + remark + '\'' +
                 ", createUser='" + createUser + '\'' +
