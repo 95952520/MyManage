@@ -3,6 +3,7 @@ package com.xuchen.util;
 import com.xuchen.entity.SysUser;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedInputStream;
@@ -163,5 +164,19 @@ public class MyUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 将图片的str流转成文件
+     * @param str 图片的str
+     * @param newFile 生成的文件
+     */
+    public static void createFileFromStr(String str,File newFile) throws IOException {
+        String imgString = str.substring(str.indexOf(",") + 1);
+        BASE64Decoder d = new BASE64Decoder();
+        byte[] bs = d.decodeBuffer(imgString);
+        FileOutputStream os = new FileOutputStream(newFile);
+        os.write(bs);
+        os.close();
     }
 }

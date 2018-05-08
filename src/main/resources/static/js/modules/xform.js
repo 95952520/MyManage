@@ -1,7 +1,7 @@
 //layui模块的定义
-layui.define(['layer', 'form', 'upload'], function (exports) {
+layui.define(['layer', 'form'], function (exports) {
 
-    var $ = layui.jquery, upload = layui.upload, form = layui.form;
+    var $ = layui.jquery,form = layui.form;
     // 验证
     form.verify({
         eqPwd: function (value) {
@@ -52,29 +52,6 @@ layui.define(['layer', 'form', 'upload'], function (exports) {
         }
     });
 
-    // 文件上传
-
-    upload.render({
-        elem: '#file-btn',
-        url: '/file/upload/',
-        size: 5 * 1024, // 限制文件大小，单位 KB
-        done: function (result) {
-            if (result.code == 0) {
-                layer.msg(result.msg, {
-                    icon: 1,
-                    time: 1000
-                });
-                // var urls = result.urls;
-                // $("#file-txt").html(urls[0]);
-                // $("#file-val").val(urls[0]);
-            } else {
-                layer.msg(result.msg, {
-                    icon: 2,
-                });
-            }
-        }
-    });
-
     // 监听提交
     form.on('submit(submit)', function (data) {
         var values = data.field, fm = data.form;
@@ -115,6 +92,26 @@ layui.define(['layer', 'form', 'upload'], function (exports) {
                 });
             }
 
+        });
+        return false;
+    });
+
+    $("#deleteImg").on('click', function () {
+        var id = $(this).attr('data-id'),
+            url = $(this).attr('data-url');
+        $.post(url, {id:id}, function (result) {
+            if (result.code == 0) {
+                layer.msg(result.msg, {
+                    icon: 1,
+                    time: 1000
+                });
+                window.parent.location.reload();
+            } else {
+                layer.msg(result.msg, {
+                    icon: 2,
+                    time: 10000
+                });
+            }
         });
         return false;
     });

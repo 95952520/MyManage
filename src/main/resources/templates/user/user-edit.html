@@ -6,7 +6,8 @@
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane" action="/user/doEdit">
-        <input type="hidden" id="img" name="userImg">
+        <input type="hidden" id="img" name="imgFile">
+        <input type="hidden" name="userImg" th:value="${myEntity.userImg}">
         <input type="hidden" name="userId" th:value="${myEntity.userId}">
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
@@ -28,7 +29,7 @@
             <div class="layui-upload">
                 <button type="button" class="layui-btn" id="uploadImg">上传图片</button>
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="imgElement" th:src="${myEntity.userImg}" lay-verify="checkImg" style="width: 600px">
+                    <img class="layui-upload-img" id="imgElement" th:src="${myEntity.userImg}" lay-verify="checkImg">
                     <p id="imgDesc"></p>
                 </div>
             </div>
@@ -36,7 +37,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" style="margin-left:200px;" lay-submit lay-filter="submit">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn layui-btn-primary" id="deleteImg" th:attr="data-id=${myEntity.userId}" data-url="/user/deleteImg">删除头像</button>
             </div>
         </div>
     </form>

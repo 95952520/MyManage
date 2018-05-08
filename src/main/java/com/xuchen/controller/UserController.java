@@ -4,6 +4,9 @@ import com.xuchen.base.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -19,6 +22,7 @@ import com.xuchen.service.UserService;
 import com.xuchen.util.MyUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +36,10 @@ public class UserController extends BaseController {
 
     @Autowired
     UserService userService;
+    @Value("${userImgDir}")
+    String userImgDir;
+    @Value("${imgPro}")
+    String imgPro;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     String index(HttpServletRequest request) {
@@ -55,7 +63,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestLog
     Result editText(User myEntity) throws Exception {
-        checkNullUpdate(myEntity.getUserName(),myEntity.getAddress(),myEntity.getPhone(),myEntity.getShopName());
+        checkNullUpdate(myEntity.getUserName(), myEntity.getAddress(), myEntity.getPhone(), myEntity.getShopName());
         myEntity.setUpdateUser(getSessionUserName());
         userService.updateById(myEntity);
         return Result.success();
@@ -65,10 +73,9 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestLog
     Result editText(BaseCheckBox checkBox) {
-        logger.info(checkBox);
         User myEntity = new User();
         myEntity.setUserId(checkBox.getId());
-        myEntity.setStatus(checkBox.isChecked()?1:0);
+        myEntity.setStatus(checkBox.isChecked() ? 1 : 0);
         userService.updateById(myEntity);
         return Result.success();
     }
@@ -81,14 +88,15 @@ public class UserController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
-    @RequestLog
-    Result doAdd(User myEntity) {
+    Result doAdd(User myEntity, String imgFile) throws IOException {
+        logger.info(myEntity);
         myEntity.setCreateUser(getSessionUserName());
         userService.insert(myEntity);
-        if (MyUtils.isNotEmpty(myEntity.getUserImg())){
-            File file = new File(imgPath+myEntity.getUserId()+".jpg");
-            MyUtils.downloadFileFromUrl(myEntity.getUserImg(),file);
-            userService.update(myEntity,null);
+        if (MyUtils.isNotEmpty(imgFile)) {
+            File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
+            MyUtils.createFileFromStr(imgFile, file);
+            myEntity.setUserImg(imgPro + userImgDir + myEntity.getUserId() + ".jpg");
+            userService.updateById(myEntity);
         }
         return Result.success();
     }
@@ -102,31 +110,35 @@ public class UserController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
-    @RequestLog
-    Result doEdit(User myEntity) {
+    Result doEdit(User myEntity, String imgFile) throws IOException {
+        logger.info(myEntity);
         myEntity.setUpdateUser(getSessionUserName());
+        if (MyUtils.isNotEmpty(imgFile)) {
+            File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
+            MyUtils.createFileFromStr(imgFile, file);
+            myEntity.setUserImg(imgPro + userImgDir + myEntity.getUserId() + ".jpg");
+        }
         userService.updateById(myEntity);
         return Result.success();
     }
 
-//    @RequestMapping("delete")
-//    @ResponseBody
-//    Result delete(User myEntity) {
-//        userService.deleteById(myEntity);
-//        return Result.success();
-//    }
-//
-//    @RequestMapping("deleteList")
-//    @ResponseBody
-//    Result deleteList(String jsonObj) {
-//        List<User> list = JSONArray.parseArray(jsonObj,User.class);
-//        List<Integer> ids = new ArrayList<>();
-//        for(User obj : list) {
-//            ids.add(obj.getId());
-//        }
-//        userService.deleteBatchIds(ids);
-//        return Result.success();
-//    }
+    @RequestMapping("deleteImg")
+    @ResponseBody
+    @RequestLog
+    Result deleteImg(Integer id) {
+        User myEntity = new User();
+        myEntity.setUserId(id);
+        myEntity = userService.selectById(myEntity);
+        myEntity.setUpdateUser(getSessionUserName());
+        myEntity.setUpdateTime(new Date());
+        myEntity.setUserImg(null);
+        userService.updateAllColumnById(myEntity);
+        File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
+        if (file.exists()) {
+            file.delete();
+        }
+        return Result.success();
+    }
 
     private void setAttributeEnums(HttpServletRequest request) {
         request.setAttribute("userType", UserTypeEnums.getMap());
