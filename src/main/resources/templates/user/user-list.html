@@ -12,7 +12,7 @@
         </div>
         用户类型：
         <div class="layui-inline">
-            <select name="字段名" lay-search="">
+            <select name="userType" lay-search="">
                 <option value="">直接选择或搜索选择</option>
                 <th:block th:each="map: ${userType}">
                     <option th:value="${map.key}" th:text="${map.value}"></option>
@@ -22,6 +22,14 @@
         门店名：
         <div class="layui-inline">
             <input class="layui-input" type="text" name="shopName" autocomplete="on" placeholder="查询字段值">
+        </div>
+        用户状态：
+        <div class="layui-inline">
+            <select name="status" lay-search="">
+                <option value="">直接选择或搜索选择</option>
+                <option th:value="0" th:text="失效"></option>
+                <option th:value="1" th:text="正常"></option>
+            </select>
         </div>
         <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
     </form>
@@ -50,7 +58,9 @@
             <th lay-data="{field:'shopName',align:'center',edit:'text',}">门店名</th>
             <th lay-data="{field:'userImg',align:'center',templet:'#userImg'}">头像</th>
             <th lay-data="{field:'address',align:'center',edit:'text',}">地址</th>
+            <th lay-data="{field:'addressTwo',align:'center',edit:'text',}">地址2</th>
             <th lay-data="{field:'phone',align:'center',edit:'text',}">电话</th>
+            <th lay-data="{field:'phoneTwo',align:'center',edit:'text',}">电话2</th>
             <th lay-data="{field:'status',align:'center',templet:'#status'}">状态</th>
             <th lay-data="{field:'remark',align:'center',edit:'text',}">备注</th>
             <th lay-data="{fixed:'right', align:'center',width:150, toolbar: '#row-bar'}">操作</th>

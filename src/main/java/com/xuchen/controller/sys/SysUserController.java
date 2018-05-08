@@ -52,6 +52,7 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     String index(HttpServletRequest request) {
         setAttributeEnums(request);
+        request.setAttribute("defaultPwd",defaultPwd);
         return "sys/user/sys-user-list";
     }
 

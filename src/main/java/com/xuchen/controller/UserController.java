@@ -5,7 +5,6 @@ import com.xuchen.base.Result;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseCheckBox;
@@ -47,7 +46,7 @@ public class UserController extends BaseController {
             myEntity = JSONObject.parseObject(params).toJavaObject(User.class);
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);
-        wrapper.eq("user_type").like("user_name").like("shop_name");
+        wrapper.eq("user_type").like("user_name").like("shop_name").eq("status");
         List<User> list = userService.selectList(wrapper);
         return Result.success(PageHelper.freeTotal(), list);
     }
