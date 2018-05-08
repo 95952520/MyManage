@@ -3,6 +3,7 @@ package com.xuchen.controller;
 import com.xuchen.base.Result;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiresPermissions("user")
 public class UserController extends BaseController {
 
-
     @Autowired
     UserService userService;
 
@@ -55,7 +55,9 @@ public class UserController extends BaseController {
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog
-    Result editText(User myEntity) {
+    Result editText(User myEntity) throws Exception {
+        checkNullUpdate(myEntity.getUserName(),myEntity.getAddress(),myEntity.getPhone(),myEntity.getShopName());
+        myEntity.setUpdateUser(getSessionUserName());
         userService.updateById(myEntity);
         return Result.success();
     }
@@ -84,6 +86,11 @@ public class UserController extends BaseController {
     Result doAdd(User myEntity) {
         myEntity.setCreateUser(getSessionUserName());
         userService.insert(myEntity);
+        if (MyUtils.isNotEmpty(myEntity.getUserImg())){
+            File file = new File(imgPath+myEntity.getUserId()+".jpg");
+            MyUtils.downloadFileFromUrl(myEntity.getUserImg(),file);
+            userService.update(myEntity,null);
+        }
         return Result.success();
     }
 

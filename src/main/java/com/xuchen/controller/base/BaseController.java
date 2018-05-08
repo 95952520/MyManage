@@ -3,14 +3,15 @@ package com.xuchen.controller.base;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.xuchen.base.Result;
 import com.xuchen.entity.SysUser;
+import com.xuchen.util.MyUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 public class BaseController {
+
+    @Value("${imgPath}")
+    public String imgPath;
 
     protected static final Logger logger = Logger.getLogger(BaseController.class);
 
@@ -83,17 +87,28 @@ public class BaseController {
     }
 
 
-    protected static String loggerArray(Integer[] ids){
-        if (ids==null || ids.length==0){
+    protected static String loggerArray(Integer[] ids) {
+        if (ids == null || ids.length == 0) {
             return "[]";
-        }else {
+        } else {
             StringBuilder sb = new StringBuilder();
             sb.append("[");
             for (Integer id : ids) {
-                sb.append(id+",");
+                sb.append(id + ",");
             }
             sb.append("]");
             return sb.toString();
+        }
+    }
+
+    protected static void checkNullUpdate(Object... obj) throws Exception {
+        if (MyUtils.isEmpty(obj)){
+            throw new Exception("该字段不能为空");
+        }
+        for (Object o : obj) {
+            if (MyUtils.isEmpty(o)){
+                throw new Exception("该字段不能为空");
+            }
         }
     }
 }

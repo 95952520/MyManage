@@ -6,7 +6,7 @@
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane" action="/user/doEdit">
-        <input type="hidden" id="uploadData" value="">
+        <input type="hidden" id="img" name="userImg">
         <input type="hidden" name="userId" th:value="${myEntity.userId}">
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
@@ -45,6 +45,7 @@
 <div th:replace="common/setting"></div>
 <script type="text/javascript">
     layui.use('xform');
+    layui.use('xupload');
 </script>
 </body>
 </html>

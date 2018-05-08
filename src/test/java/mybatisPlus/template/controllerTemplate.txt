@@ -1,10 +1,8 @@
 package com.xuchen.controller;
 
 import com.xuchen.base.Result;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
@@ -52,7 +50,8 @@ public class @ClassController@ extends BaseController {
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog
-    Result editText(@ObjEntity@ myEntity) {
+    Result editText(@ObjEntity@ myEntity) throws Exception{
+//        checkNullUpdate(myEntity.getStockName());
         @Service@.updateById(myEntity);
         return Result.success();
     }

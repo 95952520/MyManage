@@ -5,6 +5,12 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -131,5 +137,31 @@ public class MyUtils {
 
     private static char randomChar() {
         return randomStr.charAt(random.nextInt(randomStr.length()));
+    }
+
+    public static void downloadFileFromUrl(String fileUrl,File newFile){
+        BufferedInputStream bi = null;
+        BufferedOutputStream bo = null;
+        try {
+            URL url = new URL(fileUrl);
+            bi = new BufferedInputStream(url.openStream());
+            bo = new BufferedOutputStream(new FileOutputStream(newFile));
+            byte[] by = new byte[1024];
+            int len;
+            while ((len = bi.read(by)) != -1) {
+                bo.write(by, 0, len);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bo != null)
+                    bo.close();
+                if (bi != null)
+                    bi.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

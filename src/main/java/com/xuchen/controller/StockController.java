@@ -62,7 +62,8 @@ public class StockController extends BaseController {
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog
-    Result editText(Stock myEntity) {
+    Result editText(Stock myEntity) throws Exception{
+        checkNullUpdate(myEntity.getStockName());
         stockService.updateById(myEntity);
         return Result.success();
     }
