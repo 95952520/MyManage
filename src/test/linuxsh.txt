@@ -1,0 +1,57 @@
+springboot项目启动脚本
+#!/bin/bash
+if [ "$1" = "" ];then
+        echo -e "\033[0;31m 参数不能为空 \033[0m  \033[0;34m {prod|test} \033[0m"
+        exit 1
+fi
+active=$1
+if [ $active != "prod" -a $active != "test" ];then
+        echo -e "\033[0;31m springboot环境错误 \033[0m  \033[0;34m {prod|test} \033[0m"
+        exit 1
+fi
+
+count=`ps -ef |grep java|grep BootManage.jar|grep -v grep|wc -l`
+if [ $count != 0 ];then
+        echo "BootManage is running..."
+        ps -ef|grep BootManage.jar
+        exit 1
+fi
+
+if [ $active = "prod" ];then
+        echo BootManage-->prod start
+        cd /usr/local/BootManage
+        nohup java -jar BootManage.jar >>BootManage.out --spring.profiles.active=prod &
+        tail -f BootManage.out
+elif [ $active = "test" ];then
+        echo BootManage-->test start
+        cd /usr/local/BootManageTest
+        nohup java -jar BootManage.jar >>BootManageTest.out --spring.profiles.active=test &
+        tail -f BootManageTest.out
+fi
+
+mysql备份脚本
+#!/bin/bash
+#设置mysql备份目录
+folder=/home/backup/mysql/
+cd $folder
+day=`date +%Y%m%d`
+rm -rf $day
+mkdir $day
+cd $day
+#数据库服务器，一般为localhost
+host=localhost
+#用户名
+user=root
+#密码
+password=password
+#要备份的数据库
+db=boot_manage
+
+#数据要保留的天数
+days=30
+mysqldump -h$host -u$user -p$password $db>backup.sql
+tar -cvf backup.sql.tar backup.sql
+rm backup.sql
+cd ..
+day=`date -d "$days days ago" +%Y%m%d`
+rm -rf $day

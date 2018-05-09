@@ -2,9 +2,7 @@
  * Created by Eileen.Y.Lai on 2018/4/10.
  */
 layui.define(['layer', 'form'],function (exports) {
-    var $ = layui.jquery,
-        form = layui.form,
-        table = layui.table;
+    var $ = layui.jquery;
     $(".event").on('click', function (data)  {
 
         var url = $(this).attr('data-url'),
@@ -38,7 +36,21 @@ layui.define(['layer', 'form'],function (exports) {
         }else if(event == 'edit'){
             x_admin_show(title, url + '?menuId=' + id, width, height);
         }
-
     });
+
+    $('.icons').on('click',function () {
+        if($(this).hasClass('fold-icon')){
+            $(this).removeClass('fold-icon');
+            $(this).addClass('unfold-icon');
+            $(this).html('&#xe61a;');
+            $(this).parent().parent().parent().siblings('tbody').hide();
+        }else if($(this).hasClass('unfold-icon')){
+            $(this).removeClass('unfold-icon');
+            $(this).addClass('fold-icon');
+            $(this).html('&#xe602;');
+            $(this).parent().parent().parent().siblings('tbody').show();
+        }
+    });
+
     exports('xutils', {});
 });

@@ -9,3 +9,16 @@ nohup java -jar XXX.jar >>XXX.out --spring.profiles.active=test &
 nginx  启动
 nginx -s stop 停止
 nginx -s reload 重新加载配置文件
+
+/sbin/service crond start //启动服务
+/sbin/service crond stop //关闭服务
+/sbin/service crond restart //重启服务
+/sbin/service crond reload //重新载入配置
+crontab -e 编辑
+crontab -l 列表
+chmod u+x *.sh 增加权限
+
+:set ff 查看文件格式
+:set ff=unix
+
+export PATH=${PATH}:/home/mysh //设置全局脚本目录

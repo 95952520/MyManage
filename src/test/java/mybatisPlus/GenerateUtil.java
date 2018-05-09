@@ -9,16 +9,16 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class GenerateUtil {
 
-    public static void createControllerFile(TableNameInfo tableNameInfo,String projectPath) throws Exception {
+    public static void createControllerFile(TableNameInfo tableNameInfo, String projectPath) throws Exception {
         List<String> urlList = FileUtils.readLines(new File(projectPath.replace("src\\main\\java", "src\\test\\java") + "\\mybatisPlus\\template\\controllerTemplate.txt"));
         List<String> result = new ArrayList<>();
         for (String s : urlList) {
             result.add(s.replace("@ObjEntity@", tableNameInfo.getEntityName()).replace("@classMapping@", tableNameInfo.getEntityObjName())
                     .replace("@ClassController@", tableNameInfo.getEntityName() + "Controller").replace("@htmlPackage@", tableNameInfo.getHtmlPackage())
                     .replace("@Service@", tableNameInfo.getEntityObjName() + "Service").replace("@ClassService@", tableNameInfo.getEntityName() + "Service")
-                    .replace("@htmlUrl@",tableNameInfo.getHtmlUrl()));
+                    .replace("@htmlUrl@", tableNameInfo.getHtmlUrl()));
         }
-        FileUtils.writeLines(new File(tableNameInfo.getControllerFilePath() + tableNameInfo.getEntityName() + "Controller.java"),result);
+        FileUtils.writeLines(new File(tableNameInfo.getControllerFilePath() + tableNameInfo.getEntityName() + "Controller.java"), result);
     }
 
     /**
@@ -49,43 +49,176 @@ public class GenerateUtil {
     /**
      * 生成htmlFile文件
      */
-    public static void createHtmlFile(TableNameInfo tableNameInfo,String projectPath) throws Exception {
+    public static void createHtmlFile(TableNameInfo tableNameInfo, String projectPath) throws Exception {
         //list.txt
         List<String> urlList = FileUtils.readLines(new File(projectPath.replace("src\\main\\java", "src\\test\\java") + "\\mybatisPlus\\template\\listTemplate.txt"));
         List<String> result = new ArrayList<>();
-        List<EntityInfo> entityList = getEntityIntoList(new File(tableNameInfo.getEntityFilePath()+tableNameInfo.getEntityName()+".java"));
+        List<EntityInfo> entityList = getEntityIntoList(new File(tableNameInfo.getEntityFilePath() + tableNameInfo.getEntityName() + ".java"));
         String tableDetail = getTableDetail(entityList);
         for (String s : urlList) {
-            result.add(s.replace("            @tableDetail@",tableDetail).replace("@entityObjName@",tableNameInfo.getEntityObjName()));
+            result.add(s.replace("            @tableDetail@", tableDetail).replace("@entityObjName@", tableNameInfo.getEntityObjName()));
         }
-        FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() +"\\"+ tableNameInfo.getHtmlUrl() + "-list.html"),result);
+        FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() + "\\" + tableNameInfo.getHtmlUrl() + "-list.html"), result);
         //add.txt
         urlList = FileUtils.readLines(new File(projectPath.replace("src\\main\\java", "src\\test\\java") + "\\mybatisPlus\\template\\addTemplate.txt"));
         result = new ArrayList<>();
+        String itemsList = getAddItems(entityList);
         for (String s : urlList) {
-            result.add(s.replace("@entityObjName@",tableNameInfo.getEntityObjName()));
+            result.add(s.replace("@entityObjName@", tableNameInfo.getEntityObjName()).replace("@itemsList@",itemsList));
         }
-        FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() +"\\"+ tableNameInfo.getHtmlUrl() + "-add.html"),result);
+        FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() + "\\" + tableNameInfo.getHtmlUrl() + "-add.html"), result);
         //edit.txt
         urlList = FileUtils.readLines(new File(projectPath.replace("src\\main\\java", "src\\test\\java") + "\\mybatisPlus\\template\\editTemplate.txt"));
         result = new ArrayList<>();
+        itemsList = getEditItems(entityList);
         for (String s : urlList) {
-            result.add(s.replace("@entityObjName@",tableNameInfo.getEntityObjName()));
+            result.add(s.replace("@entityObjName@", tableNameInfo.getEntityObjName()).replace("@itemsList@",itemsList));
         }
-        FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() +"\\"+ tableNameInfo.getHtmlUrl() + "-edit.html"),result);
+        FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() + "\\" + tableNameInfo.getHtmlUrl() + "-edit.html"), result);
     }
 
     /**
      * 生成xxx-list.html中表格内容
      */
-    public static String getTableDetail(List<EntityInfo> list){
+    private static String getTableDetail(List<EntityInfo> list) {
         StringBuilder replace = new StringBuilder();
         for (EntityInfo info : list) {
             replace.append("\n");
-            if (info.getBeanType().contains("Integer")||info.getBeanType().contains("BigDecimal")||info.getBeanType().contains("Date")){
-                replace.append("            <th lay-data=\"{field:'"+info.getBeanName()+"',align:'center', sort: true}\">"+(info.getBeanDesc()==null?info.getBeanName():info.getBeanDesc())+"</th>");
-            }else {
-                replace.append("            <th lay-data=\"{field:'"+info.getBeanName()+"',align:'center'}\">"+(info.getBeanDesc()==null?info.getBeanName():info.getBeanDesc())+"</th>");
+            if (info.getBeanType().contains("Integer") || info.getBeanType().contains("BigDecimal") || info.getBeanType().contains("Date")) {
+                replace.append("            <th lay-data=\"{field:'" + info.getBeanName() + "',align:'center', sort: true}\">" + (info.getBeanDesc() == null ? info.getBeanName() : info.getBeanDesc()) + "</th>");
+            } else {
+                replace.append("            <th lay-data=\"{field:'" + info.getBeanName() + "',align:'center'}\">" + (info.getBeanDesc() == null ? info.getBeanName() : info.getBeanDesc()) + "</th>");
+            }
+        }
+        return replace.toString();
+    }
+
+    /**
+     * 生成xxx-add.html中每个div内容
+     * Date型不生成表单元素
+     */
+    private static String getAddItems(List<EntityInfo> list) {
+        StringBuilder replace = new StringBuilder();
+        String layuiCheck = "";
+        String layuiCheckDesc = "";
+        for (EntityInfo info : list) {
+            if (info.getBeanType().contains("Date")) {
+                continue;
+            }
+            if (info.getBeanType().contains("Integer")) {
+                layuiCheck = "checkInt";
+                layuiCheckDesc = "正整数";
+            }
+            if (info.getBeanType().contains("BigDecimal")) {
+                layuiCheck = "checkDec";
+                layuiCheckDesc = "正数";
+            }
+            if (info.getBeanType().contains("Integer") || info.getBeanType().contains("BigDecimal")) {
+                replace.append("        <div class=\"layui-inline\" style=\"margin-bottom: 15px\">\n");
+                replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
+                replace.append("            <div class=\"layui-input-inline\" style=\"width: 300px\">\n");
+                replace.append("                <select name=\"" + info.getBeanName() + "\" lay-verify=\"required\" lay-search=\"\">\n");
+                replace.append("                    <option value=\"\">直接选择或搜索选择</option>\n");
+                replace.append("                    <th:block th:each=\"map: ${枚举类}\">\n");
+                replace.append("                        <option th:value=\"${map.key}\" th:text=\"${map.value}\"></option>\n");
+                replace.append("                    </th:block>\n");
+                replace.append("                </select>\n");
+                replace.append("            </div>\n");
+                replace.append("          若为枚举 下拉框和单选框取其一\n");
+                replace.append("            <div class=\"layui-input-block\" pane>\n");
+                replace.append("                <th:block lay-verify=\"required\" th:each=\"map: ${枚举类}\">\n");
+                replace.append("                    <input type=\"radio\" name=\"" + info.getBeanName() + "\" th:value=\"${map.key}\" th:title=\"${map.value}\" th:checked=\"${map.key}==1\">\n");
+                replace.append("                </th:block>\n");
+                replace.append("            </div>\n");
+                replace.append("        </div>\n");
+                replace.append("        枚举和数值型取其一\n");
+                replace.append("        <div class=\"layui-form-item\">\n");
+                replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
+                replace.append("            <div class=\"layui-input-block\" style=\"width: 300px\">\n");
+                replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" lay-verify=\"" + layuiCheck + "\" placeholder=\"非必填," + layuiCheckDesc + "\" autocomplete=\"off\" class=\"layui-input\">\n");
+                replace.append("                必填、非必填取其一\n");
+                replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" lay-verify=\"required|" + layuiCheck + "\" placeholder=\"必填," + layuiCheckDesc + "\" autocomplete=\"off\" class=\"layui-input\">\n");
+                replace.append("            </div>\n");
+                replace.append("        </div>\n");
+            } else {
+                replace.append("        <div class=\"layui-form-item\">\n");
+                replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
+                replace.append("            <div class=\"layui-input-block\">\n");
+                replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" lay-verify=\"required\" placeholder=\"必填\" autocomplete=\"off\" class=\"layui-input\">\n");
+                replace.append("                必填、非必填取其一\n");
+                replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" placeholder=\"非必填\" autocomplete=\"off\" class=\"layui-input\">\n");
+                replace.append("            </div>\n");
+                replace.append("        </div>\n");
+            }
+        }
+        return replace.toString();
+    }
+
+    /**
+     * 生成xxx-edit.html中每个div内容
+     * 默认第一个字段为id,Date型不生成表单元素
+     */
+    private static String getEditItems(List<EntityInfo> list) {
+        StringBuilder replace = new StringBuilder();
+        String layuiCheck = "";
+        String layuiCheckDesc = "";
+        boolean idFlag = true;
+        for (EntityInfo info : list) {
+            if (idFlag == true) {
+                replace.append("        <input type=\"hidden\" name=\"" + info.getBeanName() + "\" th:value=\"${myEntity." + info.getBeanName() + "}\">\n");
+                idFlag = false;
+                continue;
+            }
+            //默认Date型不生成form选项
+            if (info.getBeanType().contains("Date")) {
+                continue;
+            }
+            if (info.getBeanType().contains("Integer")) {
+                layuiCheck = "checkInt";
+                layuiCheckDesc = "正整数";
+            }
+            if (info.getBeanType().contains("BigDecimal")) {
+                layuiCheck = "checkDec";
+                layuiCheckDesc = "正数";
+            }
+            if (info.getBeanType().contains("Integer") || info.getBeanType().contains("BigDecimal")) {
+                replace.append("        <div class=\"layui-inline\" style=\"margin-bottom: 15px\">\n");
+                replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
+                replace.append("            <div class=\"layui-input-inline\" style=\"width: 300px\">\n");
+                replace.append("                <select name=\"" + info.getBeanName() + "\" lay-verify=\"required\" lay-search=\"\">\n");
+                replace.append("                    <option value=\"\">直接选择或搜索选择</option>\n");
+                replace.append("                    <th:block th:each=\"map: ${枚举类}\">\n");
+                replace.append("                        <option th:value=\"${map.key}\" th:text=\"${map.value}\" th:selected=\"${myEntity."+info.getBeanName()+"==map.key}></option>\n");
+                replace.append("                    </th:block>\n");
+                replace.append("                </select>\n");
+                replace.append("            </div>\n");
+                replace.append("         若为枚举 下拉框和单选框取其一\n");
+                replace.append("            <div class=\"layui-input-block\" pane>\n");
+                replace.append("                <th:block lay-verify=\"required\" th:each=\"map: ${枚举类}\">\n");
+                replace.append("                    <input type=\"radio\" name=\"" + info.getBeanName() + "\" th:value=\"${map.key}\" th:title=\"${map.value}\" th:checked=\"${myEntity."+info.getBeanName()+"}==${map.key}\">\n");
+                replace.append("                </th:block>\n");
+                replace.append("            </div>\n");
+                replace.append("        </div>\n");
+                replace.append("        枚举和数值型取其一\n");
+                replace.append("        <div class=\"layui-form-item\">\n");
+                replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
+                replace.append("            <div class=\"layui-input-block\" style=\"width: 300px\">\n");
+                replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" autocomplete=\"off\" class=\"layui-input\" th:value=\"${myEntity."+info.getBeanName()+"}\"\n");
+                replace.append("                    lay-verify=\"" + layuiCheck + "\" placeholder=\"非必填," + layuiCheckDesc + "\">\n");
+                replace.append("                必填、非必填取其一\n");
+                replace.append("                    lay-verify=\"required|" + layuiCheck + "\" placeholder=\"必填," + layuiCheckDesc + "\">\n");
+                replace.append("            </div>\n");
+                replace.append("        </div>\n");
+            } else {
+                replace.append("        <div class=\"layui-form-item\">\n");
+                replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
+                replace.append("            <div class=\"layui-input-block\">\n");
+                replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" autocomplete=\"off\" class=\"layui-input\" th:value=\"${myEntity."+info.getBeanName()+"}\"\n");
+                replace.append("                    lay-verify=\"required\" placeholder=\"必填\">\n");
+                replace.append("                必填、非必填取其一\n");
+                replace.append("                    placeholder=\"非必填\">\n");
+                replace.append("            </div>\n");
+                replace.append("        </div>\n");
             }
         }
         return replace.toString();
@@ -113,24 +246,25 @@ public class GenerateUtil {
         return sb.toString();
     }
 
-    public static TableNameInfo getTableNameInfo(String tableName,String projectPath,String packageName) {
+    public static TableNameInfo getTableNameInfo(String tableName, String projectPath, String packageName) {
         TableNameInfo tableNameInfo = new TableNameInfo();
         tableNameInfo.setEntityName(GenerateUtil.toJavaName(true, tableName));
         tableNameInfo.setEntityObjName(GenerateUtil.toJavaName(false, tableName));
         tableNameInfo.setHtmlPackage(tableName.replace("_", "/"));
-        tableNameInfo.setHtmlUrl(tableName.replace("_","-"));
+        tableNameInfo.setHtmlUrl(tableName.replace("_", "-"));
         tableNameInfo.setEntityFilePath(projectPath + "\\" + packageName.replace(".", "\\") + "\\entity\\");
         tableNameInfo.setControllerFilePath(projectPath + "\\" + packageName.replace(".", "\\") + "\\controller\\");
-        tableNameInfo.setHtmlDirPath(GenerateUtil.getHtmlDirPath(tableName,projectPath));
+        tableNameInfo.setHtmlDirPath(GenerateUtil.getHtmlDirPath(tableName, projectPath));
         return tableNameInfo;
     }
 
     /**
      * 创建html文件的文件夹
+     *
      * @param tableName
      * @return 返回最后一级文件目录
      */
-    public static String getHtmlDirPath(String tableName,String projectPath) {
+    public static String getHtmlDirPath(String tableName, String projectPath) {
         String xmlPackage = projectPath.replace("main\\java", "main\\resources\\templates");
         String[] split = tableName.split("_");
         for (String s : split) {
@@ -145,15 +279,15 @@ public class GenerateUtil {
         List<String> list = FileUtils.readLines(file);
         List<EntityInfo> resultList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).contains("serialVersionUID")){
+            if (list.get(i).contains("serialVersionUID")) {
                 continue;
             }
-            if (list.get(i).contains("private ")){
+            if (list.get(i).contains("private ")) {
                 EntityInfo entityInfo = new EntityInfo();
                 String[] split = list.get(i).split(" ");
-                entityInfo.setBeanName(split[split.length-1].replace(";",""));
-                entityInfo.setBeanType(split[split.length-2]);
-                if (list.get(i-2).contains("     * ")){
+                entityInfo.setBeanName(split[split.length - 1].replace(";", ""));
+                entityInfo.setBeanType(split[split.length - 2]);
+                if (list.get(i - 2).contains("     * ")) {
                     String beanDesc = list.get(i - 2).replace("     * ", "");
                     entityInfo.setBeanDesc(beanDesc);
                 }
