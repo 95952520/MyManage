@@ -26,6 +26,8 @@ public class BaseController {
 
     @Value("${imgPath}")
     public String imgPath;
+    @Value("${imgDomain}")
+    public String imgDomain;
 
     protected static final Logger logger = Logger.getLogger(BaseController.class);
 

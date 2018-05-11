@@ -2,15 +2,15 @@
 profile: test
 
 server:
-  port: 85
+  port: 8090
 
 #MySQL
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/nbcsgo?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/boot_manage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
-    password: root
+    password: password
     type: com.alibaba.druid.pool.DruidDataSource
     filters: stat
     maxActive: 20
@@ -26,13 +26,17 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   redis:
-    database: 0
+    database: 1
     hostName: localhost
     port: 6379
-    password: pwd
+    password: password
     timeout: 5000
     pool:
       max-active: 9
       min-idle: 2
       max-idle: 9
       max-wait: -1
+
+imgPath: /home/img/
+userImgDir: userTest/
+imgDomain: http://img.zhenyang.work/

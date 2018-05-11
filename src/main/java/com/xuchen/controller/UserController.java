@@ -38,8 +38,6 @@ public class UserController extends BaseController {
     UserService userService;
     @Value("${userImgDir}")
     String userImgDir;
-    @Value("${imgPro}")
-    String imgPro;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     String index(HttpServletRequest request) {
@@ -65,6 +63,7 @@ public class UserController extends BaseController {
     Result editText(User myEntity) throws Exception {
         checkNullUpdate(myEntity.getUserName(), myEntity.getAddress(), myEntity.getPhone(), myEntity.getShopName());
         myEntity.setUpdateUser(getSessionUserName());
+        myEntity.setUpdateTime(new Date());
         userService.updateById(myEntity);
         return Result.success();
     }
@@ -72,7 +71,7 @@ public class UserController extends BaseController {
     @RequestMapping("checkboxUpdate")
     @ResponseBody
     @RequestLog
-    Result editText(BaseCheckBox checkBox) {
+    Result checkboxUpdate(BaseCheckBox checkBox) {
         User myEntity = new User();
         myEntity.setUserId(checkBox.getId());
         myEntity.setStatus(checkBox.isChecked() ? 1 : 0);
@@ -95,7 +94,7 @@ public class UserController extends BaseController {
         if (MyUtils.isNotEmpty(imgFile)) {
             File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
             MyUtils.createFileFromStr(imgFile, file);
-            myEntity.setUserImg(imgPro + userImgDir + myEntity.getUserId() + ".jpg");
+            myEntity.setUserImg(imgDomain + userImgDir + myEntity.getUserId() + ".jpg");
             userService.updateById(myEntity);
         }
         return Result.success();
@@ -111,12 +110,14 @@ public class UserController extends BaseController {
     @RequestMapping("doEdit")
     @ResponseBody
     Result doEdit(User myEntity, String imgFile) throws IOException {
-        logger.info(myEntity);
+        logger.info("url:[user/doEdit];"+myEntity);
         myEntity.setUpdateUser(getSessionUserName());
+        myEntity.setUpdateTime(new Date());
         if (MyUtils.isNotEmpty(imgFile)) {
+            logger.info("用户头像更新");
             File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
             MyUtils.createFileFromStr(imgFile, file);
-            myEntity.setUserImg(imgPro + userImgDir + myEntity.getUserId() + ".jpg");
+            myEntity.setUserImg(imgDomain + userImgDir + myEntity.getUserId() + ".jpg");
         }
         userService.updateById(myEntity);
         return Result.success();

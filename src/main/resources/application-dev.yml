@@ -8,9 +8,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/boot_manage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/boot_manage?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
-    password: xuchen93
+    password: password
     type: com.alibaba.druid.pool.DruidDataSource
     filters: stat
     maxActive: 20
@@ -26,10 +26,10 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   redis:
-    database: 0
+    database: 2
     hostName: localhost
     port: 6379
-    password: xuchen
+    password: password
     timeout: 5000
     pool:
       max-active: 9
@@ -43,3 +43,7 @@ spring:
       exclude: static/**,templates/**
   thymeleaf:
     cache: false
+
+imgPath: D:/
+userImgDir: user/
+imgDomain: file:///D:/

@@ -1,18 +1,4 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50720
-Source Host           : localhost:3306
-Source Database       : boot_manage
-
-Target Server Type    : MYSQL
-Target Server Version : 50720
-File Encoding         : 65001
-
-Date: 2018-04-23 20:48:46
-*/
-
+-- 登录帐号test 密码test
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -52,16 +38,20 @@ CREATE TABLE `goods` (
   `weight` decimal(11,2) DEFAULT NULL COMMENT '每份的重量',
   `weight_type` smallint(4) DEFAULT NULL COMMENT '0.克 1.千克 2.吨',
   `original_price` decimal(11,2) NOT NULL COMMENT '进价/成本价',
-  `freight` decimal(11,2) DEFAULT '0.00' COMMENT '运费',
   `wholesale_price` decimal(11,2) DEFAULT NULL COMMENT '批发价',
   `retail_price` decimal(11,2) DEFAULT NULL COMMENT '零售价',
-  PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `status` int(4) NOT NULL DEFAULT '1' COMMENT '0.失效 1.有效',
+  PRIMARY KEY (`goods_id`),
+  UNIQUE KEY `goodsName` (`goods_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES ('1', '腻子粉', '0', '1', '99', '0', '10.00', '1', '8.00', '0.50', '10.00', '12.00');
+INSERT INTO `goods` VALUES ('1', '腻子粉', '0', '1', '99', '0', '12.50', '1', '5.80', '8.50', '10.00', '1');
+INSERT INTO `goods` VALUES ('2', '测试', '2', '0', '1', '0', '2.00', '1', '3.00', '5.00', '6.00', '1');
+INSERT INTO `goods` VALUES ('3', '42.5白水泥', '0', '1', '500', '0', '40.00', '1', '80.00', '90.00', '95.00', '1');
+INSERT INTO `goods` VALUES ('4', 'haha', '2', '1', '50', '0', '10.00', '1', '10.30', '11.50', '12.50', '1');
 
 -- ----------------------------
 -- Table structure for order_base
@@ -85,11 +75,14 @@ CREATE TABLE `order_base` (
   `update_user` varchar(32) DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of order_base
 -- ----------------------------
+INSERT INTO `order_base` VALUES ('1', '2', '0', '1', '', '1', '0.00', '0', '0.00', '0.00', '3.00', '', '1', '2018-04-25 16:53:48', '', '2018-05-01 23:01:21');
+INSERT INTO `order_base` VALUES ('2', '5', '0', '0', '', null, '0.00', '0', '0.00', '0.00', '0.00', '', '1', '2018-04-30 18:57:17', null, null);
+INSERT INTO `order_base` VALUES ('3', '4', '1', '1', '', null, '0.00', '0', '0.00', '0.00', '0.00', '1123', '1', '2018-05-01 23:05:58', null, null);
 
 -- ----------------------------
 -- Table structure for order_goods
@@ -100,17 +93,39 @@ CREATE TABLE `order_goods` (
   `order_id` int(11) NOT NULL,
   `goods_id` int(11) NOT NULL COMMENT '商品id',
   `goods_count` int(11) NOT NULL COMMENT '商品数量',
-  `goods_sale_money` decimal(11,4) NOT NULL COMMENT '出售单价',
+  `goods_sale_money` decimal(11,2) NOT NULL COMMENT '实际出售单价',
   `create_user` varchar(32) NOT NULL COMMENT '创建人',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_user` varchar(32) DEFAULT NULL,
   `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`order_goods_id`),
   UNIQUE KEY `goodsAndOrder` (`order_id`,`goods_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of order_goods
+-- ----------------------------
+INSERT INTO `order_goods` VALUES ('10', '1', '2', '1', '3.00', '1', '2018-04-30 23:06:59', null, '2018-05-01 22:24:13');
+INSERT INTO `order_goods` VALUES ('19', '1', '4', '2', '0.00', '1', '2018-05-01 22:16:10', null, '2018-05-01 23:01:21');
+
+-- ----------------------------
+-- Table structure for recipe_base
+-- ----------------------------
+DROP TABLE IF EXISTS `recipe_base`;
+CREATE TABLE `recipe_base` (
+  `recipe_id` int(11) NOT NULL AUTO_INCREMENT,
+  `recipe_name` varchar(64) NOT NULL,
+  `recipe_type` int(11) NOT NULL COMMENT '0.胶水类 1漆类 2.粉类 3.涂料类 4.其他',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_user` varchar(32) NOT NULL,
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `update_user` varchar(32) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`recipe_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of recipe_base
 -- ----------------------------
 
 -- ----------------------------
@@ -180,7 +195,7 @@ CREATE TABLE `stock` (
 -- ----------------------------
 -- Records of stock
 -- ----------------------------
-INSERT INTO `stock` VALUES ('1', '钛白粉', '0', '0', '25.00', '1', '50', '3', '2018-04-23 20:43:06', '1');
+INSERT INTO `stock` VALUES ('1', '钛白粉', '0', '0', '0.00', '1', '25', '3', '2018-04-23 20:43:06', '1');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -208,7 +223,7 @@ INSERT INTO `sys_menu` VALUES ('2', '1', '用户管理', '/sysUser', 'sysUser', 
 INSERT INTO `sys_menu` VALUES ('3', '1', '菜单管理', '/sysMenu', 'sysMenu', '1', null, '99', '2018-03-30 11:24:28', '2018-04-10 17:07:38');
 INSERT INTO `sys_menu` VALUES ('4', '0', '商品数据', null, null, '0', '&#xe698;', '8', '2018-03-30 11:25:26', '2018-03-30 11:25:35');
 INSERT INTO `sys_menu` VALUES ('5', '4', '商品', '/goods', 'goods', '1', '', '1', '2018-03-30 11:25:58', '2018-04-18 23:01:42');
-INSERT INTO `sys_menu` VALUES ('6', '1', '菜单权限', '/sysRole', null, '1', null, '5', '2018-04-03 10:03:28', '2018-04-08 15:40:55');
+INSERT INTO `sys_menu` VALUES ('6', '1', '权限管理', '/sysRole', '', '1', null, '5', '2018-04-03 10:03:28', '2018-05-11 13:37:28');
 INSERT INTO `sys_menu` VALUES ('7', '0', '用户数据', null, null, '0', '&#xe612;', '50', '2018-04-14 10:39:39', '2018-04-15 15:13:58');
 INSERT INTO `sys_menu` VALUES ('8', '7', '用户', '/user', 'user', '1', null, '99', '2018-04-14 10:40:15', null);
 INSERT INTO `sys_menu` VALUES ('9', '0', '原料相关', null, null, '0', '&#xe61d;', '30', '2018-04-15 15:13:52', '2018-04-18 21:15:17');
@@ -246,7 +261,7 @@ CREATE TABLE `sys_role_menu` (
   `menu_id` int(11) NOT NULL COMMENT '菜单ID',
   `status` int(4) NOT NULL DEFAULT '0' COMMENT '0无权限 1有权限',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='角色与菜单对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='角色与菜单对应关系';
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -263,8 +278,8 @@ INSERT INTO `sys_role_menu` VALUES ('9', '1', '9', '1');
 INSERT INTO `sys_role_menu` VALUES ('10', '1', '10', '1');
 INSERT INTO `sys_role_menu` VALUES ('11', '1', '11', '1');
 INSERT INTO `sys_role_menu` VALUES ('12', '1', '12', '1');
-INSERT INTO `sys_role_menu` VALUES ('13', '2', '1', '1');
-INSERT INTO `sys_role_menu` VALUES ('14', '2', '2', '1');
+INSERT INTO `sys_role_menu` VALUES ('13', '2', '1', '0');
+INSERT INTO `sys_role_menu` VALUES ('14', '2', '2', '0');
 INSERT INTO `sys_role_menu` VALUES ('15', '2', '3', '0');
 INSERT INTO `sys_role_menu` VALUES ('16', '2', '4', '1');
 INSERT INTO `sys_role_menu` VALUES ('17', '2', '5', '1');
@@ -291,13 +306,13 @@ CREATE TABLE `sys_user` (
   `login_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '上次登录时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `userName` (`user_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', '3a3c6ca24f6e565c26100b01b5c3fc91', '1', '管理员', '2018-04-13 18:47:49', '0', '2018-04-23 20:33:48');
-INSERT INTO `sys_user` VALUES ('2', 'tongjun', 'fd9eb39b0e9d3700837fc71b8c5c70b1', '1', '同军', '2018-04-23 20:37:09', '1', '0000-00-00 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', 'xuchen', 'e698a95d5f57f7017e198d0b4868340d', '1', '管理员', '2018-04-13 18:47:49', '0', '2018-05-11 14:50:36');
+INSERT INTO `sys_user` VALUES ('3', 'test', '72e1242b855fb038212135e0ad348842', '1', '测试用户', '2018-05-06 14:36:40', '1', '2018-05-08 16:27:16');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -308,12 +323,14 @@ CREATE TABLE `sys_user_role` (
   `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
   `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('2', '2', '2');
+INSERT INTO `sys_user_role` VALUES ('3', '3', '1');
 
 -- ----------------------------
 -- Table structure for user
@@ -322,14 +339,14 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(32) NOT NULL COMMENT '姓名',
+  `user_img` varchar(255) DEFAULT NULL,
   `user_type` smallint(4) NOT NULL COMMENT '0.自家 1.门店 2.涂料工 3.工厂 4.散客 5.供应商 6.配送者 7.其他',
   `shop_name` varchar(32) DEFAULT NULL COMMENT '门店名',
   `address` varchar(128) DEFAULT NULL COMMENT '地址',
   `address_two` varchar(128) DEFAULT NULL COMMENT '地址2',
-  `address_three` varchar(128) DEFAULT NULL COMMENT '地址3',
   `phone` varchar(16) DEFAULT NULL COMMENT '电话',
   `phone_two` varchar(16) DEFAULT NULL COMMENT '电话2',
-  `phone_three` varchar(16) DEFAULT NULL COMMENT '电话3',
+  `status` int(4) NOT NULL DEFAULT '1' COMMENT '0.失效 1.有效',
   `remark` varchar(256) DEFAULT NULL COMMENT '备注',
   `create_user` varchar(32) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -337,11 +354,24 @@ CREATE TABLE `user` (
   `update_time` timestamp NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `userName` (`user_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '周玉', '0', '大江涂料厂', '万有商业城', '墙拐国', '', '13338991239', '', '', '', '1', '2018-04-23 20:40:26', null, '0000-00-00 00:00:00');
-INSERT INTO `user` VALUES ('2', '孙显', '1', '随便', '灌云某处', '', '', '112234456', '', '', '', '1', '2018-04-23 20:41:35', null, '0000-00-00 00:00:00');
-INSERT INTO `user` VALUES ('3', '供应商A', '5', '临沂', '临沂某处', '', '', '987654321', '', '', '', '1', '2018-04-23 20:42:41', null, '0000-00-00 00:00:00');
+INSERT INTO `user` VALUES ('1', '周玉', null, '0', '1 ', '万有商业城', '', 'a ', '', '1', '', '1', '2018-04-23 20:40:26', 'xuchen', '2018-05-10 23:09:18');
+INSERT INTO `user` VALUES ('2', '孙显', '/userTest/2.jpg', '1', '随便', '灌云某处', null, '112234456', '', '0', '', '1', '2018-04-23 20:41:35', 'xuchen', '2018-05-08 22:24:27');
+INSERT INTO `user` VALUES ('3', '供应商A', null, '6', '临沂', '临沂某处', null, '11', '', '0', '', '1', '2018-04-23 20:42:41', 'xuchen', '2018-05-09 15:12:06');
+INSERT INTO `user` VALUES ('4', '门店用户', '/userTest/4.jpg', '6', '门店A', 'address', null, '123', '', '0', '', '1', '2018-04-26 09:56:48', 'xuchen', '2018-05-09 15:12:07');
+INSERT INTO `user` VALUES ('5', '11', null, '2', '11', '1', null, '11', '', '1', '', '1', '2018-04-29 12:27:09', 'xuchen', '2018-05-08 22:17:28');
+INSERT INTO `user` VALUES ('6', '测试', null, '0', '1', '2', null, '3', '', '1', '4', 'xuchen', '2018-05-07 20:00:14', 'xuchen', '2018-05-08 22:17:43');
+INSERT INTO `user` VALUES ('7', '2', '/userTest/7.jpg', '1', '2', '3', null, '4', '', '0', '5', 'xuchen', '2018-05-07 20:02:37', 'xuchen', '2018-05-09 15:12:08');
+INSERT INTO `user` VALUES ('8', '112', '/userTest/8.jpg', '0', '3', '2', null, '3', '', '1', '1', 'xuchen', '2018-05-07 20:10:41', 'xuchen', '2018-05-08 22:16:30');
+INSERT INTO `user` VALUES ('9', '4', 'file:///D:/user/9.jpg', '0', '1', '2', null, '3', '', '1', '44', 'xuchen', '2018-05-07 20:17:49', 'xuchen', '2018-05-11 14:39:18');
+INSERT INTO `user` VALUES ('10', '111', 'file:///D:/user/10.jpg', '0', '22', '33', null, '44', '', '1', '5', 'xuchen', '2018-05-07 20:33:49', 'xuchen', '2018-05-11 14:39:35');
+INSERT INTO `user` VALUES ('11', '332', null, '0', '121', '33', null, '22', '', '1', '11', 'xuchen', '2018-05-07 20:34:35', 'xuchen', '2018-05-08 21:21:19');
+INSERT INTO `user` VALUES ('12', '4123', null, '0', '1', '2', '', '3', '', '1', '', 'xuchen', '2018-05-08 20:00:24', 'xuchen', '2018-05-08 21:21:07');
+INSERT INTO `user` VALUES ('13', '12', null, '0', '1', '2', '2', '1', '', '1', '', 'xuchen', '2018-05-09 15:08:28', null, '0000-00-00 00:00:00');
+INSERT INTO `user` VALUES ('15', 'asda', null, '0', '13', '123', '', '123', '', '1', '', 'xuchen', '2018-05-09 15:08:41', null, '0000-00-00 00:00:00');
+INSERT INTO `user` VALUES ('16', 'z', null, '0', 'z', 'z', '', '11', '', '1', '', 'xuchen', '2018-05-09 15:09:34', null, '0000-00-00 00:00:00');
+INSERT INTO `user` VALUES ('17', 'aa', null, '0', 'z', 'z', '', '1', '', '1', '', 'xuchen', '2018-05-09 15:09:45', null, '0000-00-00 00:00:00');

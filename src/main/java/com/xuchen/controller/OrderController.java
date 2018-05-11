@@ -5,6 +5,7 @@ import com.xuchen.base.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -64,6 +65,8 @@ public class OrderController extends BaseController {
     @ResponseBody
     @RequestLog
     Result editText(OrderBase myEntity) {
+        myEntity.setUpdateTime(new Date());
+        myEntity.setUpdateUser(getSessionUserName());
         orderService.updateById(myEntity);
         return Result.success();
     }
@@ -94,6 +97,8 @@ public class OrderController extends BaseController {
     @ResponseBody
     @RequestLog
     Result doEdit(OrderBase myEntity) {
+        myEntity.setUpdateTime(new Date());
+        myEntity.setUpdateUser(getSessionUserName());
         orderService.updateById(myEntity);
         return Result.success();
     }
@@ -103,18 +108,6 @@ public class OrderController extends BaseController {
     @RequestLog
     Result delete(OrderBase myEntity) {
         orderService.deleteById(myEntity);
-        return Result.success();
-    }
-
-    @RequestMapping("deleteList")
-    @ResponseBody
-    Result deleteList(String jsonObj) {
-//        List<OrderBase> list = JSONArray.parseArray(jsonObj,OrderBase.class);
-//        List<Integer> ids = new ArrayList<>();
-//        for(OrderBase obj : list) {
-//            ids.add(obj.getId());
-//        }
-//        orderService.deleteBatchIds(ids);
         return Result.success();
     }
 

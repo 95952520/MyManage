@@ -1,9 +1,9 @@
 package com.xuchen.util;
 
 import com.xuchen.entity.SysUser;
+import io.netty.util.internal.ThreadLocalRandom;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
-import sun.misc.BASE64Decoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedInputStream;
@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -21,7 +22,7 @@ import java.util.Random;
 public class MyUtils {
 
     private static Calendar calendar = Calendar.getInstance();
-    private static Random random = new Random();
+    private static Random random = ThreadLocalRandom.current();
     private final static String randomStr = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz123456789";
 
     public static Date getDateByLocal(LocalDateTime localDateTime) {
@@ -173,10 +174,9 @@ public class MyUtils {
      */
     public static void createFileFromStr(String str,File newFile) throws IOException {
         String imgString = str.substring(str.indexOf(",") + 1);
-        BASE64Decoder d = new BASE64Decoder();
-        byte[] bs = d.decodeBuffer(imgString);
+        byte[] decode = Base64.getDecoder().decode(imgString);
         FileOutputStream os = new FileOutputStream(newFile);
-        os.write(bs);
+        os.write(decode);
         os.close();
     }
 }

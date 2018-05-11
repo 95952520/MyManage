@@ -5,7 +5,7 @@
 </head>
 <body>
 <div class="x-body">
-    <form class="layui-form layui-form-pane" action="/user/doEdit">
+    <form class="layui-form layui-form-pane"  data-id="reload" action="/user/doEdit">
         <input type="hidden" id="img" name="imgFile">
         <input type="hidden" name="userImg" th:value="${myEntity.userImg}">
         <input type="hidden" name="userId" th:value="${myEntity.userId}">

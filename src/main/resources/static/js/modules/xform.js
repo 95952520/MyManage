@@ -75,7 +75,8 @@ layui.define(['layer', 'form'], function (exports) {
                     time: 1000
                 });
                 if($(fm).attr("data-id") == 'reload'){
-                    parent.window.location.reload();
+                    location.reload();//避免table中图片缓存
+                    parent.window.location.reload();//菜单页刷新
                 }
                 // 刷新父table
                 if (parent.layui.table){
