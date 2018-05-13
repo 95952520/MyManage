@@ -4,7 +4,6 @@ import com.xuchen.base.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +13,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseCheckBox;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.CheckNullUpdate;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
@@ -45,6 +45,17 @@ public class UserController extends BaseController {
         return "user/user-list";
     }
 
+    @CheckNullUpdate(checkFiled = {"userName","address","phone","shopName"})
+    @RequestMapping("editText")
+    @ResponseBody
+    @RequestLog
+    Result editText(User myEntity) {
+        myEntity.setUpdateUser(getSessionUserName());
+        myEntity.setUpdateTime(new Date());
+        userService.updateById(myEntity);
+        return Result.success();
+    }
+
     @RequestMapping("list")
     @ResponseBody
     Result list(BaseQuery baseQuery, User myEntity, String params, HttpServletRequest request) {
@@ -55,17 +66,6 @@ public class UserController extends BaseController {
         wrapper.eq("user_type").like("user_name").like("shop_name").eq("status");
         List<User> list = userService.selectList(wrapper);
         return Result.success(PageHelper.freeTotal(), list);
-    }
-
-    @RequestMapping("editText")
-    @ResponseBody
-    @RequestLog
-    Result editText(User myEntity) throws Exception {
-        checkNullUpdate(myEntity.getUserName(), myEntity.getAddress(), myEntity.getPhone(), myEntity.getShopName());
-        myEntity.setUpdateUser(getSessionUserName());
-        myEntity.setUpdateTime(new Date());
-        userService.updateById(myEntity);
-        return Result.success();
     }
 
     @RequestMapping("checkboxUpdate")

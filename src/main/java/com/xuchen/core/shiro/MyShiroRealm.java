@@ -14,6 +14,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +58,17 @@ public class MyShiroRealm extends AuthorizingRealm {
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+        Session session = SecurityUtils.getSubject().getSession();
+        List<String> permsList= (List<String>) session.getAttribute("permsList");
+        if (permsList == null){
+            SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
+            permsList = sysRoleService.findPermsByUserId(user.getId());
+            session.setAttribute("permsList",permsList);
+        }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        List<String> rolesList = sysRoleService.findRolesByUserId(user.getId());
-        List<String> permsList = sysRoleService.findPermsByUserId(user.getId());
-        info.addRoles(rolesList);
+        //暂未用到角色控制
+//        List<String> rolesList = sysRoleService.findRolesByUserId(user.getId());
+//        info.addRoles(rolesList);
         info.addStringPermissions(permsList);
         return info;
     }

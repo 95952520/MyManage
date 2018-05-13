@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.CheckNullUpdate;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Goods;
 import com.xuchen.entity.base.MyEntityWrapper;
@@ -51,6 +52,7 @@ public class GoodsController extends BaseController {
         return Result.success(PageHelper.freeTotal(), list);
     }
 
+    @CheckNullUpdate(checkFiled = "goodsName")
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog
@@ -69,7 +71,6 @@ public class GoodsController extends BaseController {
     @ResponseBody
     @RequestLog
     Result doAdd(Goods myEntity) {
-//        myEntity.setCreateUser(getSessionUserName());
         goodsService.insert(myEntity);
         return Result.success();
     }
@@ -86,26 +87,6 @@ public class GoodsController extends BaseController {
     @RequestLog
     Result doEdit(Goods myEntity) {
         goodsService.updateById(myEntity);
-        return Result.success();
-    }
-
-    @RequestMapping("delete")
-    @ResponseBody
-    @RequestLog
-    Result delete(Goods myEntity) {
-        goodsService.deleteById(myEntity);
-        return Result.success();
-    }
-
-    @RequestMapping("deleteList")
-    @ResponseBody
-    Result deleteList(String jsonObj) {
-//        List<Goods> list = JSONArray.parseArray(jsonObj,Goods.class);
-//        List<Integer> ids = new ArrayList<>();
-//        for(Goods obj : list) {
-//            ids.add(obj.getId());
-//        }
-//        goodsService.deleteBatchIds(ids);
         return Result.success();
     }
 

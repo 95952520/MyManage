@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.CheckNullUpdate;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Stock;
 import com.xuchen.entity.User;
@@ -62,8 +63,8 @@ public class StockController extends BaseController {
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog
-    Result editText(Stock myEntity) throws Exception{
-        checkNullUpdate(myEntity.getStockName());
+    @CheckNullUpdate(checkFiled = "stockName")
+    Result editText(Stock myEntity){
         stockService.updateById(myEntity);
         return Result.success();
     }

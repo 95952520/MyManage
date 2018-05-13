@@ -108,7 +108,12 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
         var value = obj.value //得到修改后的值
             , data = obj.data //得到所在行所有键值
             , field = obj.field; //得到字段
-        $.post($("#editText").val(), data, function (result) {
+        var myEntityId = $("#myEntityId").val();
+        var updateObj = new Object();
+        updateObj[myEntityId] = data[myEntityId];
+        updateObj[field] = value;
+        updateObj['updateField'] = field;
+        $.post($("#editText").val(), updateObj, function (result) {
             if (result.code == 0) {
                 parent.layer.msg(result.msg, {
                     icon: 1,

@@ -56,7 +56,7 @@ public class GenerateUtil {
         List<EntityInfo> entityList = getEntityIntoList(new File(tableNameInfo.getEntityFilePath() + tableNameInfo.getEntityName() + ".java"));
         String tableDetail = getTableDetail(entityList);
         for (String s : urlList) {
-            result.add(s.replace("            @tableDetail@", tableDetail).replace("@entityObjName@", tableNameInfo.getEntityObjName()));
+            result.add(s.replace("@tableDetail@", tableDetail).replace("@entityObjName@", tableNameInfo.getEntityObjName()).replace("@myEntityId@",entityList.get(0).getBeanName()));
         }
         FileUtils.writeLines(new File(tableNameInfo.getHtmlDirPath() + "\\" + tableNameInfo.getHtmlUrl() + "-list.html"), result);
         //add.txt

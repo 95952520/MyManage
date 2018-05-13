@@ -11,7 +11,7 @@ import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.model.ParentMenu;
 import com.xuchen.service.SysMenuService;
 import com.xuchen.util.MyUtils;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("sysMenu")
-@RequiresRoles("superUser")
+@RequiresPermissions("sysMenu")
 public class SysMenuController extends BaseController {
 
 

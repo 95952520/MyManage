@@ -16,7 +16,7 @@ import com.xuchen.model.base.TreeParModel;
 import com.xuchen.service.SysUserRoleService;
 import com.xuchen.service.SysUserService;
 import com.xuchen.util.MyUtils;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("sysUser")
-@RequiresRoles("superUser")
+@RequiresPermissions("sysUser")
 public class SysUserController extends BaseController {
 
     @Autowired

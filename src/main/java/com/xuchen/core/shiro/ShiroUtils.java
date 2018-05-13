@@ -34,8 +34,6 @@ public class ShiroUtils {
                 session.setTimeout(0);
                 return;
             }
-
         }
     }
-
 }

@@ -55,7 +55,7 @@ public class BaseController {
         logger.error("接口报错:[" + request.getRequestURI() + "],调用者[" + getSessionUserId() + "],method[" + request.getMethod() + "]");
         logger.error("参数:" + getJsonParams(request.getParameterMap()));
         e.printStackTrace();
-        return Result.fail(e.getLocalizedMessage());
+        return Result.fail(e.getMessage());
     }
 
     /**
@@ -100,17 +100,6 @@ public class BaseController {
             }
             sb.append("]");
             return sb.toString();
-        }
-    }
-
-    protected static void checkNullUpdate(Object... obj) throws Exception {
-        if (MyUtils.isEmpty(obj)){
-            throw new Exception("该字段不能为空");
-        }
-        for (Object o : obj) {
-            if (MyUtils.isEmpty(o)){
-                throw new Exception("该字段不能为空");
-            }
         }
     }
 }

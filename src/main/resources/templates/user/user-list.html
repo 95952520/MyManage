@@ -43,9 +43,10 @@
 
     <input type="hidden" id="editText" value="user/editText">
     <input type="hidden" id="checkboxUpdate" value="user/checkboxUpdate">
+    <input type="hidden" id="myEntityId" value="userId">
 
     <table class="layui-table"
-           lay-data="{height:'700', url:'/user/list', page:true,id:'table',limit:15,limits:[10,15,20,50,100]}"
+           lay-data="{url:'/user/list', page:true,id:'table',limit:15,limits:[10,15,20,50,100]}"
            lay-filter="table">
         <thead>
         <tr>
