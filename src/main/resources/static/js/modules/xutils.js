@@ -36,6 +36,7 @@ layui.define(['layer', 'form'],function (exports) {
         }else if(event == 'edit'){
             x_admin_show(title, url + '?menuId=' + id, width, height);
         }
+
     });
 
     $('.icons').on('click',function () {
@@ -47,10 +48,10 @@ layui.define(['layer', 'form'],function (exports) {
         }else if($(this).hasClass('unfold-icon')){
             $(this).removeClass('unfold-icon');
             $(this).addClass('fold-icon');
-            $(this).html('&#xe602;');
+            $(this).html('&#xe619;');
             $(this).parent().parent().parent().siblings('tbody').show();
         }
-    });
+    })
 
     exports('xutils', {});
 });

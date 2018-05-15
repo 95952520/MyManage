@@ -142,13 +142,13 @@ body{
 /*-- profile_2 --*/
 p.copy{
 	color:#fff;
-	font-size:1em;
+    font-size: 14px;
 	text-align:center;
-	margin-top:6em;
+	margin-top:20em;
 }
 /*-- w3layouts --*/
 p.copy a{
-	color:#fff;
+	color:#808080;
 	text-decoration:underline;
 }
 p.copy a:hover{

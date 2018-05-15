@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.base.Result;
 import com.xuchen.controller.base.BaseController;
+import com.xuchen.core.annotation.CheckNullUpdate;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.SysRole;
 import com.xuchen.entity.SysRoleMenu;
@@ -61,12 +62,10 @@ public class SysRoleController extends BaseController {
         return Result.success(PageHelper.freeTotal(), list);
     }
 
+    @CheckNullUpdate(checkFiled = {"roleName","roleSign"})
     @RequestMapping("editText")
     @ResponseBody
     Result editText(SysRole myEntity) {
-        if (MyUtils.isEmpty(myEntity.getRoleSign())) {
-            return Result.fail("不能为空");
-        }
         sysRoleService.updateById(myEntity);
         return Result.success();
     }

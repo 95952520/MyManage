@@ -25,7 +25,7 @@
         <table class="layui-table"  th:each="parentMenu: ${menuList}"  style="margin: 0;">
             <thead>
             <tr>
-                <th th:utext="'<i class=\'layui-icon fold-icon icons\' style=\'cursor:pointer\'>&#xe602;</i>' + ((${parentMenu.img} == null)?' ': '<i class=\'layui-icon\'> '+${parentMenu.img}+'</i> ')+${parentMenu.name}" style="width:25%">
+                <th th:utext="'<i class=\'layui-icon fold-icon icons\' style=\'cursor:pointer\'>&#xe619;</i>' + ((${parentMenu.img} == null)?' ': '<i class=\'layui-icon\'> '+${parentMenu.img}+'</i> ')+${parentMenu.name}" style="width:25%">
                 </th>
                 <th th:utext="${parentMenu.url}"></th>
                 <th th:utext="${parentMenu.perms}" style="width:20%"></th>

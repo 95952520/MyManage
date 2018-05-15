@@ -169,7 +169,10 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
             fm = data.form;
         values.params = '';
         table.reload('table', {
-            where: values
+            where: values,
+            page:{
+                curr:1
+            }
         });
         return false;
     });

@@ -21,4 +21,5 @@ chmod u+x *.sh 增加权限
 :set ff 查看文件格式
 :set ff=unix
 
-export PATH=${PATH}:/home/mysh //设置全局脚本目录
+export PATH=${PATH}:/home/mysh //设置全局脚本目录  经测试，断开ssh连接后失效
+/usr/local/bin  可全局执行脚本
