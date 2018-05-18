@@ -45,7 +45,7 @@ public class UserController extends BaseController {
         return "user/user-list";
     }
 
-    @CheckNullUpdate(checkFiled = {"userName","address","phone","shopName"})
+    @CheckNullUpdate({"userName","address","phone","shopName"})
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog

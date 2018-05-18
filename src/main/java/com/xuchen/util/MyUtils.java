@@ -2,6 +2,7 @@ package com.xuchen.util;
 
 import com.xuchen.entity.SysUser;
 import io.netty.util.internal.ThreadLocalRandom;
+import org.apache.log4j.Logger;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
@@ -11,25 +12,23 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
 public class MyUtils {
 
-    private static Calendar calendar = Calendar.getInstance();
+    protected static final Logger logger = Logger.getLogger(MyUtils.class);
     private static Random random = ThreadLocalRandom.current();
     private final static String randomStr = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz123456789";
 
     public static Date getDateByLocal(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
-
 
 
     /**
@@ -133,8 +132,8 @@ public class MyUtils {
         return sb.toString();
     }
 
-    public static void encrypPassword(SysUser sysUser){
-        String newPassword = new SimpleHash("md5", sysUser.getPassword(),  ByteSource.Util.bytes(sysUser.getUserName()), 2).toHex();
+    public static void encrypPassword(SysUser sysUser) {
+        String newPassword = new SimpleHash("md5", sysUser.getPassword(), ByteSource.Util.bytes(sysUser.getUserName()), 2).toHex();
         sysUser.setPassword(newPassword);
     }
 
@@ -142,7 +141,7 @@ public class MyUtils {
         return randomStr.charAt(random.nextInt(randomStr.length()));
     }
 
-    public static void downloadFileFromUrl(String fileUrl,File newFile){
+    public static void downloadFileFromUrl(String fileUrl, File newFile) {
         BufferedInputStream bi = null;
         BufferedOutputStream bo = null;
         try {
@@ -170,14 +169,34 @@ public class MyUtils {
 
     /**
      * 将图片的str流转成文件
-     * @param str 图片的str
+     *
+     * @param str     图片的str
      * @param newFile 生成的文件
      */
-    public static void createFileFromStr(String str,File newFile) throws IOException {
+    public static void createFileFromStr(String str, File newFile) throws IOException {
         String imgString = str.substring(str.indexOf(",") + 1);
         byte[] decode = Base64.getDecoder().decode(imgString);
         FileOutputStream os = new FileOutputStream(newFile);
         os.write(decode);
         os.close();
+    }
+
+    public static Object getFieldValue(Object myEntity, String column) {
+        if (myEntity == null){
+            return null;
+        }
+        Field fields[] = myEntity.getClass().getDeclaredFields();
+        Field.setAccessible(fields, true);
+        for (Field field : fields) {
+            if (column.equals(field.getName())) {
+                try {
+                    return field.get(myEntity);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        logger.warn("[" + myEntity.getClass() + "]没有成员变量[" + column + "]");
+        return null;
     }
 }

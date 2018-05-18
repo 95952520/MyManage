@@ -13,7 +13,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -49,35 +48,16 @@ public class AopCore {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         CheckNullUpdate check = method.getAnnotation(CheckNullUpdate.class);
         if (check != null) {
-            String[] checkFileds = check.checkFiled();
+            String[] checkFileds = check.value();
             for (String checkFiled : checkFileds) {
                 if (checkFiled.equals(updateFiled)) {
-                    Object value = getColumnValue(myEntity, updateFiled);
+                    Object value = MyUtils.getFieldValue(myEntity, updateFiled);
                     if (MyUtils.isEmpty(value)) {
-                        throw new RuntimeException("该字段不能为空");
+                        throw new RuntimeException("该值不能为空");
                     }
-                    break;
+                    return;
                 }
             }
         }
     }
-
-
-    private Object getColumnValue(Object myEntity, String column) {
-        Field fields[] = myEntity.getClass().getDeclaredFields();
-        Field.setAccessible(fields, true);
-        Object value = null;
-        for (Field field : fields) {
-            if (column.equals(field.getName())) {
-                try {
-                    value = field.get(myEntity);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-        }
-        return value;
-    }
-
 }

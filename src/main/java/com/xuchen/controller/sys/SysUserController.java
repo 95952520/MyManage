@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "updateUserRole", method = RequestMethod.POST)
     @ResponseBody
     Result updateUserRole(Integer id, Integer[] ids) {
-        logger.info("id=" + id + ",ids=" + loggerArray(ids));
+        logger.info("id=" + id + ",ids=" + Arrays.toString(ids));
         sysUserRoleService.updateUserRole(id, ids);
         return Result.success();
     }

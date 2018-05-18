@@ -52,7 +52,7 @@ public class GoodsController extends BaseController {
         return Result.success(PageHelper.freeTotal(), list);
     }
 
-    @CheckNullUpdate(checkFiled = "goodsName")
+    @CheckNullUpdate("goodsName")
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog

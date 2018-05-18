@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -62,7 +63,7 @@ public class SysRoleController extends BaseController {
         return Result.success(PageHelper.freeTotal(), list);
     }
 
-    @CheckNullUpdate(checkFiled = {"roleName","roleSign"})
+    @CheckNullUpdate({"roleName","roleSign"})
     @RequestMapping("editText")
     @ResponseBody
     Result editText(SysRole myEntity) {
@@ -127,7 +128,7 @@ public class SysRoleController extends BaseController {
     @RequestMapping(value = "updateRoleMenu", method = RequestMethod.POST)
     @ResponseBody
     Result updateRoleMenu(Integer id, Integer[] ids) {
-        logger.info("id=" + id + ",ids=" + loggerArray(ids));
+        logger.info("id=" + id + ",ids=" + Arrays.toString(ids));
         SysRoleMenu sysRoleMenu = new SysRoleMenu();
         sysRoleMenu.setStatus(0);
         sysRoleMenuService.update(sysRoleMenu, new EntityWrapper<SysRoleMenu>().eq("role_id", id));

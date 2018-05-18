@@ -7,13 +7,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 校验对象是否为null
+ * 校验对象更新的字段不能为null
  * 校验方法的第一个参数须为该对象,前端须传updateFiled作为更新的字段名
- * checkFiled为校验不能为空的字段
+ * value为校验不能为null的字段
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CheckNullUpdate {
-    String[] checkFiled();
+    String[] value();
 }

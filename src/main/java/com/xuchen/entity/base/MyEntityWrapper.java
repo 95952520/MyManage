@@ -2,8 +2,7 @@ package com.xuchen.entity.base;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xuchen.base.BaseQuery;
-
-import java.lang.reflect.Method;
+import com.xuchen.util.MyUtils;
 
 public class MyEntityWrapper<T> extends EntityWrapper {
 
@@ -24,7 +23,7 @@ public class MyEntityWrapper<T> extends EntityWrapper {
     }
 
     public MyEntityWrapper like(String column) {
-        String columnValue = getColumnValue(column);
+        String columnValue = (String) MyUtils.getFieldValue(myEntity,getFiled(column));
         if (columnValue != null) {
             super.like(column, columnValue);
         }
@@ -32,7 +31,7 @@ public class MyEntityWrapper<T> extends EntityWrapper {
     }
 
     public MyEntityWrapper eq(String column) {
-        String columnValue = getColumnValue(column);
+        String columnValue = (String) MyUtils.getFieldValue(myEntity,getFiled(column));
         if (columnValue != null) {
             super.eq(column, columnValue);
         }
@@ -50,24 +49,6 @@ public class MyEntityWrapper<T> extends EntityWrapper {
             super.lt(column,baseQuery.getEndDate());
         }
         return this;
-    }
-
-    private String getColumnValue(String column) {
-        if (myEntity == null) {
-            return null;
-        }
-        Method method = null;
-        try {
-            method = myEntity.getClass().getMethod(getFiled("get_" + column), new Class[0]);
-            Object value = method.invoke(myEntity, new Object[]{});
-            if (value == null || "".equals(value)) {
-                return null;
-            }
-            return String.valueOf(value);
-        } catch (Exception e) {
-            System.out.println("数据库对象映射entity失败:" + myEntity.getClass());
-        }
-        return null;
     }
 
 
