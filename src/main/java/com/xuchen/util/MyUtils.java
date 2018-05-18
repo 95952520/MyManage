@@ -33,12 +33,16 @@ public class MyUtils {
 
     /**
      * 获取用户真实IP
-     *
+     * 线上环境是nginx反向代理，增加一层x-real-ip
+     * 经测试httpClient模拟请求时，会获取请求头设置的x-forwarded-for，先保留吧
      * @param request
      * @return
      */
     public static String getIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
+        String ip = request.getHeader("X-Real-IP");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("x-forwarded-for");
+        }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }

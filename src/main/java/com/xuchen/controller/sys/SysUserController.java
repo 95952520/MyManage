@@ -12,7 +12,7 @@ import com.xuchen.entity.SysUser;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.StatusEnum;
 import com.xuchen.model.UserRoleModel;
-import com.xuchen.model.base.TreeParModel;
+import com.xuchen.model.base.LayuiTreeModel;
 import com.xuchen.service.SysUserRoleService;
 import com.xuchen.service.SysUserService;
 import com.xuchen.util.MyUtils;
@@ -113,13 +113,13 @@ public class SysUserController extends BaseController {
     @RequestMapping(value = "userRoleTree", method = RequestMethod.GET)
     @ResponseBody
     String userRoleTree(Integer paramId) {
-        List<TreeParModel> list = new ArrayList<>();
+        List<LayuiTreeModel> list = new ArrayList<>();
         List<UserRoleModel> userRoleList = sysUserRoleService.getUseRoleTreeByUserId(paramId);
         for (UserRoleModel model : userRoleList) {
-            TreeParModel treeParModel = new TreeParModel();
+            LayuiTreeModel treeParModel = new LayuiTreeModel();
             treeParModel.setValue(model.getRoleId());
             treeParModel.setTitle(model.getRoleName());
-            treeParModel.setChecked(model.getUserId() != null);
+            treeParModel.setChecked(model.getUserId()!=null);
             list.add(treeParModel);
         }
         return JSONArray.toJSONString(list);

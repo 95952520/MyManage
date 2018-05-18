@@ -3,14 +3,18 @@ package com.xuchen.model.base;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreeSonModel {
+/**
+ * layui-xtree 3.0版本 见
+ * http://fly.layui.com/jie/19038/
+ */
+public class LayuiTreeModel {
     private Integer value;
     private String title;
     private boolean checked;
     private boolean disabled;
-    private List<TreeSonModel> data;
+    private List<LayuiTreeModel> data;
 
-    public TreeSonModel(){
+    public LayuiTreeModel(){
         data = new ArrayList<>();
     }
 
@@ -30,6 +34,14 @@ public class TreeSonModel {
         this.title = title;
     }
 
+    public List<LayuiTreeModel> getData() {
+        return data;
+    }
+
+    public void setData(List<LayuiTreeModel> data) {
+        this.data = data;
+    }
+
     public boolean isChecked() {
         return checked;
     }
@@ -46,17 +58,9 @@ public class TreeSonModel {
         this.disabled = disabled;
     }
 
-    public List<TreeSonModel> getData() {
-        return data;
-    }
-
-    public void setData(List<TreeSonModel> data) {
-        this.data = data;
-    }
-
     @Override
     public String toString() {
-        return "TreeSonModel{" +
+        return "TreeParModel{" +
                 "value='" + value + '\'' +
                 ", title='" + title + '\'' +
                 ", checked=" + checked +

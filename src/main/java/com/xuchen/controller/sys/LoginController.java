@@ -55,12 +55,12 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     String login(SysUser loginEntity, HttpServletRequest request, RedirectAttributes attributes) {
-        logger.info("[" + loginEntity.getUserName() + "]登录,IP["+ MyUtils.getIpAddress(request)+"]");
+        String ip = MyUtils.getIpAddress(request);
+        logger.info("[" + loginEntity.getUserName() + "]登录,IP[" + ip + "]");
         if (MyUtils.isEmpty(loginEntity.getUserName()) || MyUtils.isEmpty(loginEntity.getPassword())) {
             return "redirect:login";
         }
-        Integer loginCount;
-        loginCount = RedisStore.getValue(RedisKey.LOGIN_IP + MyUtils.getIpAddress(request));
+        Integer loginCount = RedisStore.getValue(RedisKey.LOGIN_IP + ip);
         if (loginCount != null && loginCount == 5) {
             attributes.addFlashAttribute("msg", "用户尝试登录次数过多，请30分钟后再试");
             return "redirect:login";
@@ -74,13 +74,13 @@ public class LoginController extends BaseController {
             return "redirect:login";
         } catch (AuthenticationException e) {
             token.clear();
-            loginCount = RedisStore.getValue(RedisKey.LOGIN_IP + MyUtils.getIpAddress(request));
-            RedisStore.setValue(RedisKey.LOGIN_IP + MyUtils.getIpAddress(request), (loginCount == null ? 0 : loginCount) + 1, 30, TimeUnit.MINUTES);
-            attributes.addFlashAttribute("msg", "用户或密码不正确！还可尝试"+(5-(loginCount==null?0:loginCount))+"次");
+            loginCount = RedisStore.getValue(RedisKey.LOGIN_IP + ip);
+            RedisStore.setValue(RedisKey.LOGIN_IP + ip, (loginCount == null ? 0 : loginCount) + 1, 30, TimeUnit.MINUTES);
+            attributes.addFlashAttribute("msg", "用户或密码不正确！还可尝试" + (5 - (loginCount == null ? 0 : loginCount)) + "次");
             return "redirect:login";
         }
         RedisStore.delKey(RedisKey.LOGIN_IP + MyUtils.getIpAddress(request));
-        logger.info("[" + loginEntity.getUserName() + "]登录成功,IP["+ MyUtils.getIpAddress(request)+"]");
+        logger.info("[" + loginEntity.getUserName() + "]登录成功,IP[" + MyUtils.getIpAddress(request) + "]");
         return "redirect:index";
     }
 

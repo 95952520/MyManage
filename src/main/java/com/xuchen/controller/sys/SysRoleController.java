@@ -14,8 +14,7 @@ import com.xuchen.entity.SysRoleMenu;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.model.ParentMenu;
 import com.xuchen.model.SonMenu;
-import com.xuchen.model.base.TreeParModel;
-import com.xuchen.model.base.TreeSonModel;
+import com.xuchen.model.base.LayuiTreeModel;
 import com.xuchen.service.SysMenuService;
 import com.xuchen.service.SysRoleMenuService;
 import com.xuchen.service.SysRoleService;
@@ -104,19 +103,18 @@ public class SysRoleController extends BaseController {
     @RequestMapping(value = "menuTree", method = RequestMethod.GET)
     @ResponseBody
     String menuTree(Integer paramId) {
-        List<TreeParModel> list = new ArrayList<>();
-
+        List<LayuiTreeModel> list = new ArrayList<>();
         List<ParentMenu> menuByRoleId = sysMenuService.getMenuByRoleId(paramId);
         for (ParentMenu parentMenu : menuByRoleId) {
-            TreeParModel model = new TreeParModel();
+            LayuiTreeModel model = new LayuiTreeModel();
             model.setValue(parentMenu.getId());
             model.setTitle(parentMenu.getName());
-            List<TreeSonModel> sonList = new ArrayList<>();
+            List<LayuiTreeModel> sonList = new ArrayList<>();
             for (SonMenu sonMenu : parentMenu.getList()) {
-                TreeSonModel sonModel = new TreeSonModel();
+                LayuiTreeModel sonModel = new LayuiTreeModel();
                 sonModel.setValue(sonMenu.getSonId());
                 sonModel.setTitle(sonMenu.getSonName());
-                sonModel.setChecked(sonMenu.getSonStatus() == 1);
+                sonModel.setChecked(sonMenu.getSonStatus()==1);
                 sonList.add(sonModel);
             }
             model.setData(sonList);
