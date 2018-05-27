@@ -17,4 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderBase> implements OrderService {
 
+    @Override
+    public void updateTotalMoney(Integer orderId) {
+        this.baseMapper.updateTotalMoney(orderId);
+    }
+
+    @Override
+    public void updateGoodsCountForDel(Integer orderId) {
+        this.baseMapper.updateGoodsCountForDel(orderId);
+    }
 }

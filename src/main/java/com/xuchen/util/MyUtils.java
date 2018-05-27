@@ -20,10 +20,9 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Random;
 
-public class MyUtils {
+public final class MyUtils {
 
-    protected static final Logger logger = Logger.getLogger(MyUtils.class);
-    private static Random random = ThreadLocalRandom.current();
+    private static final Logger logger = Logger.getLogger(MyUtils.class);
     private final static String randomStr = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz123456789";
 
     public static Date getDateByLocal(LocalDateTime localDateTime) {
@@ -34,25 +33,14 @@ public class MyUtils {
     /**
      * 获取用户真实IP
      * 线上环境是nginx反向代理，增加一层x-real-ip
-     * 经测试httpClient模拟请求时，会获取请求头设置的x-forwarded-for，先保留吧
      * @param request
      * @return
      */
     public static String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("X-Real-IP");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("x-forwarded-for");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-
         // 若用户经过多层代理则request.getHeader("x-forwarded-for")返回的为多个IP
         // 用逗号分隔，获取其中不为unknown的第一个IP作为用户的IP
         if (ip.length() > 15) {
@@ -90,26 +78,6 @@ public class MyUtils {
     }
 
     /**
-     * 校验Integer是否的该范围
-     *
-     * @param i     参数
-     * @param begin 起始(含)
-     * @param end   截止(含)
-     */
-    public static boolean isBetween(Integer i, Integer begin, Integer end) {
-        if (i == null) {
-            return false;
-        }
-        if (begin != null && i < begin) {
-            return false;
-        }
-        if (end != null && i > end) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * 去掉url中域名部分
      *
      * @param url
@@ -141,9 +109,6 @@ public class MyUtils {
         sysUser.setPassword(newPassword);
     }
 
-    private static char randomChar() {
-        return randomStr.charAt(random.nextInt(randomStr.length()));
-    }
 
     public static void downloadFileFromUrl(String fileUrl, File newFile) {
         BufferedInputStream bi = null;
@@ -202,5 +167,10 @@ public class MyUtils {
         }
         logger.warn("[" + myEntity.getClass() + "]没有成员变量[" + column + "]");
         return null;
+    }
+
+
+    private static char randomChar() {
+        return randomStr.charAt(ThreadLocalRandom.current().nextInt(randomStr.length()));
     }
 }

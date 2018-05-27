@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuchen.mapper.StatisticsMapper">
+
+    <select id="getMonthGoodsSale" resultType="com.xuchen.model.base.statistics.GoodsSaleModel">
+        SELECT month_time,g.goods_id,goods_name,sale_money,sale_count,original_money,gain_money
+        FROM statistics_goods_month m
+        INNER JOIN goods g ON m.goods_id = g.goods_id
+        WHERE m.month_time = #{monthTime}
+        <if test="goodsType != null">
+            AND g.goods_type = #{goodsType}
+        </if>
+    </select>
+
+</mapper>

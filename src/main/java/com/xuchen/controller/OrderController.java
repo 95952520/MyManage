@@ -1,19 +1,20 @@
 package com.xuchen.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.xuchen.base.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.xuchen.base.Result;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.controller.base.BaseController;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.OrderBase;
+import com.xuchen.entity.OrderGoods;
 import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.DeliveryTypeEnum;
@@ -21,6 +22,7 @@ import com.xuchen.enums.OrderTypeEnum;
 import com.xuchen.enums.PayTypeEnum;
 import com.xuchen.enums.StatusEnum;
 import com.xuchen.enums.UserTypeEnums;
+import com.xuchen.service.OrderGoodsService;
 import com.xuchen.service.OrderService;
 import com.xuchen.service.UserService;
 import com.xuchen.util.MyUtils;
@@ -40,6 +42,8 @@ public class OrderController extends BaseController {
     @Autowired
     OrderService orderService;
     @Autowired
+    OrderGoodsService orderGoodsService;
+    @Autowired
     UserService userService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -56,7 +60,7 @@ public class OrderController extends BaseController {
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);
         wrapper.eq("customer_id").eq("order_type").eq("delivery_type").eq("delivery_user_id")
-                .eq("pay_type").between("create_time");
+                .eq("pay_type").between("order_time");
         List<OrderBase> list = orderService.selectList(wrapper);
         return Result.success(PageHelper.freeTotal(), list);
     }
@@ -108,12 +112,14 @@ public class OrderController extends BaseController {
     @RequestLog
     Result delete(OrderBase myEntity) {
         orderService.deleteById(myEntity);
+        orderService.updateGoodsCountForDel(myEntity.getOrderId());
+        orderGoodsService.delete(new EntityWrapper<OrderGoods>().eq("order_id", myEntity.getOrderId()));
         return Result.success();
     }
 
     private void setAttributeEnums(HttpServletRequest request) {
         List<User> deliverList = userService.selectList(new EntityWrapper<User>()
-                .eq("user_type",UserTypeEnums.home.getId()).or().eq("user_type",UserTypeEnums.deliver.getId())
+                .eq("user_type", UserTypeEnums.home.getId()).or().eq("user_type", UserTypeEnums.deliver.getId())
                 .andNew().eq("status", StatusEnum.useable.getId()));
         List<Integer> ids = new ArrayList<>(5);
         ids.add(UserTypeEnums.shop.getId());

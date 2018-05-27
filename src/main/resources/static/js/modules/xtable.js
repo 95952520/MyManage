@@ -1,8 +1,7 @@
 //layui xtable
-layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports) {
+layui.define(['layer', 'table', 'form', 'laydate'], function (exports) {
 
     var $ = layui.jquery,
-        element = layui.element,
         form = layui.form,
         table = layui.table,
         laydate = layui.laydate;
@@ -202,7 +201,8 @@ layui.define(['layer', 'table', 'element', 'form', 'laydate'], function (exports
     //日期
     $.each($('.layDate'), function (i, item) {
         laydate.render({
-            elem: item
+            elem: item,
+            max: 0
         });
     });
 

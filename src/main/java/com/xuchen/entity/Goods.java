@@ -32,6 +32,10 @@ public class Goods implements Serializable {
      */
     private Integer isProduct;
     /**
+     * 0.非原料 1.原料
+     */
+    private Integer isStock;
+    /**
      * 库存量
      */
     private Integer stockCount;
@@ -60,6 +64,11 @@ public class Goods implements Serializable {
      */
     private BigDecimal retailPrice;
 
+    private Integer status;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Integer getGoodsId() {
         return goodsId;
@@ -91,6 +100,14 @@ public class Goods implements Serializable {
 
     public void setIsProduct(Integer isProduct) {
         this.isProduct = isProduct;
+    }
+
+    public Integer getIsStock() {
+        return isStock;
+    }
+
+    public void setIsStock(Integer isStock) {
+        this.isStock = isStock;
     }
 
     public Integer getStockCount() {
@@ -133,7 +150,6 @@ public class Goods implements Serializable {
         this.originalPrice = originalPrice;
     }
 
-
     public BigDecimal getWholesalePrice() {
         return wholesalePrice;
     }
@@ -150,20 +166,30 @@ public class Goods implements Serializable {
         this.retailPrice = retailPrice;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Goods{" +
-        ", goodsId=" + goodsId +
-        ", goodsName=" + goodsName +
-        ", goodsType=" + goodsType +
-        ", isProduct=" + isProduct +
-        ", stockCount=" + stockCount +
-        ", unitType=" + unitType +
-        ", weight=" + weight +
-        ", weightType=" + weightType +
-        ", originalPrice=" + originalPrice +
-        ", wholesalePrice=" + wholesalePrice +
-        ", retailPrice=" + retailPrice +
-        "}";
+                "goodsId=" + goodsId +
+                ", goodsName='" + goodsName + '\'' +
+                ", goodsType=" + goodsType +
+                ", isProduct=" + isProduct +
+                ", isStock=" + isStock +
+                ", stockCount=" + stockCount +
+                ", unitType=" + unitType +
+                ", weight=" + weight +
+                ", weightType=" + weightType +
+                ", originalPrice=" + originalPrice +
+                ", wholesalePrice=" + wholesalePrice +
+                ", retailPrice=" + retailPrice +
+                ", status=" + status +
+                '}';
     }
 }

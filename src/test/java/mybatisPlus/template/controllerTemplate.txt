@@ -38,7 +38,7 @@ public class @ClassController@ extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    Result list(BaseQuery baseQuery, @ObjEntity@ myEntity, String params, HttpServletRequest request) {
+    Result list(BaseQuery baseQuery, @ObjEntity@ myEntity, String params) {
         if (MyUtils.isNotEmpty(params)) {
             myEntity = JSONObject.parseObject(params).toJavaObject(@ObjEntity@.class);
         }
@@ -48,7 +48,7 @@ public class @ClassController@ extends BaseController {
         return Result.success(PageHelper.freeTotal(), list);
     }
 
-//  @CheckNullUpdate(checkFiled = "")
+//  @CheckNullUpdate("")
     @RequestMapping("editText")
     @ResponseBody
     @RequestLog

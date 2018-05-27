@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-04-18
  */
 public interface OrderService extends IService<OrderBase> {
+    void updateTotalMoney(Integer orderId);
 
+    void updateGoodsCountForDel(Integer orderId);
 }

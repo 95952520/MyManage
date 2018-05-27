@@ -31,6 +31,14 @@
                 </th:block>
             </div>
         </div>
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">原料/商品</label>
+            <div class="layui-input-block">
+                <th:block lay-verify="required" th:each="map: ${stockType}">
+                    <input type="radio" name="isStock" th:value="${map.key}" th:title="${map.value}" th:checked="${map.key}==0">
+                </th:block>
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">库存量</label>
             <div class="layui-input-block" style="width: 300px">

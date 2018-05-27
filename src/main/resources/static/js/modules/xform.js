@@ -1,7 +1,22 @@
 //layui模块的定义
-layui.define(['layer', 'form'], function (exports) {
+layui.define(['layer', 'form','laydate'], function (exports) {
 
-    var $ = layui.jquery,form = layui.form;
+    var $ = layui.jquery,
+        form = layui.form,
+        laydate = layui.laydate;
+
+
+
+    $(".dayTime").each(function () {
+        laydate.render({
+            elem: this,
+            type: 'datetime',
+            max:0,
+            format:'yyyy-MM-dd HH:mm:ss',
+            value: new Date()
+        });
+    });
+
     // 验证
     form.verify({
         eqPwd: function (value) {
@@ -32,6 +47,15 @@ layui.define(['layer', 'form'], function (exports) {
                 return;
             }
             if (!new RegExp("^-?\\d+$").test(value)) {
+                return '需要为数字类型';
+            }
+        },
+        checkPlusInt: function (value) {
+            value = value.trim();
+            if ("" == value) {
+                return;
+            }
+            if (!new RegExp("\\d+$").test(value)) {
                 return '需要为数字类型';
             }
         },
@@ -90,6 +114,7 @@ layui.define(['layer', 'form'], function (exports) {
             } else {
                 layer.msg(result.msg, {
                     icon: 2,
+                    time:5000
                 });
             }
 
@@ -110,7 +135,7 @@ layui.define(['layer', 'form'], function (exports) {
             } else {
                 layer.msg(result.msg, {
                     icon: 2,
-                    time: 10000
+                    time: 5000
                 });
             }
         });

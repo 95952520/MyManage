@@ -83,7 +83,14 @@
             <label class="layui-form-label">未付款金额</label>
             <div class="layui-input-block" style="width: 300px">
                 <input type="text" name="unpayMoney" lay-verify="checkDec" placeholder="非必填,默认0,正数"
-                       autocomplete="off" class="layui-input" th:value="${myEntity.deliveryPrice}">
+                       autocomplete="off" class="layui-input commonTime" th:value="${myEntity.deliveryPrice}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="orderTime" placeholder="yyyy-MM-dd" lay-verify="required"
+                      class="layui-input dayTime" th:value="${#dates.format(myEntity.orderTime, 'yyyy-MM-dd')}">
             </div>
         </div>
         <div class="layui-form-item">

@@ -21,8 +21,9 @@ import java.util.List;
  */
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+
     @Autowired
-    private SysMenuMapper sysMenuMapper;
+    SysMenuMapper sysMenuMapper;
 
     @Override
     public List<ParentMenu> getMenuByUserId(Integer i) {
@@ -40,7 +41,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void deleteMenuById(Integer id) {
          sysMenuMapper.deleteMenuById(id);
     }

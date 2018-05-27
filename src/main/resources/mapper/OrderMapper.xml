@@ -2,4 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xuchen.mapper.OrderMapper">
 
+    <update id="updateTotalMoney">
+        UPDATE order_base b
+        INNER JOIN (SELECT IFNULL(sum(goods_count*goods_sale_money),0) AS totalMoney FROM order_goods WHERE order_id =  #{orderId}) temp
+        SET total_price = temp.totalMoney
+        WHERE b.order_id = #{orderId}
+    </update>
+
+    <update id="updateGoodsCountForDel">
+        UPDATE goods g
+        INNER JOIN order_goods o ON g.goods_id = o.goods_id
+        SET g.stock_count = g.stock_count + o.goods_count
+        WHERE o.order_id = #{orderId}
+    </update>
+
 </mapper>

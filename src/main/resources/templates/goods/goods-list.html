@@ -6,47 +6,60 @@
 <body>
 <div class="x-body">
     <form class="layui-form" style="padding-bottom: 10px;text-align: left;">
-        商品名称：
-        <div class="layui-inline">
-            <input class="layui-input" type="text" name="goodsName" autocomplete="on" placeholder="查询字段值">
+        <div class="layui-form-item">
+            商品名称：
+            <div class="layui-inline">
+                <input class="layui-input" type="text" name="goodsName" autocomplete="on" placeholder="查询字段值">
+            </div>
+            商品类型：
+            <div class="layui-inline">
+                <select name="goodsType" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${goodsType}">
+                        <option th:value="${map.key}" th:text="${map.value}"></option>
+                    </th:block>
+                </select>
+            </div>
+            生产/转卖：
+            <div class="layui-inline">
+                <select name="isProduct" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${productType}">
+                        <option th:value="${map.key}" th:text="${map.value}"></option>
+                    </th:block>
+                </select>
+            </div>
+            商品/原料：
+            <div class="layui-inline">
+                <select name="isStock" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${stockType}">
+                        <option th:value="${map.key}" th:text="${map.value}"></option>
+                    </th:block>
+                </select>
+            </div>
         </div>
-        商品类型：
-        <div class="layui-inline">
-            <select name="goodsType" lay-search="">
-                <option value="">直接选择或搜索选择</option>
-                <th:block th:each="map: ${goodsType}">
-                    <option th:value="${map.key}" th:text="${map.value}"></option>
-                </th:block>
-            </select>
+        <div class="layui-form-item">
+            重量单位：
+            <div class="layui-inline">
+                <select name="weightType" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${weightType}">
+                        <option th:value="${map.key}" th:text="${map.value}"></option>
+                    </th:block>
+                </select>
+            </div>
+            包装类型：
+            <div class="layui-inline">
+                <select name="unitType" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    <th:block th:each="map: ${unitType}">
+                        <option th:value="${map.key}" th:text="${map.value}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </div>
-        生产/转卖：
-        <div class="layui-inline">
-            <select name="isProduct" lay-search="">
-                <option value="">直接选择或搜索选择</option>
-                <th:block th:each="map: ${productType}">
-                    <option th:value="${map.key}" th:text="${map.value}"></option>
-                </th:block>
-            </select>
-        </div>
-        重量单位：
-        <div class="layui-inline">
-            <select name="weightType" lay-search="">
-                <option value="">直接选择或搜索选择</option>
-                <th:block th:each="map: ${weightType}">
-                    <option th:value="${map.key}" th:text="${map.value}"></option>
-                </th:block>
-            </select>
-        </div>
-        包装类型：
-        <div class="layui-inline">
-            <select name="unitType" lay-search="">
-                <option value="">直接选择或搜索选择</option>
-                <th:block th:each="map: ${unitType}">
-                    <option th:value="${map.key}" th:text="${map.value}"></option>
-                </th:block>
-            </select>
-        </div>
-        <button class="layui-btn" lay-submit lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
     </form>
 
     <xblock>
@@ -57,9 +70,10 @@
 
     <input type="hidden" id="editText" value="goods/editText">
     <input type="hidden" id="myEntityId" value="goodsId">
+    <input type="hidden" id="checkboxUpdate" value="goods/checkboxUpdate">
 
     <table class="layui-table"
-           lay-data="{height:'700', url:'/goods/list', page:true,id:'table',limit:15,limits:[10,15,20,50,100]}"
+           lay-data="{url:'/goods/list', page:true,id:'table',limit:15,limits:[10,15,20,50,100]}"
            lay-filter="table">
         <thead>
         <tr>
@@ -70,6 +84,7 @@
             <th lay-data="{field:'goodsName',align:'center',edit:'text'}">商品名</th>
             <th lay-data="{field:'goodsType',align:'center', sort: true,templet:'#goodsType'}">商品类型</th>
             <th lay-data="{field:'isProduct',align:'center', sort: true,templet:'#productType'}">生产/转卖</th>
+            <th lay-data="{field:'isStock',align:'center', sort: true,templet:'#stockType'}">原料/商品</th>
             <th lay-data="{field:'stockCount',align:'center', sort: true}">库存量</th>
             <th lay-data="{field:'unitType',align:'center', sort: true,templet:'#unitType'}">包装类型</th>
             <th lay-data="{field:'weight',align:'center'}">每份的重量</th>
@@ -77,7 +92,8 @@
             <th lay-data="{field:'originalPrice',align:'center', sort: true}">进价/成本价</th>
             <th lay-data="{field:'wholesalePrice',align:'center', sort: true}">批发价</th>
             <th lay-data="{field:'retailPrice',align:'center', sort: true}">零售价</th>
-            <th lay-data="{fixed:'right', align:'center',width:150, toolbar: '#row-bar'}">操作</th>
+            <th lay-data="{field:'status',align:'center',templet:'#status'}">状态</th>
+            <th lay-data="{fixed:'right', align:'center',width:120, toolbar: '#row-bar'}">操作</th>
         </tr>
         </thead>
     </table>
@@ -95,6 +111,15 @@
         {{#  var map = [[${productType}]] }}
         {{#  for(var key in map){ }}
         {{#     if(d.isProduct == key){ }}
+        {{         unescape(map[key].replace(/\\u/g, '%u')) }}
+        {{#     } }}
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="stockType" th:inline="javascript">
+        {{#  var map = [[${stockType}]] }}
+        {{#  for(var key in map){ }}
+        {{#     if(d.isStock == key){ }}
         {{         unescape(map[key].replace(/\\u/g, '%u')) }}
         {{#     } }}
         {{#  } }}
@@ -118,11 +143,16 @@
         {{#  } }}
     </script>
 
+    <script type="text/html" id="status">
+        <input type="checkbox" name="status" value="{{d.goodsId}}" lay-skin="switch" lay-text="正常|失效"
+               lay-filter="checkbox" {{ d.status== 1 ? 'checked' : '' }}
+    </script>
+
     <script type="text/html" id="row-bar">
         <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" data-url="/goods/toEdit" data-title="编辑"
            data-id="goodsId" data-width="800" data-height="800"><i class="layui-icon">&#xe642;</i> 编辑</a>
         <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" data-url='/goods/delete'><i-->
-                <!--class="layui-icon">&#xe640;</i> 删除</a>-->
+        <!--class="layui-icon">&#xe640;</i> 删除</a>-->
     </script>
 </div>
 <div th:replace="common/js"></div>

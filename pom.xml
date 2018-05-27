@@ -114,10 +114,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
 		<!-- mybatis插件 -->
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -148,13 +144,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-			</resource>
-		</resources>
+		<!--<resources>-->
+			<!--<resource>-->
+				<!--<directory>src/main/resources</directory>-->
+			<!--</resource>-->
+			<!--<resource>-->
+				<!--<directory>src/main/java</directory>-->
+			<!--</resource>-->
+		<!--</resources>-->
 	</build>
 </project>

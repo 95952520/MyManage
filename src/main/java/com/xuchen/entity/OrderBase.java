@@ -62,6 +62,10 @@ public class OrderBase implements Serializable {
      */
     private BigDecimal unpayMoney;
     /**
+     * 订单时间
+     */
+    private Date orderTime;
+    /**
      * 备注
      */
     private String remark;
@@ -208,25 +212,34 @@ public class OrderBase implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Date getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(Date orderTime) {
+        this.orderTime = orderTime;
+    }
+
     @Override
     public String toString() {
         return "OrderBase{" +
-        ", orderId=" + orderId +
-        ", customerId=" + customerId +
-        ", totalPrice=" + totalPrice +
-        ", orderType=" + orderType +
-        ", deliveryType=" + deliveryType +
-        ", deliveryAddress=" + deliveryAddress +
-        ", deliveryUserId=" + deliveryUserId +
-        ", deliveryPrice=" + deliveryPrice +
-        ", payType=" + payType +
-        ", payMoney=" + payMoney +
-        ", unpayMoney=" + unpayMoney +
-        ", remark=" + remark +
-        ", createUser=" + createUser +
-        ", createTime=" + createTime +
-        ", updateUser=" + updateUser +
-        ", updateTime=" + updateTime +
-        "}";
+                "orderId=" + orderId +
+                ", customerId=" + customerId +
+                ", totalPrice=" + totalPrice +
+                ", orderType=" + orderType +
+                ", deliveryType=" + deliveryType +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", deliveryUserId=" + deliveryUserId +
+                ", deliveryPrice=" + deliveryPrice +
+                ", payType=" + payType +
+                ", payMoney=" + payMoney +
+                ", unpayMoney=" + unpayMoney +
+                ", orderTime=" + orderTime +
+                ", remark='" + remark + '\'' +
+                ", createUser='" + createUser + '\'' +
+                ", createTime=" + createTime +
+                ", updateUser='" + updateUser + '\'' +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

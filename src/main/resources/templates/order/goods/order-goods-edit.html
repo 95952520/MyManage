@@ -8,10 +8,10 @@
     <form class="layui-form layui-form-pane" action="/orderGoods/doEdit">
         <input type="hidden" id="orderGoodsId" name="orderGoodsId" th:value="${myEntity.orderGoodsId}">
         <input type="hidden" id="orderId" name="orderId" th:value="${myEntity.orderId}">
-        <div class="layui-inline" style="margin-bottom: 15px">
+        <div class="layui-inline" style="margin-bottom: 10px">
             <label class="layui-form-label">商品</label>
             <div class="layui-input-block">
-                <select name="goodsId" lay-verify="required" lay-search="">
+                <select name="goodsId" id="goodsId" lay-verify="required" lay-search=""  lay-filter="doSelect">
                     <option value="">直接选择或搜索选择</option>
                     <th:block th:each="map: ${goodsList}">
                         <option th:value="${map.goodsId}" th:text="${map.goodsName}" th:selected="${myEntity.goodsId==map.goodsId}"></option>
@@ -19,10 +19,11 @@
                 </select>
             </div>
         </div>
+        <p id="goodsDetail" style="color: red;margin-bottom: 10px"></p>
         <div class="layui-form-item">
             <label class="layui-form-label">数量</label>
             <div class="layui-input-block">
-                <input type="text" name="goodsCount" lay-verify="required|checkInt" placeholder="必填,正整数"
+                <input type="text" name="goodsCount" lay-verify="required|checkPlusInt" placeholder="必填,正整数"
                        autocomplete="off"  th:value="${myEntity.goodsCount}"
                        class="layui-input">
             </div>
@@ -43,10 +44,38 @@
         </div>
     </form>
 </div>
+
 <div th:replace="common/js"></div>
 <div th:replace="common/setting"></div>
 <script type="text/javascript">
     layui.use('xlayform');
+    layui.use(['layer', 'form'], function(){
+        var $ = layui.jquery,
+            form = layui.form;
+
+        $(function () {
+            getGoodsPrice($("#goodsId").val());
+        });
+
+        form.on('select(doSelect)', function(data){
+            getGoodsPrice(data.value);
+            return null;
+        });
+
+        function getGoodsPrice(goodsId) {
+            $.post('/goods/selectById', {goodsId:goodsId}, function (result) {
+                if (result.code == 0) {
+                    $("#goodsDetail").html("&nbsp;&nbsp;零售价："+result.data.retailPrice+"&nbsp;&nbsp;批发价："+result.data.wholesalePrice);
+                } else {
+                    layer.msg(result.msg, {
+                        icon: 2,
+                        time: 5000
+                    });
+                    $("#goodsDetail").html("");
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>

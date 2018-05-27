@@ -5,13 +5,6 @@ layui.define(['layer', 'form'], function (exports) {
         form = layui.form;
     // 验证
     form.verify({
-        eqPwd: function (value) {
-            //获取密码
-            var pwd = $("#password").val();
-            if (pwd != value) {
-                return '两次输入的密码不一致';
-            }
-        },
         checkStr: function (value) {
             var pwd = $("#password").val();
             if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
@@ -34,6 +27,15 @@ layui.define(['layer', 'form'], function (exports) {
             }
             if (!new RegExp("^-?\\d+$").test(value)) {
                 return '需要为数字类型';
+            }
+        },
+        checkPlusInt: function (value) {
+            value = value.trim();
+            if ("" == value) {
+                return;
+            }
+            if (!new RegExp( /^[1-9]\d*$/).test(value)) {
+                return '需要为正整数';
             }
         },
         checkDec: function (value) {
@@ -83,14 +85,14 @@ layui.define(['layer', 'form'], function (exports) {
 
             } else {
                 layer.msg(result.msg, {
-                    icon: 2
+                    icon: 2,
+                    time:5000
                 });
             }
 
         });
         return false;
     });
-
 
     exports('xlayform', {});
 });  

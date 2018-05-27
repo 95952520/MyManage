@@ -33,12 +33,6 @@ public class LoginController extends BaseController {
         return "login";
     }
 
-
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
-    String main() {
-        return "main";
-    }
-
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     String error() {
         return "error";
@@ -55,6 +49,9 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     String login(SysUser loginEntity, HttpServletRequest request, RedirectAttributes attributes) {
+        if (getSessionUser()!=null){
+            return "redirect:index";
+        }
         String ip = MyUtils.getIpAddress(request);
         logger.info("[" + loginEntity.getUserName() + "]登录,IP[" + ip + "]");
         if (MyUtils.isEmpty(loginEntity.getUserName()) || MyUtils.isEmpty(loginEntity.getPassword())) {

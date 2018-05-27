@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface OrderMapper extends BaseMapper<OrderBase> {
 
+    void updateTotalMoney(Integer orderId);
+
+    void updateGoodsCountForDel(Integer orderId);
 }

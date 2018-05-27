@@ -15,7 +15,7 @@
     <input type="hidden" id="initUrl" value="/orderGoods">
     <input type="hidden" id="initParam" th:value="${orderId}">
 
-    <table class="layui-table" th:attr="lay-data=|{height:'700', url:'/orderGoods/list?orderId='+${orderId}}|" lay-filter="table">
+    <table class="layui-table" th:attr="lay-data=|{url:'/orderGoods/list?orderId='+${orderId}}|" lay-filter="table">
         <thead>
         <tr>
             <th lay-data="{field:'goodsId',align:'center', sort: true,templet:'#goodsList'}">商品名</th>

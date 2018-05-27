@@ -3,12 +3,9 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum StockTypeEnum {
-    powder(0,"粉类"),
-    slurry(1,"浆类"),
-    emulsion(2,"乳液类"),
-    sand(3,"沙类"),
-    appliances(4,"器具类"),
-    others(5,"其他类别");
+    goods(0,"商品"),
+    stock(1,"原料");
+
     private int id;
     private String value;
 
@@ -33,5 +30,4 @@ public enum StockTypeEnum {
         }
         return map;
     }
-
 }

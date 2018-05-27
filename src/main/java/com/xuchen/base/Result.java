@@ -34,7 +34,7 @@ public class Result{
     }
 
     public static Result fail() {
-        return new Result(false, 1, "error", null);
+        return new Result(false, 1, "操作失败", null);
     }
 
 
@@ -54,7 +54,7 @@ public class Result{
         this.success = true;
         this.code = 0;
         this.data = data;
-        this.msg = "success";
+        this.msg = "操作成功";
     }
 
     private Result(int count,Object data) {
@@ -62,7 +62,7 @@ public class Result{
         this.success = true;
         this.count = count;
         this.data = data;
-        this.msg = "success";
+        this.msg = "操作成功";
     }
 
     public boolean isSuccess() {

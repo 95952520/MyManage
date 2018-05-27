@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xuchen.base.BaseQuery;
 import com.xuchen.util.MyUtils;
 
+import java.util.Date;
+
 public class MyEntityWrapper<T> extends EntityWrapper {
 
     private T myEntity;
@@ -23,15 +25,15 @@ public class MyEntityWrapper<T> extends EntityWrapper {
     }
 
     public MyEntityWrapper like(String column) {
-        String columnValue = (String) MyUtils.getFieldValue(myEntity,getFiled(column));
+        Object columnValue = MyUtils.getFieldValue(myEntity,getFiled(column));
         if (columnValue != null) {
-            super.like(column, columnValue);
+            super.like(column, String.valueOf(columnValue));
         }
         return this;
     }
 
     public MyEntityWrapper eq(String column) {
-        String columnValue = (String) MyUtils.getFieldValue(myEntity,getFiled(column));
+        Object columnValue = MyUtils.getFieldValue(myEntity,getFiled(column));
         if (columnValue != null) {
             super.eq(column, columnValue);
         }
@@ -39,14 +41,16 @@ public class MyEntityWrapper<T> extends EntityWrapper {
     }
 
     public MyEntityWrapper between(String column) {
-        if (baseQuery.getBeginDate()!=null && baseQuery.getEndDate()!=null){
-            if (baseQuery.getBeginDate().before(baseQuery.getEndDate())){
-                super.between(column,baseQuery.getBeginDate(),baseQuery.getEndDate());
+        Date beginDate = baseQuery.getBeginDate();
+        Date endDate = baseQuery.getEndDate();
+        if (beginDate!=null && endDate!=null){
+            if (beginDate.before(endDate)){
+                super.between(column,beginDate,endDate);
             }
-        }else if (baseQuery.getBeginDate()!=null){
-            super.gt(column,baseQuery.getBeginDate());
+        }else if (beginDate!=null){
+            super.gt(column,beginDate);
         }else if (baseQuery.getEndDate()!=null){
-            super.lt(column,baseQuery.getEndDate());
+            super.lt(column,endDate);
         }
         return this;
     }

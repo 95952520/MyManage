@@ -13,5 +13,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface GoodsService extends IService<Goods> {
 
-    void updateTotalMoney(Integer orderId);
+    void updateGoodsStock(Integer goodsId,Integer stockCountChange);
 }
