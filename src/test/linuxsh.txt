@@ -55,3 +55,11 @@ rm backup.sql
 cd ..
 day=`date -d "$days days ago" +%Y%m%d`
 rm -rf $day
+
+启动BootManage脚本，配合定时任务用
+#!/bin/bash
+pid=$(ps -ef |grep java|grep BootManage.jar |awk '{print $2}')
+kill -9 $pid
+echo "kill result:$?"
+cd /usr/local/BootManage
+nohup java -jar BootManage.jar >>BootManage.out --spring.profiles.active=prod &
