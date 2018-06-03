@@ -20,20 +20,11 @@
                     </th:block>
                 </select>
             </div>
-            生产/转卖：
+            销售属性：
             <div class="layui-inline">
-                <select name="isProduct" lay-search="">
+                <select name="saleType" lay-search="">
                     <option value="">直接选择或搜索选择</option>
-                    <th:block th:each="map: ${productType}">
-                        <option th:value="${map.key}" th:text="${map.value}"></option>
-                    </th:block>
-                </select>
-            </div>
-            商品/原料：
-            <div class="layui-inline">
-                <select name="isStock" lay-search="">
-                    <option value="">直接选择或搜索选择</option>
-                    <th:block th:each="map: ${stockType}">
+                    <th:block th:each="map: ${saleType}">
                         <option th:value="${map.key}" th:text="${map.value}"></option>
                     </th:block>
                 </select>
@@ -83,8 +74,7 @@
             <th lay-data="{field:'goodsId',align:'center', sort: true}">goodsId</th>
             <th lay-data="{field:'goodsName',align:'center',edit:'text'}">商品名</th>
             <th lay-data="{field:'goodsType',align:'center', sort: true,templet:'#goodsType'}">商品类型</th>
-            <th lay-data="{field:'isProduct',align:'center', sort: true,templet:'#productType'}">生产/转卖</th>
-            <th lay-data="{field:'isStock',align:'center', sort: true,templet:'#stockType'}">原料/商品</th>
+            <th lay-data="{field:'saleType',align:'center', sort: true,templet:'#saleType'}">销售属性</th>
             <th lay-data="{field:'stockCount',align:'center', sort: true}">库存量</th>
             <th lay-data="{field:'unitType',align:'center', sort: true,templet:'#unitType'}">包装类型</th>
             <th lay-data="{field:'weight',align:'center'}">每份的重量</th>
@@ -107,19 +97,10 @@
         {{#  } }}
     </script>
 
-    <script type="text/html" id="productType" th:inline="javascript">
-        {{#  var map = [[${productType}]] }}
+    <script type="text/html" id="saleType" th:inline="javascript">
+        {{#  var map = [[${saleType}]] }}
         {{#  for(var key in map){ }}
-        {{#     if(d.isProduct == key){ }}
-        {{         unescape(map[key].replace(/\\u/g, '%u')) }}
-        {{#     } }}
-        {{#  } }}
-    </script>
-
-    <script type="text/html" id="stockType" th:inline="javascript">
-        {{#  var map = [[${stockType}]] }}
-        {{#  for(var key in map){ }}
-        {{#     if(d.isStock == key){ }}
+        {{#     if(d.saleType == key){ }}
         {{         unescape(map[key].replace(/\\u/g, '%u')) }}
         {{#     } }}
         {{#  } }}

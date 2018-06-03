@@ -95,16 +95,12 @@ public class GenerateUtil {
 
     /**
      * 生成xxx-add.html中每个div内容
-     * Date型不生成表单元素
      */
     private static String getAddItems(List<EntityInfo> list) {
         StringBuilder replace = new StringBuilder();
         String layuiCheck = "";
         String layuiCheckDesc = "";
         for (EntityInfo info : list) {
-            if (info.getBeanType().contains("Date")) {
-                continue;
-            }
             if (info.getBeanType().contains("Integer")) {
                 layuiCheck = "checkInt";
                 layuiCheckDesc = "正整数";
@@ -124,39 +120,48 @@ public class GenerateUtil {
                 replace.append("                    </th:block>\n");
                 replace.append("                </select>\n");
                 replace.append("            </div>\n");
-                replace.append("          若为枚举 下拉框和单选框取其一\n");
+                replace.append("若为枚举 下拉框（上）、单选框（下）取其一\n");
                 replace.append("            <div class=\"layui-input-block\" pane>\n");
                 replace.append("                <th:block lay-verify=\"required\" th:each=\"map: ${枚举类}\">\n");
                 replace.append("                    <input type=\"radio\" name=\"" + info.getBeanName() + "\" th:value=\"${map.key}\" th:title=\"${map.value}\" th:checked=\"${map.key}==1\">\n");
                 replace.append("                </th:block>\n");
                 replace.append("            </div>\n");
                 replace.append("        </div>\n");
-                replace.append("        枚举和数值型取其一\n");
+                replace.append("枚举（上）、数值型（下）取其一\n");
                 replace.append("        <div class=\"layui-form-item\">\n");
                 replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
                 replace.append("            <div class=\"layui-input-block\" style=\"width: 300px\">\n");
                 replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" lay-verify=\"" + layuiCheck + "\" placeholder=\"非必填," + layuiCheckDesc + "\" autocomplete=\"off\" class=\"layui-input\">\n");
-                replace.append("                必填、非必填取其一\n");
+                replace.append("                非必填（上）、必填（下）取其一\n");
                 replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" lay-verify=\"required|" + layuiCheck + "\" placeholder=\"必填," + layuiCheckDesc + "\" autocomplete=\"off\" class=\"layui-input\">\n");
                 replace.append("            </div>\n");
                 replace.append("        </div>\n");
-            } else {
+            } else if (info.getBeanType().contains("Date")&&!info.getBeanName().contains("create")&&!info.getBeanName().contains("update")){
+                replace.append("        <div class=\"layui-form-item\">");
+                replace.append("            <label class=\"layui-form-label\">"+info.getBeanDesc()+"</label>");
+                replace.append("            <div class=\"layui-input-inline\">");
+                replace.append("                <input type=\"text\" name=\""+info.getBeanName()+"\" lay-verify=\"required\" placeholder=\"yyyy-MM-dd HH:mm:ss\"");
+                replace.append("                       class=\"layui-input dayTime\">");
+                replace.append("            </div>");
+                replace.append("        </div>");
+            }else {
                 replace.append("        <div class=\"layui-form-item\">\n");
                 replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
                 replace.append("            <div class=\"layui-input-block\">\n");
                 replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" lay-verify=\"required\" placeholder=\"必填\" autocomplete=\"off\" class=\"layui-input\">\n");
-                replace.append("                必填、非必填取其一\n");
+                replace.append("                非必填（上）、必填（下）取其一\n");
                 replace.append("                <input type=\"text\" name=\"" + info.getBeanName() + "\" placeholder=\"非必填\" autocomplete=\"off\" class=\"layui-input\">\n");
                 replace.append("            </div>\n");
                 replace.append("        </div>\n");
             }
+            replace.append("\n");
         }
         return replace.toString();
     }
 
     /**
      * 生成xxx-edit.html中每个div内容
-     * 默认第一个字段为id,Date型不生成表单元素
+     * 默认第一个字段为id
      */
     private static String getEditItems(List<EntityInfo> list) {
         StringBuilder replace = new StringBuilder();
@@ -167,10 +172,6 @@ public class GenerateUtil {
             if (idFlag == true) {
                 replace.append("        <input type=\"hidden\" name=\"" + info.getBeanName() + "\" th:value=\"${myEntity." + info.getBeanName() + "}\">\n");
                 idFlag = false;
-                continue;
-            }
-            //默认Date型不生成form选项
-            if (info.getBeanType().contains("Date")) {
                 continue;
             }
             if (info.getBeanType().contains("Integer")) {
@@ -192,14 +193,14 @@ public class GenerateUtil {
                 replace.append("                    </th:block>\n");
                 replace.append("                </select>\n");
                 replace.append("            </div>\n");
-                replace.append("         若为枚举 下拉框和单选框取其一\n");
+                replace.append("若为枚举 下拉框（上）、单选框（下）取其一\n");
                 replace.append("            <div class=\"layui-input-block\" pane>\n");
                 replace.append("                <th:block lay-verify=\"required\" th:each=\"map: ${枚举类}\">\n");
                 replace.append("                    <input type=\"radio\" name=\"" + info.getBeanName() + "\" th:value=\"${map.key}\" th:title=\"${map.value}\" th:checked=\"${myEntity."+info.getBeanName()+"}==${map.key}\">\n");
                 replace.append("                </th:block>\n");
                 replace.append("            </div>\n");
                 replace.append("        </div>\n");
-                replace.append("        枚举和数值型取其一\n");
+                replace.append("枚举（上）、数值型（下）取其一\n");
                 replace.append("        <div class=\"layui-form-item\">\n");
                 replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
                 replace.append("            <div class=\"layui-input-block\" style=\"width: 300px\">\n");
@@ -209,7 +210,15 @@ public class GenerateUtil {
                 replace.append("                    lay-verify=\"required|" + layuiCheck + "\" placeholder=\"必填," + layuiCheckDesc + "\">\n");
                 replace.append("            </div>\n");
                 replace.append("        </div>\n");
-            } else {
+            } else if (info.getBeanType().contains("Date")&&!info.getBeanName().contains("create")&&!info.getBeanName().contains("update")){
+                replace.append("        <div class=\"layui-form-item\">");
+                replace.append("            <label class=\"layui-form-label\">"+info.getBeanDesc()+"</label>");
+                replace.append("            <div class=\"layui-input-inline\">");
+                replace.append("                <input type=\"text\" name=\""+info.getBeanName()+"\" lay-verify=\"required\" placeholder=\"yyyy-MM-dd HH:mm:ss\"");
+                replace.append("                       class=\"layui-input dayTimeNoValue\">");
+                replace.append("            </div>");
+                replace.append("        </div>");
+            }else {
                 replace.append("        <div class=\"layui-form-item\">\n");
                 replace.append("            <label class=\"layui-form-label\">" + info.getBeanDesc() + "</label>\n");
                 replace.append("            <div class=\"layui-input-block\">\n");

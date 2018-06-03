@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotations.TableId;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -28,13 +29,9 @@ public class Goods implements Serializable {
      */
     private Integer goodsType;
     /**
-     * 0.自己生产 1.转卖
+     * 0.转卖 1.自己生产 2.生产原料,非卖品
      */
-    private Integer isProduct;
-    /**
-     * 0.非原料 1.原料
-     */
-    private Integer isStock;
+    private Integer saleType;
     /**
      * 库存量
      */
@@ -94,20 +91,12 @@ public class Goods implements Serializable {
         this.goodsType = goodsType;
     }
 
-    public Integer getIsProduct() {
-        return isProduct;
+    public Integer getSaleType() {
+        return saleType;
     }
 
-    public void setIsProduct(Integer isProduct) {
-        this.isProduct = isProduct;
-    }
-
-    public Integer getIsStock() {
-        return isStock;
-    }
-
-    public void setIsStock(Integer isStock) {
-        this.isStock = isStock;
+    public void setSaleType(Integer saleType) {
+        this.saleType = saleType;
     }
 
     public Integer getStockCount() {
@@ -180,8 +169,7 @@ public class Goods implements Serializable {
                 "goodsId=" + goodsId +
                 ", goodsName='" + goodsName + '\'' +
                 ", goodsType=" + goodsType +
-                ", isProduct=" + isProduct +
-                ", isStock=" + isStock +
+                ", saleType=" + saleType +
                 ", stockCount=" + stockCount +
                 ", unitType=" + unitType +
                 ", weight=" + weight +

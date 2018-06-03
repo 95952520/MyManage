@@ -2,9 +2,10 @@ package com.xuchen.util;
 
 import com.xuchen.entity.SysUser;
 import io.netty.util.internal.ThreadLocalRandom;
-import org.apache.log4j.Logger;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedInputStream;
@@ -18,12 +19,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Random;
 
 public final class MyUtils {
 
-    private static final Logger logger = Logger.getLogger(MyUtils.class);
-    private final static String randomStr = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz123456789";
+    protected static final Logger logger = LoggerFactory.getLogger(MyUtils.class);
+    private static final String randomStr = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz123456789";
 
     public static Date getDateByLocal(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
@@ -31,7 +31,7 @@ public final class MyUtils {
 
 
     /**
-     * 获取用户真实IP
+     * 获取用户IP
      * 线上环境是nginx反向代理，增加一层x-real-ip
      * @param request
      * @return
@@ -41,7 +41,6 @@ public final class MyUtils {
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-        // 若用户经过多层代理则request.getHeader("x-forwarded-for")返回的为多个IP
         // 用逗号分隔，获取其中不为unknown的第一个IP作为用户的IP
         if (ip.length() > 15) {
             String[] ips = ip.split(",");
@@ -57,47 +56,32 @@ public final class MyUtils {
 
     /**
      * 校验是否为空
-     *
-     * @param string
-     * @return
+     * @return 任意一个为空则返回true
      */
-    public static boolean isEmpty(Object string) {
-        if (string == null || "".equals(String.valueOf(string).trim()))
+    public static boolean isEmpty(Object... strings) {
+        if (strings==null){
             return true;
+        }
+        for (Object string : strings) {
+            if (string == null || "".equals(String.valueOf(string).trim()))
+                return true;
+        }
         return false;
     }
 
     /**
      * 校验是否为空
-     *
-     * @param string
-     * @return
      */
     public static boolean isNotEmpty(Object string) {
         return !isEmpty(string);
     }
 
     /**
-     * 去掉url中域名部分
-     *
-     * @param url
-     * @return
-     */
-    public static String splitUrlDomain(String url) {
-        if (url.contains("http")) {
-            return url.substring(url.indexOf("/", 10) + 1);
-        }
-        return url;
-    }
-
-    /**
      * 获取随机数
-     *
      * @param count 获得随机数数量
-     * @return
      */
     public static String getRandomStr(Integer count) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
             sb.append(randomChar());
         }

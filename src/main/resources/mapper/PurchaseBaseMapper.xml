@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuchen.mapper.PurchaseBaseMapper">
+
+    <update id="updateTotalMoney">
+        UPDATE purchase_base b
+        INNER JOIN (SELECT IFNULL(sum(d.goods_count*g.original_price),0) AS totalMoney
+										FROM purchase_detail d
+										INNER JOIN goods g ON d.goods_id = g.goods_id
+										WHERE purchase_base_id = #{purchaseId} ) temp
+        SET total_price = temp.totalMoney
+        WHERE b.purchase_id = #{purchaseId}
+    </update>
+
+    <update id="updateGoodsCountForDel">
+        UPDATE goods g
+        INNER JOIN purchase_detail d ON d.purchase_base_id = #{purchaseId} AND g.goods_id = d.goods_id
+        SET g.stock_count = g.stock_count - d.goods_count
+    </update>
+</mapper>
