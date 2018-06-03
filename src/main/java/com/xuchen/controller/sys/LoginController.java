@@ -13,6 +13,8 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,7 +30,7 @@ public class LoginController extends BaseController {
     @Autowired
     SysMenuService sysMenuService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping(value = "/login")
     String login() {
         return "login";
     }
@@ -39,7 +41,7 @@ public class LoginController extends BaseController {
     }
 
 
-    @RequestMapping(value = {"/", "/index", ""}, method = RequestMethod.GET)
+    @GetMapping(value = {"/", "/index", ""})
     String menuList(HttpServletRequest request) {
         List<ParentMenu> list = sysMenuService.getMenuByUserId(getSessionUser().getId());
         request.setAttribute("menuList", list);
@@ -47,7 +49,7 @@ public class LoginController extends BaseController {
         return "index";
     }
 
-    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
+    @PostMapping(value = "/doLogin")
     String login(SysUser loginEntity, HttpServletRequest request, RedirectAttributes attributes) {
         if (getSessionUser()!=null){
             return "redirect:index";
@@ -59,7 +61,7 @@ public class LoginController extends BaseController {
         }
         Integer loginCount = RedisStore.getValue(RedisKey.LOGIN_IP + ip);
         if (loginCount != null && loginCount == 5) {
-            attributes.addFlashAttribute("msg", "用户尝试登录次数过多，请30分钟后再试");
+            attributes.addFlashAttribute("msg", "用户尝试登录次数过多，请稍后再试");
             return "redirect:login";
         }
         UsernamePasswordToken token = new UsernamePasswordToken(loginEntity.getUserName(), loginEntity.getPassword());

@@ -85,11 +85,7 @@ public class CutImgUtil {
         g.drawImage(img, 0, 0, width, height, null);
         g.dispose();
         // 输出为文件
-        try {
-            ImageIO.write(tag, imgType, resultFile);
-        } catch (IOException e) {
-            throw e;
-        }
+        ImageIO.write(tag, imgType, resultFile);
         return resultFile;
     }
 }

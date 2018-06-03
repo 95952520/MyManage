@@ -50,8 +50,8 @@ layui.define(['layer', 'form', 'laydate'], function (exports) {
                 unSelected.总售额 = false;
                 unSelected.总成本 = false;
                 unSelected.总利润 = false;
-                series.push({"type": "bar","markLine":{data:[markLineObj]}, "name": "总售量", "data": saleMoneyDate});
-                series.push({"type": "bar","markLine":{data:[markLineObj]}, "name": "总售额", "data": saleCountDate});
+                series.push({"type": "bar","markLine":{data:[markLineObj]}, "name": "总售量", "data": saleCountDate});
+                series.push({"type": "bar","markLine":{data:[markLineObj]}, "name": "总售额", "data": saleMoneyDate});
                 series.push({"type": "bar","markLine":{data:[markLineObj]}, "name": "总成本", "data": originalMoneyDate});
                 series.push({"type": "bar","markLine":{data:[markLineObj]}, "name": "总利润", "data": gainMoneyList});
                 var option = {

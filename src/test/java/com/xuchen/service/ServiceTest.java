@@ -1,7 +1,8 @@
 package com.xuchen.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xuchen.BootManage;
-import com.xuchen.model.base.statistics.GoodsSaleModel;
+import com.xuchen.entity.Goods;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,11 @@ import java.util.List;
 @SpringBootTest(classes = BootManage.class)
 public class ServiceTest {
     @Autowired
-    StatisticsService service;
+    GoodsService goodsService;
 
     @Test
     public void test() {
-        List<GoodsSaleModel> monthGoodsSale =
-                service.getMonthGoodsSale(201805, 1);
-        System.out.println(monthGoodsSale.size());
+        List<Goods> list = goodsService.selectList(new EntityWrapper<Goods>());
     }
 
 }

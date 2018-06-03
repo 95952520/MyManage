@@ -11,8 +11,7 @@ import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Goods;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.GoodsTypeEnum;
-import com.xuchen.enums.ProductTypeEnum;
-import com.xuchen.enums.StockTypeEnum;
+import com.xuchen.enums.SaleTypeEnum;
 import com.xuchen.enums.UnitTypeEnum;
 import com.xuchen.enums.WeightTypeEnum;
 import com.xuchen.service.GoodsService;
@@ -49,7 +48,7 @@ public class GoodsController extends BaseController {
             myEntity = JSONObject.parseObject(params).toJavaObject(Goods.class);
         }
         MyEntityWrapper wrapper = new MyEntityWrapper(baseQuery, myEntity);
-        wrapper.eq("goods_type").eq("is_product").eq("unit_type").eq("weight_type").like("goods_name").eq("is_stock");
+        wrapper.eq("goods_type").eq("sale_type").eq("unit_type").eq("weight_type").like("goods_name");
         List<Goods> list = goodsService.selectList(wrapper);
         return Result.success(PageHelper.freeTotal(), list);
     }
@@ -111,11 +110,17 @@ public class GoodsController extends BaseController {
         return Result.success();
     }
 
+//    @GetMapping("excel")
+//    @RequestLog
+//    void exportExcel(HttpServletResponse response) {
+//        List<Goods> list = goodsService.selectList(new EntityWrapper<>());
+//        ExportExcel.excelHttpExport(response,"商品",null,"标题行",list);
+//    }
+
     private void setAttributeEnums(HttpServletRequest request) {
         request.setAttribute("goodsType", GoodsTypeEnum.getMap());
-        request.setAttribute("productType", ProductTypeEnum.getMap());
+        request.setAttribute("saleType", SaleTypeEnum.getMap());
         request.setAttribute("unitType", UnitTypeEnum.getMap());
         request.setAttribute("weightType", WeightTypeEnum.getMap());
-        request.setAttribute("stockType", StockTypeEnum.getMap());
     }
 }

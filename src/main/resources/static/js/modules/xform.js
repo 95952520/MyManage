@@ -17,6 +17,15 @@ layui.define(['layer', 'form','laydate'], function (exports) {
         });
     });
 
+    $(".dayTimeNoValue").each(function () {
+        laydate.render({
+            elem: this,
+            type: 'datetime',
+            max:0,
+            format:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+
     // 验证
     form.verify({
         eqPwd: function (value) {
@@ -56,7 +65,7 @@ layui.define(['layer', 'form','laydate'], function (exports) {
                 return;
             }
             if (!new RegExp("\\d+$").test(value)) {
-                return '需要为数字类型';
+                return '需要为非负整数类型';
             }
         },
         checkDec: function (value) {
@@ -72,6 +81,15 @@ layui.define(['layer', 'form','laydate'], function (exports) {
         file: function (value, item) {
             if (value == '') {
                 return "上传文件不能为空";
+            }
+        },
+        checkDayTime: function (value, item) {
+            value = value.trim();
+            if ("" == value) {
+                return;
+            }
+            if (!new RegExp("^[1-2][0-9][0-9][0-9]-([1][0-2]|0?[1-9])-([12][0-9]|3[01]|0?[1-9]) ([01][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9]$").test(value)) {
+                return '时间格式不正确';
             }
         }
     });
