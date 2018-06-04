@@ -11,9 +11,6 @@ server:
   port: 85
   tomcat:
     uri-encoding: utf-8
-  session:
-    timeout: 15
-
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

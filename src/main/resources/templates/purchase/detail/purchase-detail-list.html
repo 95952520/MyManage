@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="common/head"/>
+</head>
+<body>
+<div class="x-body">
+
+    <xblock>
+        <button class="layui-btn layui-btn-normal dialog" th:attr="data-url=|/purchaseDetail/toAdd?purchaseBaseId=+${purchaseBaseId}|"data-title="添加">
+            <i class="layui-icon">&#xe608;</i>添加
+        </button>
+    </xblock>
+
+    <input type="hidden" id="initUrl" value="/purchaseDetail">
+    <input type="hidden" id="initParam" th:value="${purchaseBaseId}">
+
+    <table class="layui-table" th:attr="lay-data=|{url:'/purchaseDetail/list?purchaseBaseId='+${purchaseBaseId}}|" lay-filter="table">
+        <thead>
+        <tr>
+            <th lay-data="{field:'goodsId',align:'center', sort: true,templet:'#goodsList'}">商品名</th>
+            <th lay-data="{field:'goodsCount',align:'center', sort: true}">进货量</th>
+            <th lay-data="{fixed:'right', align:'center',toolbar: '#row-bar'}">操作</th>
+        </tr>
+        </thead>
+    </table>
+
+
+    <script type="text/html" id="goodsList" th:inline="javascript">
+        {{#  var list = [[${goodsList}]] }}
+        {{#  for(var index in list){ }}
+        {{#     if(d.goodsId == list[index].goodsId){ }}
+        {{         unescape(list[index].goodsName.replace(/\\u/g, '%u')) }}
+        {{#     } }}
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="row-bar">
+        <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" data-url="/purchaseDetail/toEdit" data-title="编辑"
+         data-id="purchaseDetailId" data-width="800" data-height="600"><i class="layui-icon">&#xe642;</i> 编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" data-url="/purchaseDetail/delete"><i
+         data-id="purchaseDetailId" class="layui-icon">&#xe640;</i> 删除</a>
+    </script>
+</div>
+<div th:replace="common/js"></div>
+<div th:replace="common/setting"></div>
+<script type="text/javascript">
+    layui.use('xlaytable');
+</script>
+</body>
+</html>

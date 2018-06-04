@@ -2,12 +2,13 @@ package com.xuchen.core.aop;
 
 import com.xuchen.core.annotation.CheckNullUpdate;
 import com.xuchen.util.MyUtils;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -20,7 +21,8 @@ import java.util.Arrays;
 @Component
 public class AopCore {
 
-    private final static Logger logger = Logger.getLogger(AopCore.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(AopCore.class);
 
     @Pointcut("@annotation(com.xuchen.core.annotation.RequestLog)")
     void requestLog() {
@@ -43,15 +45,15 @@ public class AopCore {
     void CheckNullUpdate(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        String updateFiled = request.getParameter("updateField");
+        String updateField = request.getParameter("updateField");
         Object myEntity = joinPoint.getArgs()[0];
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         CheckNullUpdate check = method.getAnnotation(CheckNullUpdate.class);
         if (check != null) {
-            String[] checkFileds = check.value();
-            for (String checkFiled : checkFileds) {
-                if (checkFiled.equals(updateFiled)) {
-                    Object value = MyUtils.getFieldValue(myEntity, updateFiled);
+            String[] checkFields = check.value();
+            for (String checkField : checkFields) {
+                if (checkField.equals(updateField)) {
+                    Object value = MyUtils.getFieldValue(myEntity, updateField);
                     if (MyUtils.isEmpty(value)) {
                         throw new RuntimeException("该值不能为空");
                     }

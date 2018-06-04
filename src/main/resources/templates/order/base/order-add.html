@@ -70,14 +70,14 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">已付款金额</label>
+            <label class="layui-form-label">已付金额</label>
             <div class="layui-input-block" style="width: 300px">
                 <input type="text" name="payMoney" lay-verify="checkDec" placeholder="非必填,默认0,正数" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">未付款金额</label>
+            <label class="layui-form-label">未付金额</label>
             <div class="layui-input-block" style="width: 300px">
                 <input type="text" name="unpayMoney" lay-verify="checkDec" placeholder="非必填,默认0,正数"
                        autocomplete="off"
@@ -87,7 +87,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">订单日期</label>
             <div class="layui-input-inline">
-                <input type="text" name="orderTime" lay-verify="required" placeholder="yyyy-MM-dd HH:mm:ss"
+                <input type="text" name="orderTime" lay-verify="required|checkDayTime" placeholder="yyyy-MM-dd HH:mm:ss"
                        class="layui-input dayTime">
             </div>
         </div>

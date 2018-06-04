@@ -88,7 +88,7 @@ public class UserController extends BaseController {
     @RequestMapping("doAdd")
     @ResponseBody
     Result doAdd(User myEntity, String imgFile) throws IOException {
-        logger.info(myEntity);
+        logger.info(myEntity.toString());
         myEntity.setCreateUser(getSessionUserName());
         userService.insert(myEntity);
         if (MyUtils.isNotEmpty(imgFile)) {

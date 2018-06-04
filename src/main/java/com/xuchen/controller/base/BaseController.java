@@ -3,8 +3,9 @@ package com.xuchen.controller.base;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.xuchen.base.Result;
 import com.xuchen.entity.SysUser;
-import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -25,7 +26,7 @@ public class BaseController {
     @Value("${imgDomain}")
     public String imgDomain;
 
-    protected static final Logger logger = Logger.getLogger(BaseController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     protected static SysUser getSessionUser() {
         return (SysUser) SecurityUtils.getSubject().getPrincipal();

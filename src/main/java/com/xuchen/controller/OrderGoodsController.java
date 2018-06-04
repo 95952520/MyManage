@@ -6,8 +6,8 @@ import com.xuchen.controller.base.BaseController;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Goods;
 import com.xuchen.entity.OrderGoods;
+import com.xuchen.enums.SaleTypeEnum;
 import com.xuchen.enums.StatusEnum;
-import com.xuchen.enums.StockTypeEnum;
 import com.xuchen.service.GoodsService;
 import com.xuchen.service.OrderGoodsService;
 import com.xuchen.service.OrderService;
@@ -45,18 +45,11 @@ public class OrderGoodsController extends BaseController {
 
     @RequestMapping("list")
     @ResponseBody
-    Result list(Integer orderId, HttpServletRequest request) {
+    Result list(Integer orderId) {
         List<OrderGoods> list = orderGoodsService.selectList(new EntityWrapper<OrderGoods>().eq("order_id", orderId));
         return Result.success(list);
     }
 
-    @RequestMapping("editText")
-    @ResponseBody
-    @RequestLog
-    Result editText(OrderGoods myEntity) {
-        orderGoodsService.updateById(myEntity);
-        return Result.success();
-    }
 
     @RequestMapping(value = "toAdd", method = RequestMethod.GET)
     String toAdd(Integer orderId, HttpServletRequest request) {
@@ -64,7 +57,7 @@ public class OrderGoodsController extends BaseController {
         List<Integer> ids = getGoodsIdByOrderId(orderId);
         request.setAttribute("goodsList", goodsService.selectList(new EntityWrapper<Goods>()
                 .eq("status", StatusEnum.useable.getId())
-                .eq("is_stock", StockTypeEnum.goods.getId())
+                .ne("sale_type", SaleTypeEnum.unsaleable.getId())
                 .notIn("goods_id", ids)));//查询 未添加的、未失效的、商品属性的
         return "order/goods/order-goods-add";
     }
@@ -88,10 +81,10 @@ public class OrderGoodsController extends BaseController {
         //编辑时查询 未添加、当前选中的、未失效、商品属性
         request.setAttribute("goodsList", goodsService.selectList(new EntityWrapper<Goods>()
                 .eq("status", StatusEnum.useable.getId())
+                .ne("sale_type", SaleTypeEnum.unsaleable.getId())
                 .notIn("goods_id", ids)
-                .eq("is_stock", StockTypeEnum.goods.getId())
                 .orNew()
-                .eq("goods_id", myEntity.getGoodsId())));
+                .eq("goods_id",myEntity.getGoodsId())));
         request.setAttribute("myEntity", orderGoodsService.selectById(myEntity));
         return "order/goods/order-goods-edit";
     }
