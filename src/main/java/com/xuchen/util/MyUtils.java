@@ -15,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
@@ -154,7 +156,63 @@ public final class MyUtils {
     }
 
 
+    public static String transLateByEnum(String toTranslate, Class<? extends Enum> enumClass) {
+        return transLateByEnum(toTranslate, enumClass, ",", "、");
+    }
+
+
+    public static String transLateByEnum(String toTranslate, Class<? extends Enum> enumClass, String oldSplitChar, String newSplitChar) {
+        String[] split = toTranslate.split(oldSplitChar);
+        StringBuilder sb = new StringBuilder();
+        try {
+            for (int i = 0; i < split.length; i++) {
+                sb.append(enumClass.getMethod("getValueById", Integer.TYPE).invoke(enumClass, Integer.valueOf(split[i])));
+                if (i != split.length - 1) {
+                    sb.append(newSplitChar);
+                }
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            logger.warn("[{}]转化根据枚举类[{}]转换失败", toTranslate, enumClass);
+            return "";
+        }
+    }
+
+    public static String arrayToString(Object[] arr) {
+        if (arr == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            sb.append(arr[i]);
+            if (i != arr.length - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 比较两个yyyy-MM-dd HH:mm:ss/HH:mm:ss
+     * 第一个时间是否在第二个之前
+     */
+    public static boolean isBefore(String dateStr,String comparedDateStr) {
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (!dateStr.contains("-")){
+            dateStr = "1970-01-01 "+dateStr;
+            comparedDateStr = "1970-01-01 "+comparedDateStr;
+        }
+        try {
+            return s.parse(dateStr).before(s.parse(comparedDateStr));
+        } catch (ParseException e) {
+            logger.warn("比较的时间[{}]、[{}]转化date失败",dateStr,comparedDateStr);
+            return false;
+        }
+    }
+
+
     private static char randomChar() {
         return randomStr.charAt(ThreadLocalRandom.current().nextInt(randomStr.length()));
     }
+
 }

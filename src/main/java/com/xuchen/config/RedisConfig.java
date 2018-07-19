@@ -27,8 +27,7 @@ public class RedisConfig {
     @Bean
     @ConfigurationProperties(prefix="spring.redis")
     public JedisConnectionFactory getConnectionFactory(){
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        factory.setPoolConfig(getJedisPoolConfig());
+        JedisConnectionFactory factory = new JedisConnectionFactory(getJedisPoolConfig());
         return factory;
     }
 

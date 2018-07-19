@@ -38,9 +38,19 @@ layui.define(['element'], function (exports) {
 
     //监听导航点击
     element.on('nav(side)', function (elem) {
-        title = elem.find('cite').text();
-        url = elem.find('a').attr('_href');
-
+        var title = elem.find('cite').text();
+        var url = elem.find('a').attr('_href');
+        if( $('.layui-tab-title li').length == 0) {
+            res = element.tabAdd('x-tab', {
+                id: 0,
+                title: title,
+                content: '<iframe frameborder="0" src="' + url + '" class="x-iframe"></iframe>'
+            });
+            window.location.hash = url;
+            $('.layui-tab-title li').eq(0).attr('lay-id',0);
+            element.tabChange('x-tab', 0);
+            return;
+        }
         for (var i = 0; i < $('.layui-tab-title li').length; i++) {
             $('.layui-tab-title li').eq(i).attr('lay-id',i);
         }
@@ -63,8 +73,8 @@ layui.define(['element'], function (exports) {
 
     $(".dialog").on('click', function () {
         var me = this;
-        var url = $(this).attr('data-url');
-        width = $(me).attr('data-width') || 800,
+        var url = $(this).attr('data-url'),
+            width = $(me).attr('data-width') || 800,
             height = $(me).attr('data-height') || 600,
             title = $(me).attr('data-title') || '';
         x_admin_show(title, url, width, height);
