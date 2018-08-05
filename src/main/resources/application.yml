@@ -6,11 +6,13 @@ spring:
     time-zone: GMT+8
   thymeleaf:
     mode: html
-
 server:
   port: 85
   tomcat:
     uri-encoding: utf-8
+  servlet:
+    session:
+      timeout: 10m
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

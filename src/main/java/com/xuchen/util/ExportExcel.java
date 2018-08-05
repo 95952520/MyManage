@@ -15,11 +15,6 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.List;
 
-/***
- * 导出List<Object>数据到excel（最多可导出65535行）
- *
- * @author user
- */
 public final class ExportExcel {
 
 
