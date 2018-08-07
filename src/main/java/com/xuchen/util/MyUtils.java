@@ -90,6 +90,18 @@ public final class MyUtils {
         return sb.toString();
     }
 
+    /**
+     * 获取随机数字
+     * @param count 获得随机数数量
+     */
+    public static String getRandomInt(Integer count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append(ThreadLocalRandom.current().nextInt(10));
+        }
+        return sb.toString();
+    }
+
     public static void encrypPassword(SysUser sysUser) {
         String newPassword = new SimpleHash("md5", sysUser.getPassword(), ByteSource.Util.bytes(sysUser.getUserName()), 2).toHex();
         sysUser.setPassword(newPassword);
@@ -178,20 +190,6 @@ public final class MyUtils {
         }
     }
 
-    public static String arrayToString(Object[] arr) {
-        if (arr == null) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < arr.length; i++) {
-            sb.append(arr[i]);
-            if (i != arr.length - 1) {
-                sb.append(",");
-            }
-        }
-        return sb.toString();
-    }
-
     /**
      * 比较两个yyyy-MM-dd HH:mm:ss/HH:mm:ss
      * 第一个时间是否在第二个之前
@@ -210,6 +208,21 @@ public final class MyUtils {
         }
     }
 
+    public static String decode(String dataStr) {
+        int temp;
+        final StringBuffer buffer = new StringBuffer();
+        while (true) {
+            temp = dataStr.indexOf("\\u");
+            if (temp==-1){
+                buffer.append(dataStr);
+                break;
+            }
+            buffer.append(dataStr.substring(0,temp));
+            buffer.append(new Character((char)Integer.parseInt(dataStr.substring(temp+2,temp+6),16)));
+            dataStr = dataStr.substring(temp+6,dataStr.length());
+        }
+        return buffer.toString();
+    }
 
     private static char randomChar() {
         return randomStr.charAt(ThreadLocalRandom.current().nextInt(randomStr.length()));

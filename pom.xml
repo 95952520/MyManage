@@ -143,7 +143,20 @@
 			<version>${zxing.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>4.1.1</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.3</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
+
 
 	<build>
 		<finalName>BootManage</finalName>

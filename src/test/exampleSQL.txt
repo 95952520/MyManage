@@ -1,0 +1,51 @@
+-- 生成结果排行
+SELECT ID,@curRank:=@curRank as rank,@curRank:=@curRank+1 FROM fin_item_user,(SELECT @curRank:=1)p
+
+-- 插入
+INSERT INTO Table_A
+(key1,key2) SELECT value1,value2 FROM Table_B
+
+-- 更新
+UPDATE Table_A
+        inner join Table_B on A.id = B.id
+    set
+        A.key = B.key
+    where
+        B.key = value
+
+-- 动态sql
+    set @sql=concat('INSERT INTO ',@tablename ,' SELECT * FROM table');
+    prepare dd from @sql;
+    execute dd;
+
+-- 创建表
+CREATE TABLE if NOT exists sys_menu_test LIKE sys_menu
+
+-- 查询存储过程内容
+SELECT SPECIFIC_name,routine_name,routine_definition  FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_DEFINITION LIKE '%death_rank%';
+
+
+DECLARE steamid int(11);
+DECLARE done INT DEFAULT FALSE;
+
+-- mysql游标
+DECLARE cur CURSOR FOR
+SELECT steam_id
+FROM Year_End_Inventory;
+/*将结束标志绑定到游标*/
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+/*打开游标*/
+OPEN cur;
+/*开始循环*/
+read_loop: LOOP
+/*提取游标里的数据，这里只有一个，多个的话也一样*/
+FETCH cur INTO steamid;
+    /*声明结束的时候*/
+    IF done THEN
+        LEAVE read_loop;
+    END IF;
+    /*这里做你想做的循环的事件*/
+    call USP_Year_End_Inventory_FRIEND_PLAY(steamid);
+END LOOP;
+/*关闭游标*/
+CLOSE cur;

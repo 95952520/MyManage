@@ -1,6 +1,4 @@
 # 正式环境
-profile: prod
-
 server:
   port: 8080
 
@@ -35,11 +33,12 @@ spring:
     port: 6379
     password: password
     timeout: 5000
-    pool:
-      max-active: 9
-      min-idle: 2
-      max-idle: 9
-      max-wait: -1
+    jedis:
+      pool:
+        max-active: 9
+        min-idle: 2
+        max-idle: 9
+        max-wait: -1
 
 imgPath: /home/img/
 userImgDir: user/

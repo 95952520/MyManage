@@ -7,7 +7,6 @@ spring:
   thymeleaf:
     mode: html
 server:
-  port: 85
   tomcat:
     uri-encoding: utf-8
   servlet:

@@ -1,0 +1,30 @@
+nexus配置
+https://www.cnblogs.com/huaxingtianxia/p/6846801.html
+https://blog.csdn.net/a491857321/article/details/52253329
+
+
+maven-setting.xml
+	<server>
+      <id>benq-nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+    <mirror>
+        <id>benq-nexus</id>
+        <mirrorOf>central</mirrorOf>
+        <name>benq-nexus</name>
+        <url>http://localhost:8081/repository/maven-group/</url>
+    </mirror>
+deploy时的pom.xml
+    <distributionManagement>
+        <repository>
+            <id>benq-nexus</id>
+            <name>Internal Releases</name>
+            <url>http://localhost:8081/repository/maven-3rd/</url>
+        </repository>
+        <snapshotRepository>
+            <id>benq-nexus</id>
+            <name>Internal Releases</name>
+            <url>http://localhost:8081/repository/maven-3rd/</url>
+        </snapshotRepository>
+    </distributionManagement>
