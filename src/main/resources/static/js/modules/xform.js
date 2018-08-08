@@ -205,6 +205,7 @@ layui.define(['layer', 'form','laydate'], function (exports) {
                 }
             });
         }
+        return false;
     });
 
     $("#deleteImg").on('click', function () {

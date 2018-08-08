@@ -31,7 +31,7 @@
                 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] [%class:%line] --- %m %n</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>logs/B5ZoneManage.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+                <fileNamePattern>logs/BootManage.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
                 <!-- 30 days -->
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
