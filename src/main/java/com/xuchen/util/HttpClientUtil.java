@@ -1,4 +1,4 @@
-package util;
+package com.xuchen.util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -132,7 +132,7 @@ public class HttpClientUtil {
      * @param saveCookie  是否保存会话
      * @param doGetCookie 是否读取已保存的会话(cookie)
      */
-    public static String doRequest(HttpRequestBase requestBase, boolean saveCookie, boolean doGetCookie) throws IOException {
+    public static synchronized String doRequest(HttpRequestBase requestBase, boolean saveCookie, boolean doGetCookie) throws IOException {
         CloseableHttpClient tempClient;
         if (doGetCookie) {
             CookieStore cookieStore = threadLocalCookieStore.get();

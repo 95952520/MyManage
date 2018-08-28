@@ -3,6 +3,7 @@ package com.xuchen.service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.xuchen.BootManage;
 import com.xuchen.entity.Goods;
+import com.xuchen.util.ExportExcel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class ServiceTest {
     @Test
     public void test() {
         List<Goods> list = goodsService.selectList(new EntityWrapper<Goods>());
+//        list.forEach(i-> System.out.println(i));
+
+        ExportExcel.excelExport(true,"sheetName","123456",list,"D://"+System.currentTimeMillis());
     }
 
 }

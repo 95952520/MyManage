@@ -12,6 +12,8 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -53,6 +55,10 @@ public class BaseController {
         logger.error("参数:" + getJsonParams(request.getParameterMap()));
         e.printStackTrace();
         return Result.fail(e.getMessage());
+    }
+
+    protected HttpServletRequest getRequest(){
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
     private static String getJsonParams(Map<String, String[]> map) {

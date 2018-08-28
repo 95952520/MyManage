@@ -87,6 +87,11 @@
 			<artifactId>poi</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -124,11 +129,17 @@
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- httpClient相关 -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>${httpclient.version}</version>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpclient.version}</version>
 		</dependency>
 		<!-- 二维码 -->
 		<dependency>
@@ -143,18 +154,15 @@
 			<version>${zxing.version}</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>net.sourceforge.tess4j</groupId>
 			<artifactId>tess4j</artifactId>
 			<version>4.1.1</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.5.3</version>
-            <scope>test</scope>
-        </dependency>
+
+
 	</dependencies>
 
 

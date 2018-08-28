@@ -51,4 +51,8 @@ public class RedisStore {
     public static void expire(String key, long timeout, TimeUnit timeType) {
         redisTemplate.expire(key, timeout, timeType);
     }
+
+    public static boolean hasKey(String key) {
+        return redisTemplate.hasKey(key).booleanValue();
+    }
 }
