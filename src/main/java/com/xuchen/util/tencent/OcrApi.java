@@ -1,7 +1,8 @@
-package util.api.tencent;
+package com.xuchen.util.tencent;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xuchen.util.CutImgUtil;
+import com.xuchen.util.HttpClientUtil;
 import org.apache.http.Consts;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -10,7 +11,6 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.HttpClientUtil;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,14 +21,14 @@ import java.util.Random;
 
 public class OcrApi {
 
-    private static final long appid = 1;
+    private static final long appid = 1257229926;
     private static final String SecretID = "SecretID";
     private static final String SecretKey = "SecretKey";
     private static final Logger logger = LoggerFactory.getLogger(OcrApi.class);
     private static final HttpPost httpPost = new HttpPost("https://recognition.image.myqcloud.com/ocr/general");
     static {
         httpPost.addHeader("host", "recognition.image.myqcloud.com");
-        httpPost.addHeader("authorization", "authorization=");
+        httpPost.addHeader("authorization", "JUrmqZ2341SyFPg1516UjxtwKJ1hPTEyNTcyMjk5MjYmYj0maz1BS0lEVXM2QTV0eWNEY3J1QUhyM2UzSEo5cUxncTE0d004UVomdD0xNTMzMTA5NzcwJmU9MTUzODI5Mzc3MCZyPTE4NzkxMTk1NzA=");
     }
 
     public static String doOcr(BufferedImage bufferedImage){
