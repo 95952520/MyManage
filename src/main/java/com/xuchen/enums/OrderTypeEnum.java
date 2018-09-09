@@ -3,9 +3,9 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum OrderTypeEnum {
-    unDeliver(0,"未配送"),
-    delivering(1,"配送中"),
-    finished(2,"配送完成");
+    UNDELIVER(0,"未配送"),
+    DELIVERING(1,"配送中"),
+    FINISHED(2,"配送完成");
 
     private int id;
     private String value;

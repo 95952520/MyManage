@@ -92,6 +92,10 @@ public class UserController extends BaseController {
         myEntity.setCreateUser(getSessionUserName());
         userService.insert(myEntity);
         if (MyUtils.isNotEmpty(imgFile)) {
+            File dir = new File(imgPath + userImgDir);
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
             File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
             MyUtils.createFileFromStr(imgFile, file);
             myEntity.setUserImg(imgDomain + userImgDir + myEntity.getUserId() + ".jpg");
@@ -115,6 +119,10 @@ public class UserController extends BaseController {
         myEntity.setUpdateTime(new Date());
         if (MyUtils.isNotEmpty(imgFile)) {
             logger.info("用户头像更新");
+            File dir = new File(imgPath + userImgDir);
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
             File file = new File(imgPath + userImgDir + myEntity.getUserId() + ".jpg");
             MyUtils.createFileFromStr(imgFile, file);
             myEntity.setUserImg(imgDomain + userImgDir + myEntity.getUserId() + ".jpg");

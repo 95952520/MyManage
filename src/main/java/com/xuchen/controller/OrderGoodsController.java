@@ -56,8 +56,8 @@ public class OrderGoodsController extends BaseController {
         request.setAttribute("orderId", orderId);
         List<Integer> ids = getGoodsIdByOrderId(orderId);
         request.setAttribute("goodsList", goodsService.selectList(new EntityWrapper<Goods>()
-                .eq("status", StatusEnum.useable.getId())
-                .ne("sale_type", SaleTypeEnum.unsaleable.getId())
+                .eq("status", StatusEnum.USEABLE.getId())
+                .ne("sale_type", SaleTypeEnum.UNSALEABLE.getId())
                 .notIn("goods_id", ids)));//查询 未添加的、未失效的、商品属性的
         return "order/goods/order-goods-add";
     }
@@ -80,8 +80,8 @@ public class OrderGoodsController extends BaseController {
         List<Integer> ids =getGoodsIdByOrderId(myEntity.getOrderId());
         //编辑时查询 未添加、当前选中的、未失效、商品属性
         request.setAttribute("goodsList", goodsService.selectList(new EntityWrapper<Goods>()
-                .eq("status", StatusEnum.useable.getId())
-                .ne("sale_type", SaleTypeEnum.unsaleable.getId())
+                .eq("status", StatusEnum.USEABLE.getId())
+                .ne("sale_type", SaleTypeEnum.UNSALEABLE.getId())
                 .notIn("goods_id", ids)
                 .orNew()
                 .eq("goods_id",myEntity.getGoodsId())));

@@ -3,9 +3,9 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum WeightTypeEnum {
-    gram(0,"克"),
-    kilogram(1,"千克"),
-    ton(2,"吨");
+    GRAM(0,"克"),
+    KILOGRAM(1,"千克"),
+    TON(2,"吨");
 
     private int id;
     private String value;

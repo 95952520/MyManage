@@ -119,14 +119,14 @@ public class OrderController extends BaseController {
 
     private void setAttributeEnums(HttpServletRequest request) {
         List<User> deliverList = userService.selectList(new EntityWrapper<User>()
-                .eq("user_type", UserTypeEnums.home.getId()).or().eq("user_type", UserTypeEnums.deliver.getId())
-                .andNew().eq("status", StatusEnum.useable.getId()));
+                .eq("user_type", UserTypeEnums.HOME.getId()).or().eq("user_type", UserTypeEnums.DELIVER.getId())
+                .andNew().eq("status", StatusEnum.USEABLE.getId()));
         List<Integer> ids = new ArrayList<>(5);
-        ids.add(UserTypeEnums.shop.getId());
-        ids.add(UserTypeEnums.worker.getId());
-        ids.add(UserTypeEnums.factory.getId());
-        ids.add(UserTypeEnums.elseType.getId());
-        ids.add(UserTypeEnums.littleBuyer.getId());
+        ids.add(UserTypeEnums.SHOP.getId());
+        ids.add(UserTypeEnums.WORKER.getId());
+        ids.add(UserTypeEnums.FACTORY.getId());
+        ids.add(UserTypeEnums.ELSE_TYPE.getId());
+        ids.add(UserTypeEnums.LITTLE_BUYER.getId());
         List<User> customerList = userService.selectList(new EntityWrapper<User>().in("user_type", ids));
         request.setAttribute("customerList", customerList);
         request.setAttribute("deliverList", deliverList);

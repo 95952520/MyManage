@@ -9,6 +9,7 @@ import com.xuchen.controller.base.BaseController;
 import com.xuchen.core.annotation.CheckNullUpdate;
 import com.xuchen.core.annotation.RequestLog;
 import com.xuchen.entity.Goods;
+import com.xuchen.entity.User;
 import com.xuchen.entity.base.MyEntityWrapper;
 import com.xuchen.enums.GoodsTypeEnum;
 import com.xuchen.enums.SaleTypeEnum;
@@ -18,12 +19,17 @@ import com.xuchen.service.GoodsService;
 import com.xuchen.util.MyUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -34,6 +40,8 @@ public class GoodsController extends BaseController {
 
     @Autowired
     GoodsService goodsService;
+    @Value("${goodsImgDir}")
+    String goodsImgDir;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     String index(HttpServletRequest request) {
@@ -77,13 +85,23 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("doAdd")
     @ResponseBody
-    @RequestLog
-    Result doAdd(Goods myEntity) {
+    Result doAdd(Goods myEntity, String imgFile) throws IOException {
+        logger.info(myEntity.toString());
         goodsService.insert(myEntity);
+        if (MyUtils.isNotEmpty(imgFile)) {
+            File dir = new File(imgPath + goodsImgDir);
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
+            File file = new File(imgPath + goodsImgDir + myEntity.getGoodsId() + ".jpg");
+            MyUtils.createFileFromStr(imgFile, file);
+            myEntity.setGoodsImg(imgDomain + goodsImgDir + myEntity.getGoodsId() + ".jpg");
+            goodsService.updateById(myEntity);
+        }
         return Result.success();
     }
 
-    @RequestMapping(value = "toEdit", method = RequestMethod.GET)
+    @GetMapping(value = "toEdit")
     String toEdit(Goods myEntity, HttpServletRequest request) {
         setAttributeEnums(request);
         request.setAttribute("myEntity", goodsService.selectById(myEntity));
@@ -92,8 +110,18 @@ public class GoodsController extends BaseController {
 
     @RequestMapping("doEdit")
     @ResponseBody
-    @RequestLog
-    Result doEdit(Goods myEntity) {
+    Result doEdit(Goods myEntity,String imgFile) throws IOException {
+        logger.info("url:[goods/doEdit];"+myEntity);
+        if (MyUtils.isNotEmpty(imgFile)) {
+            logger.info("商品图片更新");
+            File dir = new File(imgPath + goodsImgDir);
+            if (!dir.exists()){
+                dir.mkdirs();
+            }
+            File file = new File(imgPath + goodsImgDir + myEntity.getGoodsId() + ".jpg");
+            MyUtils.createFileFromStr(imgFile, file);
+            myEntity.setGoodsImg(imgDomain + goodsImgDir + myEntity.getGoodsId() + ".jpg");
+        }
         goodsService.updateById(myEntity);
         return Result.success();
     }
@@ -107,6 +135,23 @@ public class GoodsController extends BaseController {
         myEntity.setGoodsId(checkBox.getId());
         myEntity.setStatus(checkBox.isChecked() ? 1 : 0);
         goodsService.updateById(myEntity);
+        return Result.success();
+    }
+
+
+    @GetMapping("deleteImg")
+    @ResponseBody
+    @RequestLog
+    Result deleteImg(Integer id) {
+        Goods myEntity = new Goods();
+        myEntity.setGoodsId(id);
+        myEntity = goodsService.selectById(myEntity);
+        myEntity.setGoodsImg(null);
+        goodsService.updateAllColumnById(myEntity);
+        File file = new File(imgPath + goodsImgDir + myEntity.getGoodsId() + ".jpg");
+        if (file.exists()) {
+            file.delete();
+        }
         return Result.success();
     }
 

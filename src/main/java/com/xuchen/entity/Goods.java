@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotations.TableId;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * <p>
@@ -62,6 +61,8 @@ public class Goods implements Serializable {
     private BigDecimal retailPrice;
 
     private Integer status;
+
+    private String goodsImg;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -163,6 +164,14 @@ public class Goods implements Serializable {
         this.status = status;
     }
 
+    public String getGoodsImg() {
+        return goodsImg;
+    }
+
+    public void setGoodsImg(String goodsImg) {
+        this.goodsImg = goodsImg;
+    }
+
     @Override
     public String toString() {
         return "Goods{" +
@@ -178,6 +187,7 @@ public class Goods implements Serializable {
                 ", wholesalePrice=" + wholesalePrice +
                 ", retailPrice=" + retailPrice +
                 ", status=" + status +
+                ", goodsImg='" + goodsImg + '\'' +
                 '}';
     }
 }

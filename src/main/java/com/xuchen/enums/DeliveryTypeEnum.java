@@ -3,9 +3,9 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum DeliveryTypeEnum {
-    noDelivery(0,"客户上门"),
-    deliverSelf(1,"自家取送"),
-    thirdDelivery(2,"他人取送");
+    NO_DELIVERY(0,"客户上门"),
+    DELIVER_SELF(1,"自家取送"),
+    THIRD_DELIVERY(2,"他人取送");
 
     private int id;
     private String value;

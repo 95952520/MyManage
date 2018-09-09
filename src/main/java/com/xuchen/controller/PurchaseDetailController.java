@@ -56,8 +56,8 @@ public class PurchaseDetailController extends BaseController {
         request.setAttribute("purchaseBaseId", purchaseBaseId);
         List<Integer> ids = getGoodsIdByPurchaseId(purchaseBaseId);
         request.setAttribute("goodsList", goodsService.selectList(new EntityWrapper<Goods>()
-                .eq("status", StatusEnum.useable.getId())
-                .ne("sale_type", SaleTypeEnum.product.getId())
+                .eq("status", StatusEnum.USEABLE.getId())
+                .ne("sale_type", SaleTypeEnum.PRODUCT.getId())
                 .notIn("goods_id", ids)));//查询 未添加的、未失效的、原料属性或转卖商品的的
         return "purchase/detail/purchase-detail-add";
     }
@@ -78,8 +78,8 @@ public class PurchaseDetailController extends BaseController {
         List<Integer> ids = getGoodsIdByPurchaseId(myEntity.getPurchaseBaseId());
         //编辑时查询 未添加、当前选中的、未失效、原料属性或转卖商品属性的
         request.setAttribute("goodsList", goodsService.selectList(new EntityWrapper<Goods>()
-                .eq("status", StatusEnum.useable.getId())
-                .ne("sale_type", SaleTypeEnum.product.getId())
+                .eq("status", StatusEnum.USEABLE.getId())
+                .ne("sale_type", SaleTypeEnum.PRODUCT.getId())
                 .notIn("goods_id", ids)
                 .orNew()
                 .eq("goods_id",myEntity.getGoodsId())));

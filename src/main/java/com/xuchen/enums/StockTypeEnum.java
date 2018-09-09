@@ -3,8 +3,8 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum StockTypeEnum {
-    goods(0,"商品"),
-    stock(1,"原料");
+    GOODS(0,"商品"),
+    STOCK(1,"原料");
 
     private int id;
     private String value;

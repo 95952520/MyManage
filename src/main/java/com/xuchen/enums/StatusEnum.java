@@ -3,8 +3,8 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum StatusEnum {
-    useable(1,"正常"),
-    invalid(0,"失效");
+    USEABLE(1,"正常"),
+    INVALID(0,"失效");
     private int id;
     private String value;
 

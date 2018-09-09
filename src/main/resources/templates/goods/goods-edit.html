@@ -6,6 +6,8 @@
 <body>
 <div class="x-body">
     <form class="layui-form layui-form-pane" action="/goods/doEdit">
+        <input type="hidden" id="img" name="imgFile">
+        <input type="hidden" name="goodsImg" th:value="${myEntity.goodsImg}">
         <input type="hidden" name="goodsId" th:value="${myEntity.goodsId}">
         <div class="layui-form-item">
             <label class="layui-form-label">商品名称</label>
@@ -87,6 +89,16 @@
             <div class="layui-form-mid layui-word-aux">原料，非卖品不用填</div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">商品图片</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="uploadImg">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="imgElement" th:src="${myEntity.goodsImg}" lay-verify="checkImg">
+                    <p id="imgDesc"></p>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" style="margin-left:200px;" lay-submit lay-filter="submit">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -98,6 +110,7 @@
 <div th:replace="common/setting"></div>
 <script type="text/javascript">
     layui.use('xform');
+    layui.use('xupload');
 </script>
 </body>
 </html>

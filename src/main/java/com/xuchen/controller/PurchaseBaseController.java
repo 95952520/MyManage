@@ -106,6 +106,6 @@ public class PurchaseBaseController extends BaseController {
 
     private void setAttributeEnums(HttpServletRequest request) {
         request.setAttribute("payType", PayTypeEnum.getMap());
-        request.setAttribute("supplierList",userService.selectList(new EntityWrapper<User>().eq("user_type",UserTypeEnums.supplier.getId())));
+        request.setAttribute("supplierList",userService.selectList(new EntityWrapper<User>().eq("user_type",UserTypeEnums.SUPPLIER.getId())));
     }
 }

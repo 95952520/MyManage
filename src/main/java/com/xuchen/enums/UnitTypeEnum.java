@@ -3,11 +3,11 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum UnitTypeEnum {
-    bag(0,"袋"),
-    bucket(1,"桶"),
-    bottle(2,"瓶"),
-    count(3,"个"),
-    kilogram(4,"公斤");
+    BAG(0,"袋"),
+    BUCKET(1,"桶"),
+    BOTTLE(2,"瓶"),
+    COUNT(3,"个"),
+    KILOGRAM(4,"公斤");
     private int id;
     private String value;
 

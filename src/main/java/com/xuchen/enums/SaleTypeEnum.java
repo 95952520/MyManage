@@ -3,9 +3,9 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum SaleTypeEnum {
-    resell(0,"转卖"),
-    product(1,"生产"),
-    unsaleable(2,"原料，非卖品");
+    RESELL(0,"转卖"),
+    PRODUCT(1,"生产"),
+    UNSALEABLE(2,"原料，非卖品");
 
     private int id;
     private String value;

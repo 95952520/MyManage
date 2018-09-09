@@ -3,12 +3,12 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum GoodsTypeEnum {
-    powder(0, "粉类"),
-    slurry(1, "浆类"),
-    emulsion(2, "乳液类"),
-    sand(3, "沙类"),
-    appliances(4, "器具类"),
-    others(5, "其他类别");
+    POWDER(0, "粉类"),
+    SLURRY(1, "浆类"),
+    EMULSION(2, "乳液类"),
+    SAND(3, "沙类"),
+    APPLIANCES(4, "器具类"),
+    OTHERS(5, "其他类别");
 
 
     private int id;

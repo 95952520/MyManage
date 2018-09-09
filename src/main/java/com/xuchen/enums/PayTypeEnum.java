@@ -3,9 +3,9 @@ package com.xuchen.enums;
 import java.util.HashMap;
 
 public enum PayTypeEnum {
-    noPay(0,"未付款"),
-    partPay(1,"付部分"),
-    allPay(2,"已付款");
+    NO_PAY(0,"未付款"),
+    PART_PAY(1,"付部分"),
+    ALL_PAY(2,"已付款");
 
     private int id;
     private String value;
